@@ -16,7 +16,6 @@ class LoginComponent extends React.Component {
           <Text>Привет, Мир</Text>
           <Text>Привет, Мир</Text>
           <TextInput>asd</TextInput>
-          <TextInput>asd</TextInput>
           <Button onPress={() => { this.setState({changed: true}) }} title={"Next"}/>
           <Button title={"Registration"}/>
         </View>
@@ -26,8 +25,8 @@ class LoginComponent extends React.Component {
       return(
         <View>
           <Text>1</Text>
-          <Text>2</Text><TextInput>asd</TextInput>
-          <TextInput>asd</TextInput>
+          <Text>2</Text>
+          <TextInput>asd123</TextInput>
           <Button title={"Entry"}/>
           <Button onPress={()=>{this.setState({changed: false})}} title={"Back"}/>
         </View>
