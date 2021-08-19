@@ -4,8 +4,7 @@ import DBUtils from '../DBUtils/DBUtils'
 import styles from './style'
 
 class LoginComponent extends React.Component {
-  db:any;
-
+  
   constructor(props) {
     super(props);
     this.db = new DBUtils();
