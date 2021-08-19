@@ -30,4 +30,19 @@ export default class DBUtils {
       );
     });
   }
+
+  login(username, password){
+    this.db.transaction(tx => {
+      tx.executeSql("SELECT * FROM Users WHERE Username =? and Password =?",
+        [username, password],
+        (tx, result) => {
+          if (result.rows.length > 0) {
+           return true;
+          } else {
+            return false;
+          };
+        }
+      );
+    });
+  }
 }
