@@ -1,7 +1,6 @@
 import { openDatabase } from 'react-native-sqlite-storage';
 
 export default class DBUtils {
-  db: any;
 
   constructor() {
     this.db = openDatabase({ name: 'KeyRingDB.db', location: 'default' });
@@ -27,6 +26,21 @@ export default class DBUtils {
         "Password	TEXT NOT NULL, " +
         "FOREIGN KEY(Id_user) REFERENCES Users(Id_user)," +
         "PRIMARY KEY(Id_key AUTOINCREMENT));"
+      );
+    });
+  }
+
+  login(username, password){
+    this.db.transaction(tx => {
+      tx.executeSql("SELECT * FROM Users WHERE Username =? and Password =?",
+        [username, password],
+        (tx, result) => {
+          if (result.rows.length > 0) {
+           return true;
+          } else {
+            return false;
+          };
+        }
       );
     });
   }
