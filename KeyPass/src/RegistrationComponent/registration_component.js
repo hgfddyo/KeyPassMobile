@@ -1,36 +1,92 @@
 import * as React from 'react';
-import { Button, View, Text, TextInput } from 'react-native';
-import styles from './style'
+import {Button, View, Text, TextInput, Alert} from 'react-native';
+import DBUtils from '../DBUtils/DBUtils';
+import styles from './styles';
 
 class RegistrationComponent extends React.Component {
-
   constructor(props) {
     super(props);
-    this.state = {flag: true}
+    this.db = new DBUtils();
+    this.state = {changed: false, username: '', password: ''};
   }
 
-  render(){
-    if(this.state.flag) {
+  render() {
+    if (!this.state.changed) {
       return (
         <View>
           <Text>Привет, Мир</Text>
           <Text>Привет, Мир</Text>
-          <TextInput>asd</TextInput>
-          <TextInput>asd</TextInput>
-          <Button onPress={this.state.flag = false}>Next</Button>
-          <Button>Log in</Button>
+          <TextInput
+            value={this.state.username}
+            onChangeText={username => this.setState({username: username})}
+          />
+          <Button
+            onPress={() => {
+              this.setState({changed: true});
+            }}
+            title={'Next'}
+          />
+          <Button
+            title={'Login'}
+            onPress={() => {
+              this.props.navigation.navigate('Login');
+            }}
+          />
+        </View>
+      );
+    } else {
+      return (
+        <View>
+          <Text>1</Text>
+          <Text>2</Text>
+          <TextInput
+            value={this.state.password}
+            onChangeText={password => this.setState({password: password})}
+            secureTextEntry
+          />
+          <Button
+            title={'Entry'}
+            onPress={async () => {
+              let registationResult = await this.db.registration(
+                this.state.username,
+                this.state.password,
+              );
+              if (registationResult) {
+                Alert.alert(
+                  'Success',
+                  'You register Successfully',
+                  [
+                    {
+                      text: 'Ok',
+                      onPress: () =>
+                        this.props.navigation.navigate('HomeScreen'),
+                    },
+                  ],
+                  {cancelable: false},
+                );
+              } else {
+                Alert.alert(
+                  'Error',
+                  'This user already exists',
+                  [
+                    {
+                      text: 'Ok',
+                    },
+                  ],
+                  {cancelable: false},
+                );
+              }
+            }}
+          />
+          <Button
+            onPress={() => {
+              this.setState({changed: false});
+            }}
+            title={'Back'}
+          />
         </View>
       );
     }
-    else return(
-      <View>
-        <Text>Привет, Мир</Text>
-        <Text>Привет, Мир</Text><TextInput>asd</TextInput>
-        <TextInput>asd</TextInput>
-        <Button>Entry</Button>
-        <Button onPress={this.state.flag = true}>Back</Button>
-      </View>
-    );
   }
 }
-export default LoginComponent;
+export default RegistrationComponent;
