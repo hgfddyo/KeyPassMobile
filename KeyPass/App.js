@@ -19,7 +19,7 @@ function App() {
     <userContext.Provider value={{user, isLogin, setUser, setIsLogin}}>
       <PaperProvider>
         <NavigationContainer>
-          <Drawer.Navigator>
+          <Drawer.Navigator initialRouteName="Login">
             <Drawer.Screen name="Login" component={LoginComponent} />
             <Drawer.Screen
               name="Registration"

@@ -4,12 +4,22 @@ import {TextInput, Surface} from 'react-native-paper';
 import DBUtils from '../DBUtils/DBUtils';
 import styles from './styles';
 import {userContext} from '../userContext/userContext';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 class LoginComponent extends React.Component {
   constructor(props) {
     super(props);
     this.db = new DBUtils();
     this.state = {changed: false, username: '', password: ''};
+  }
+
+  componentDidMount() {
+    EncryptedStorage.getItem('active_user').then(user => {
+      if (user) {
+        this.context.setUser(user);
+        this.context.setIsLogin(true);
+      }
+    });
   }
 
   render() {
@@ -69,8 +79,14 @@ class LoginComponent extends React.Component {
                   [
                     {
                       text: 'Ok',
-                      onPress: () =>
-                        this.props.navigation.navigate('HomeScreen'),
+                      onPress: () => {
+                        this.context.setUser(this.state.username);
+                        this.context.setIsLogin(true);
+                        EncryptedStorage.setItem(
+                          'active_user',
+                          this.state.username,
+                        );
+                      },
                     },
                   ],
                   {cancelable: false},
