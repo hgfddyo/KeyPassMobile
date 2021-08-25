@@ -58,33 +58,46 @@ class RegistrationComponent extends React.Component {
           <Button
             title={'Entry'}
             onPress={async () => {
-              let registationResult = await this.db.registration(
-                this.state.username,
-                this.state.password,
-              );
-              if (registationResult) {
-                Alert.alert(
-                  'Success',
-                  'You register Successfully',
-                  [
-                    {
-                      text: 'Ok',
-                      onPress: () => {
-                        this.context.setUser(this.state.username);
-                        this.context.setIsLogin(true);
-                        EncryptedStorage.setItem(
-                          'active_user',
-                          this.state.username,
-                        );
-                      },
-                    },
-                  ],
-                  {cancelable: false},
+              if (this.state.username && this.state.password) {
+                let registationResult = await this.db.registration(
+                  this.state.username,
+                  this.state.password,
                 );
+                if (registationResult) {
+                  Alert.alert(
+                    'Success',
+                    'You register Successfully',
+                    [
+                      {
+                        text: 'Ok',
+                        onPress: () => {
+                          this.context.setUser(this.state.username);
+                          this.context.setIsLogin(true);
+                          EncryptedStorage.setItem(
+                            'active_user',
+                            this.state.username,
+                          );
+                        },
+                      },
+                    ],
+                    {cancelable: false},
+                  );
+                } else {
+                  Alert.alert(
+                    'Error',
+                    'This user already exists',
+                    [
+                      {
+                        text: 'Ok',
+                      },
+                    ],
+                    {cancelable: false},
+                  );
+                }
               } else {
                 Alert.alert(
                   'Error',
-                  'This user already exists',
+                  'Enter correct data',
                   [
                     {
                       text: 'Ok',

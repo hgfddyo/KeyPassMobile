@@ -10,7 +10,7 @@ class LoginComponent extends React.Component {
   constructor(props) {
     super(props);
     this.db = new DBUtils();
-    this.state = {changed: false, username: '', password: ''};
+    this.state = {changed: false, username: '', password: '', isSecure: true};
   }
 
   componentDidMount() {
@@ -55,13 +55,20 @@ class LoginComponent extends React.Component {
     } else {
       return (
         <View style={styles.views}>
-          <Text style={styles.textH1}>Login</Text>
+          <Text style={styles.textH1}>Log in</Text>
           <Text style={styles.textH6}>Enter your password</Text>
           <TextInput
             style={styles.textInput}
             label="Password"
-            secureTextEntry
-            right={<TextInput.Icon name="eye" />}
+            secureTextEntry={this.state.isSecure}
+            right={
+              <TextInput.Icon
+                name={this.state.isSecure ? 'eye' : 'eye-off'}
+                onPress={() => {
+                  this.setState({isSecure: !this.state.isSecure});
+                }}
+              />
+            }
             value={this.state.password}
             onChangeText={password => this.setState({password: password})}
           />
