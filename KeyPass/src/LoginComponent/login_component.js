@@ -1,5 +1,6 @@
 import * as React from 'react';
-import {Button, View, Text, TextInput, Alert} from 'react-native';
+import {View, Text, Alert, TouchableOpacity} from 'react-native';
+import {TextInput, Surface} from 'react-native-paper';
 import DBUtils from '../DBUtils/DBUtils';
 import styles from './style';
 import {userContext} from '../userContext/userContext';
@@ -14,39 +15,48 @@ class LoginComponent extends React.Component {
   render() {
     if (!this.state.changed) {
       return (
-        <View>
-          <Text>Привет, Мир</Text>
-          <Text>Привет, Мир</Text>
+        <View style={styles.views}>
+          <Text style={styles.textH1}>Log in</Text>
+          <Text style={styles.textH6}>Enter your login</Text>
           <TextInput
+            style={styles.textInput}
+            label="Login"
             value={this.state.username}
             onChangeText={username => this.setState({username: username})}
           />
-          <Button
+
+          <TouchableOpacity
+            style={styles.button1}
             onPress={() => {
               this.setState({changed: true});
-            }}
-            title={'Next'}
-          />
-          <Button
-            title={'Registration'}
+            }}>
+            <Text style={styles.nextText}> Next </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.button2}
             onPress={() => {
               this.props.navigation.navigate('Registration');
-            }}
-          />
+            }}>
+            <Text style={styles.regText}> Registration </Text>
+          </TouchableOpacity>
         </View>
       );
     } else {
       return (
-        <View>
-          <Text>1</Text>
-          <Text>2</Text>
+        <View style={styles.views}>
+          <Text style={styles.textH1}>Login</Text>
+          <Text style={styles.textH6}>Enter your password</Text>
           <TextInput
+            style={styles.textInput}
+            label="Password"
+            secureTextEntry
+            right={<TextInput.Icon name="eye" />}
             value={this.state.password}
             onChangeText={password => this.setState({password: password})}
-            secureTextEntry
           />
-          <Button
-            title={'Entry'}
+          <TouchableOpacity
+            style={styles.button1}
             onPress={async () => {
               let loginResult = await this.db.login(
                 this.state.username,
@@ -77,14 +87,16 @@ class LoginComponent extends React.Component {
                   {cancelable: false},
                 );
               }
-            }}
-          />
-          <Button
+            }}>
+            <Text style={styles.nextText}> Entry </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button2}
             onPress={() => {
               this.setState({changed: false});
-            }}
-            title={'Back'}
-          />
+            }}>
+            <Text style={styles.regText}> Back </Text>
+          </TouchableOpacity>
         </View>
       );
     }
