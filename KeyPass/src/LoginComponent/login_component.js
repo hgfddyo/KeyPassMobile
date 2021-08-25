@@ -2,6 +2,7 @@ import * as React from 'react';
 import {Button, View, Text, TextInput, Alert} from 'react-native';
 import DBUtils from '../DBUtils/DBUtils';
 import styles from './style';
+import {userContext} from '../userContext/userContext';
 
 class LoginComponent extends React.Component {
   constructor(props) {
@@ -89,4 +90,6 @@ class LoginComponent extends React.Component {
     }
   }
 }
+LoginComponent.contextType = userContext;
+
 export default LoginComponent;

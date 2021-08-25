@@ -5,24 +5,30 @@ import LoginComponent from './src/LoginComponent/login_component';
 import RegistrationComponent from './src/RegistrationComponent/registration_component';
 import DBUtils from './src/DBUtils/DBUtils';
 import {Provider as PaperProvider} from 'react-native-paper';
+import {userContext} from './src/userContext/userContext';
 
 const Drawer = createDrawerNavigator();
 let db = new DBUtils();
 db.createTables();
 
 function App() {
+  const [user, setUser] = React.useState('');
+  const [isLogin, setIsLogin] = React.useState(false);
+
   return (
-    <PaperProvider>
-      <NavigationContainer>
-        <Drawer.Navigator>
-          <Drawer.Screen name="Login" component={LoginComponent} />
-          <Drawer.Screen
-            name="Registration"
-            component={RegistrationComponent}
-          />
-        </Drawer.Navigator>
-      </NavigationContainer>
-    </PaperProvider>
+    <userContext.Provider value={{user, isLogin, setUser, setIsLogin}}>
+      <PaperProvider>
+        <NavigationContainer>
+          <Drawer.Navigator>
+            <Drawer.Screen name="Login" component={LoginComponent} />
+            <Drawer.Screen
+              name="Registration"
+              component={RegistrationComponent}
+            />
+          </Drawer.Navigator>
+        </NavigationContainer>
+      </PaperProvider>
+    </userContext.Provider>
   );
 }
 
