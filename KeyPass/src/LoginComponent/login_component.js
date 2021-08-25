@@ -2,7 +2,7 @@ import * as React from 'react';
 import {View, Text, Alert, TouchableOpacity} from 'react-native';
 import {TextInput, Surface} from 'react-native-paper';
 import DBUtils from '../DBUtils/DBUtils';
-import styles from './style';
+import styles from './styles';
 import {userContext} from '../userContext/userContext';
 
 class LoginComponent extends React.Component {
