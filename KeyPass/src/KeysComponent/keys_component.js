@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Button, View, Text, Alert, TouchableOpacity} from 'react-native';
-import {TextInput, Surface} from 'react-native-paper';
+import {TextInput, Surface, FAB} from 'react-native-paper';
 import Autocomplete from 'react-native-autocomplete-input';
 import DBUtils from '../DBUtils/DBUtils';
 import styles from './style';
@@ -148,6 +148,17 @@ class KeysComponent extends React.Component {
           onChangeText={password => this.setState({password: password})}
           secureTextEntry
         />
+        <FAB
+          style={styles.fab}
+          big
+          icon="plus"
+          onPress={() => console.log('Pressed')}
+        />
+        <TouchableOpacity
+          //style={styles.button2}
+          onPress={() => {}}>
+          <Text> View all </Text>
+        </TouchableOpacity>
       </View>
     );
   }

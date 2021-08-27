@@ -29,5 +29,11 @@ const styles = StyleSheet.create({
     zIndex: 1,
     padding: 5,
   },
+  fab: {
+    position: 'absolute',
+    margin: 16,
+    right: 0,
+    bottom: 0,
+  },
 });
 export default styles;
