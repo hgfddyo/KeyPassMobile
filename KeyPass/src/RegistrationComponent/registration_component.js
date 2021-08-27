@@ -1,15 +1,16 @@
 import * as React from 'react';
-import {Button, View, Text, TextInput, Alert} from 'react-native';
+import {Button, View, Text,  Alert, TouchableOpacity} from 'react-native';
 import DBUtils from '../DBUtils/DBUtils';
 import styles from './styles';
 import {userContext} from '../userContext/userContext';
 import EncryptedStorage from 'react-native-encrypted-storage';
+import {TextInput} from 'react-native-paper';
 
 class RegistrationComponent extends React.Component {
   constructor(props) {
     super(props);
     this.db = new DBUtils();
-    this.state = {changed: false, username: '', password: ''};
+    this.state = {changed: false, username: '', password: '', isSecure: true};
   }
 
   componentDidMount() {
@@ -24,39 +25,62 @@ class RegistrationComponent extends React.Component {
   render() {
     if (!this.state.changed) {
       return (
-        <View>
-          <Text>Привет, Мир</Text>
-          <Text>Привет, Мир</Text>
+        <View style={styles.views}>
+          <Text style={styles.textH1}>Registration</Text>
+          <Text style={styles.textH6}>Enter your login</Text>
           <TextInput
+            style={styles.textInput}
+            label="Login"
             value={this.state.username}
             onChangeText={username => this.setState({username: username})}
           />
-          <Button
+
+
+          <TouchableOpacity
+            style={styles.button1}
             onPress={() => {
               this.setState({changed: true});
-            }}
-            title={'Next'}
-          />
-          <Button
-            title={'Login'}
+            }}>
+            <Text style={styles.nextText}> Next </Text>
+          </TouchableOpacity>
+
+
+          <TouchableOpacity
+            style={styles.button2}
             onPress={() => {
               this.props.navigation.navigate('Login');
-            }}
-          />
+            }}>
+            <Text style={styles.regText}> Log in </Text>
+          </TouchableOpacity>
+
         </View>
       );
     } else {
       return (
-        <View>
-          <Text>1</Text>
-          <Text>2</Text>
+        <View style={styles.views}>
+          <Text style={styles.textH1}>Registration</Text>
+          <Text style={styles.textH6}>Enter your password</Text>
+
           <TextInput
+            style={styles.textInput}
+            label="Password"
+            secureTextEntry={this.state.isSecure}
             value={this.state.password}
             onChangeText={password => this.setState({password: password})}
-            secureTextEntry
+
+            right={
+              <TextInput.Icon
+                name={this.state.isSecure ? 'eye' : 'eye-off'}
+                onPress={() => {
+                  this.setState({isSecure: !this.state.isSecure});
+                }}
+              />
+            }
           />
-          <Button
-            title={'Entry'}
+
+          <TouchableOpacity
+            style={styles.button1}
+
             onPress={async () => {
               if (this.state.username && this.state.password) {
                 let registationResult = await this.db.registration(
@@ -107,13 +131,18 @@ class RegistrationComponent extends React.Component {
                 );
               }
             }}
-          />
-          <Button
+          >
+            <Text style={styles.nextText}> Entry </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.button2}
             onPress={() => {
               this.setState({changed: false});
             }}
-            title={'Back'}
-          />
+          >
+            <Text style={styles.regText}> Back </Text>
+          </TouchableOpacity>
         </View>
       );
     }
