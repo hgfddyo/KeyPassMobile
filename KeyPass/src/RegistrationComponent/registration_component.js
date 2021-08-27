@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Button, View, Text,  Alert, TouchableOpacity} from 'react-native';
+import {Button, View, Text, Alert, TouchableOpacity} from 'react-native';
 import DBUtils from '../DBUtils/DBUtils';
 import styles from './styles';
 import {userContext} from '../userContext/userContext';
@@ -35,7 +35,6 @@ class RegistrationComponent extends React.Component {
             onChangeText={username => this.setState({username: username})}
           />
 
-
           <TouchableOpacity
             style={styles.button1}
             onPress={() => {
@@ -44,7 +43,6 @@ class RegistrationComponent extends React.Component {
             <Text style={styles.nextText}> Next </Text>
           </TouchableOpacity>
 
-
           <TouchableOpacity
             style={styles.button2}
             onPress={() => {
@@ -52,7 +50,6 @@ class RegistrationComponent extends React.Component {
             }}>
             <Text style={styles.regText}> Log in </Text>
           </TouchableOpacity>
-
         </View>
       );
     } else {
@@ -67,7 +64,6 @@ class RegistrationComponent extends React.Component {
             secureTextEntry={this.state.isSecure}
             value={this.state.password}
             onChangeText={password => this.setState({password: password})}
-
             right={
               <TextInput.Icon
                 name={this.state.isSecure ? 'eye' : 'eye-off'}
@@ -80,7 +76,6 @@ class RegistrationComponent extends React.Component {
 
           <TouchableOpacity
             style={styles.button1}
-
             onPress={async () => {
               if (this.state.username && this.state.password) {
                 let registationResult = await this.db.registration(
@@ -130,8 +125,7 @@ class RegistrationComponent extends React.Component {
                   {cancelable: false},
                 );
               }
-            }}
-          >
+            }}>
             <Text style={styles.nextText}> Entry </Text>
           </TouchableOpacity>
 
@@ -139,8 +133,7 @@ class RegistrationComponent extends React.Component {
             style={styles.button2}
             onPress={() => {
               this.setState({changed: false});
-            }}
-          >
+            }}>
             <Text style={styles.regText}> Back </Text>
           </TouchableOpacity>
         </View>
