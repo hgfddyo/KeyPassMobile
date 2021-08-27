@@ -57,6 +57,7 @@ class LoginComponent extends React.Component {
         <View style={styles.views}>
           <Text style={styles.textH1}>Log in</Text>
           <Text style={styles.textH6}>Enter your password</Text>
+
           <TextInput
             style={styles.textInput}
             label="Password"
@@ -72,6 +73,7 @@ class LoginComponent extends React.Component {
             value={this.state.password}
             onChangeText={password => this.setState({password: password})}
           />
+
           <TouchableOpacity
             style={styles.button1}
             onPress={async () => {
