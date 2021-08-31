@@ -7,6 +7,7 @@ import DBUtils from './src/DBUtils/DBUtils';
 import {Provider as PaperProvider} from 'react-native-paper';
 import {userContext} from './src/userContext/userContext';
 import KeysComponent from './src/KeysComponent/keys_component';
+import AddKeyComponent from './src/addKeyComponent/addkey_component';
 
 const Drawer = createDrawerNavigator();
 let db = new DBUtils();
@@ -27,6 +28,7 @@ function App() {
               component={RegistrationComponent}
             />
             <Drawer.Screen name="Keys" component={KeysComponent} />
+            <Drawer.Screen name="Add key" component={AddKeyComponent} />
           </Drawer.Navigator>
         </NavigationContainer>
       </PaperProvider>
