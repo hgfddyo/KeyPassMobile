@@ -8,6 +8,7 @@ import {Provider as PaperProvider} from 'react-native-paper';
 import {userContext} from './src/userContext/userContext';
 import KeysComponent from './src/KeysComponent/keys_component';
 import AddKeyComponent from './src/addKeyComponent/addkey_component';
+import KeysTableComponent from './src/KeysTableComponent/keystable_component';
 
 const Drawer = createDrawerNavigator();
 let db = new DBUtils();
@@ -27,8 +28,9 @@ function App() {
               name="Registration"
               component={RegistrationComponent}
             />
-            <Drawer.Screen name="Keys" component={KeysComponent} />
-            <Drawer.Screen name="Add key" component={AddKeyComponent} />
+            <Drawer.Screen name="Search" component={KeysComponent} />
+            <Drawer.Screen name="Accounts" component={KeysTableComponent} />
+            <Drawer.Screen name="Adding" component={AddKeyComponent} />
           </Drawer.Navigator>
         </NavigationContainer>
       </PaperProvider>

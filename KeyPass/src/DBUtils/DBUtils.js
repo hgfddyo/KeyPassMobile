@@ -74,6 +74,25 @@ export default class DBUtils {
     });
   }
 
+  async deleteKey(context, login) {
+    return new Promise((resolve, reject) => {
+      this.db.transaction(tx => {
+        tx.executeSql(
+          'DELETE FROM Keys where Context=? AND Login=?',
+          [context, login],
+          (tx, result) => {
+            if (result.rowsAffected > 0) {
+              resolve(true);
+            }
+          },
+          err => {
+            resolve(false);
+          },
+        );
+      });
+    });
+  }
+
   async getKeys(username) {
     return new Promise((resolve, reject) => {
       this.db.transaction(tx => {
