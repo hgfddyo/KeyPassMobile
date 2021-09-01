@@ -3,6 +3,15 @@ import {openDatabase} from 'react-native-sqlite-storage';
 export default class DBUtils {
   constructor() {
     this.db = openDatabase({name: 'KeyRingDB.db', location: 'default'});
+    // prettier-ignore
+    this.passwordVocabulary = [
+    '!', '#', '$', '%', '&', '(', ')', '*', '+', '-',
+    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+    ':', ';', '<' ,'=', '>', '?', '@',
+    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
+    'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
+    'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
   }
 
   createTables() {
@@ -89,5 +98,59 @@ export default class DBUtils {
         );
       });
     });
+  }
+
+  async getUserId(username) {
+    return new Promise((resolve, reject) => {
+      this.db.transaction(tx => {
+        tx.executeSql(
+          'SELECT Id_user FROM Users where Username =?',
+          [username],
+          (tx, result) => {
+            if (result.rows.length > 0) {
+              resolve(result.rows.item(0).Id_user);
+            } else {
+              resolve(-1);
+            }
+          },
+        );
+      });
+    });
+  }
+
+  async addKey(username, context, login, password) {
+    return new Promise(async (resolve, reject) => {
+      let userId = await this.getUserId(username);
+      if (userId > -1) {
+        this.db.transaction(tx => {
+          tx.executeSql(
+            'INSERT INTO Keys(Id_user, Context, Login, Password) VALUES (?,?,?,?)',
+            [userId, context, login, password],
+            (tx, result) => {
+              if (result.rowsAffected > 0) {
+                resolve(true);
+              }
+            },
+            err => {
+              resolve(false);
+            },
+          );
+        });
+      } else {
+        resolve(false);
+      }
+    });
+  }
+
+  generatePassword() {
+    let res = new Uint32Array(21);
+    window.crypto.getRandomValues(res);
+    let password = '';
+    for (var i = 0; i < res.length; i++) {
+      let code = res[i];
+      let index = code % this.passwordVocabulary.length;
+      password = password + this.passwordVocabulary[index];
+    }
+    return password;
   }
 }
