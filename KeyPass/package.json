@@ -10,6 +10,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@react-native-clipboard/clipboard": "^1.8.4",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-community/toolbar-android": "*",
     "@react-navigation/native-stack": "^6.0.5",

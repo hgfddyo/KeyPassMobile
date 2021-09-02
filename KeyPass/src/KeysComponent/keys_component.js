@@ -157,7 +157,7 @@ class KeysComponent extends React.Component {
         <TouchableOpacity
           //style={styles.button2}
           onPress={() => {}}>
-          <Text> View all </Text>
+          <Text> Show all </Text>
         </TouchableOpacity>
       </View>
     );
