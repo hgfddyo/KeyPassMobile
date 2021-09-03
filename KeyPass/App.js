@@ -9,6 +9,7 @@ import {userContext} from './src/userContext/userContext';
 import KeysComponent from './src/KeysComponent/keys_component';
 import AddKeyComponent from './src/addKeyComponent/addkey_component';
 import KeysTableComponent from './src/KeysTableComponent/keystable_component';
+import UpdateKeyComponent from './src/UpdateKeyComponent/updatekey_component';
 
 const Drawer = createDrawerNavigator();
 let db = new DBUtils();
@@ -31,6 +32,7 @@ function App() {
             <Drawer.Screen name="Search" component={KeysComponent} />
             <Drawer.Screen name="Accounts" component={KeysTableComponent} />
             <Drawer.Screen name="Adding" component={AddKeyComponent} />
+            <Drawer.Screen name="Updating" component={UpdateKeyComponent} />
           </Drawer.Navigator>
         </NavigationContainer>
       </PaperProvider>
