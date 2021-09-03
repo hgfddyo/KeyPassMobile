@@ -76,7 +76,14 @@ class KeysTableComponent extends React.Component {
               )}
               renderRightActions={() => (
                 <View>
-                  <RectButton onPress={() => {}}>
+                  <RectButton
+                    onPress={() => {
+                      this.props.navigation.navigate('Updating', {
+                        context: item.context,
+                        login: item.login,
+                        password: item.password,
+                      });
+                    }}>
                     <MaterialCommunityIcons name="pencil" />
                   </RectButton>
                   <RectButton

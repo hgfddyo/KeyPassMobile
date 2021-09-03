@@ -161,9 +161,41 @@ export default class DBUtils {
     });
   }
 
+  async updateKey(username, oldKey, newKey) {
+    return new Promise(async (resolve, reject) => {
+      let userId = await this.getUserId(username);
+      if (userId > -1) {
+        this.db.transaction(tx => {
+          tx.executeSql(
+            'UPDATE Keys SET Context=?, Login=?, Password=? WHERE Context=? AND Login=? AND Password=? AND Id_user=?',
+            [
+              newKey.context,
+              newKey.login,
+              newKey.password,
+              oldKey.context,
+              oldKey.login,
+              oldKey.password,
+              userId,
+            ],
+            (tx, result) => {
+              if (result.rowsAffected > 0) {
+                resolve(true);
+              }
+            },
+            err => {
+              resolve(false);
+            },
+          );
+        });
+      } else {
+        resolve(false);
+      }
+    });
+  }
+
   generatePassword() {
     let res = new Uint32Array(21);
-    window.crypto.getRandomValues(res);
+    crypto.getRandomValues(res);
     let password = '';
     for (var i = 0; i < res.length; i++) {
       let code = res[i];

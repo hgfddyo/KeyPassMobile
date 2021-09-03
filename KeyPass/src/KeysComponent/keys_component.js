@@ -37,9 +37,16 @@ class KeysComponent extends React.Component {
   }
 
   componentWillUnmount() {
-    this.props.navigation.removeListener('focus', async () => {
+    this.props.navigation.addListener('focus', async () => {
       let keys = await this.db.getKeys(this.context.user);
-      this.setState({keys: keys});
+      this.setState({
+        contexts: keys
+          .map(key => key.context)
+          .filter((item, index, arr) => {
+            return arr.indexOf(item) === index;
+          }),
+        keys: keys,
+      });
     });
   }
 
