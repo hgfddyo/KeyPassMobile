@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   textInputContext: {
-    //поле ввода логина
+    //поле ввода контекста
     marginRight: 40,
     marginLeft: 40,
     marginTop: 10,
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
   },
   textInputPassword: {
-    //поле ввода логина
+    //поле ввода пароля
     marginRight: 40,
     marginLeft: 40,
     marginTop: 10,
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#00C4B4',
   },
   btnUpdateText: {
-    //текст на кнопке reg
+    //текст на кнопке update
     color: '#121212',
     textAlign: 'center',
     paddingLeft: 10,
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 15,
   },
-  fab: {
+  fab: {//кнопка назад
     marginRight: 150,
     marginLeft: 152,
     marginTop:20,
