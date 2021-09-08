@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     marginRight: 40,
     marginLeft: 40,
     marginTop: 10,
-    backgroundColor:"#ffffff",
+    backgroundColor: '#ffffff',
     fontSize: 17,
   },
   textInputLogin: {
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     marginLeft: 40,
     marginTop: 10,
     borderColor: '#ccc',
-    backgroundColor:"#ffffff",
+    backgroundColor: '#ffffff',
     fontSize: 17,
   },
   textInputPassword: {
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     marginLeft: 40,
     marginTop: 10,
     marginBottom: 30,
-    backgroundColor:"#ffffff",
+    backgroundColor: '#ffffff',
     fontSize: 17,
   },
   btnUpdate: {
@@ -62,12 +62,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 15,
   },
-  fab: {//кнопка назад
+  fab: {
+    //кнопка назад
     marginRight: 150,
     marginLeft: 152,
-    marginTop:20,
+    marginTop: 20,
     right: 0,
-    left:0,
+    left: 0,
     bottom: 0,
     borderRadius: 40,
     elevation: 20,
