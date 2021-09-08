@@ -13,15 +13,6 @@ class LoginComponent extends React.Component {
     this.state = {changed: false, username: '', password: '', isSecure: true};
   }
 
-  componentDidMount() {
-    EncryptedStorage.getItem('active_user').then(user => {
-      if (user) {
-        this.context.setUser(user);
-        this.context.setIsLogin(true);
-      }
-    });
-  }
-
   render() {
     if (!this.state.changed) {
       return (
@@ -34,7 +25,6 @@ class LoginComponent extends React.Component {
             value={this.state.username}
             onChangeText={username => this.setState({username: username})}
           />
-
           <TouchableOpacity
             style={styles.button1}
             onPress={() => {
@@ -42,7 +32,6 @@ class LoginComponent extends React.Component {
             }}>
             <Text style={styles.nextText}> Next </Text>
           </TouchableOpacity>
-
           <TouchableOpacity
             style={styles.button2}
             onPress={() => {
@@ -57,7 +46,6 @@ class LoginComponent extends React.Component {
         <View style={styles.views}>
           <Text style={styles.textH1}>Log in</Text>
           <Text style={styles.textH6}>Enter your password</Text>
-
           <TextInput
             style={styles.textInput}
             label="Password"
@@ -73,7 +61,6 @@ class LoginComponent extends React.Component {
             value={this.state.password}
             onChangeText={password => this.setState({password: password})}
           />
-
           <TouchableOpacity
             style={styles.button1}
             onPress={async () => {
