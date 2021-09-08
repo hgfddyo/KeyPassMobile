@@ -47,19 +47,29 @@ class UpdateKeyComponent extends React.Component {
 
   render() {
     return (
-      <View>
+      <View style={styles.views}>
+        <Text style={styles.textH1}>Update key</Text>
         <TextInput
+          style={styles.textInputContext}
           placeholder="Context"
+          mode = 'outlined'
+          outlineColor="#ccc"
           value={this.state.context}
           onChangeText={context => this.setState({context: context})}
         />
         <TextInput
+          style={styles.textInputLogin}
           placeholder="Login"
+          mode = 'outlined'
+          outlineColor="#ccc"
           value={this.state.login}
           onChangeText={login => this.setState({login: login})}
         />
         <TextInput
+          style={styles.textInputPassword}
           placeholder="Password"
+          mode = 'outlined'
+          outlineColor="#ccc"
           value={this.state.password}
           onChangeText={password => this.setState({password: password})}
           right={
@@ -72,6 +82,7 @@ class UpdateKeyComponent extends React.Component {
           }
         />
         <TouchableOpacity
+          style={styles.btnUpdate}
           onPress={async () => {
             if (this.state.login && this.state.password && this.state.context) {
               let updateKeyResult = await this.db.updateKey(
@@ -114,14 +125,18 @@ class UpdateKeyComponent extends React.Component {
               );
             }
           }}>
-          <Text> update </Text>
+          <Text  style={styles.btnUpdateText}> update </Text>
         </TouchableOpacity>
-        <TouchableOpacity
+        <FAB
+          style={styles.fab}
+          small
+          icon="chevron-left"
+          label="back"
+          color={'#00C4B4'}
           onPress={() => {
             this.props.navigation.goBack();
-          }}>
-          <Text>{'< back'}</Text>
-        </TouchableOpacity>
+          }}
+        />
       </View>
     );
   }

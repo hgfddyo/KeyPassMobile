@@ -21,8 +21,7 @@ class AddKeyComponent extends React.Component {
           placeholder="Context"
           mode = 'outlined'
           outlineColor="#ccc"
-          //underlineColor="#ccc"
-          //selectionColor="#ccc"
+
           value={this.state.context}
           onChangeText={context => this.setState({context: context})}
         />
