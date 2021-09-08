@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
     fontSize: 30,
     marginTop: 60,
-    marginBottom: 60,
+    marginBottom: 55,
     textAlign: 'center',
   },
   btnSave: {
