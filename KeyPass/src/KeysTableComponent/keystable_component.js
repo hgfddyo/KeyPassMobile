@@ -23,6 +23,7 @@ class KeysTableComponent extends React.Component {
   }
 
   componentDidMount() {
+    this.toggleHeaderBar(false);
     this.props.navigation.addListener('focus', async () => {
       let keys = await this.db.getKeys(this.context.user);
       this.setState({keys: keys});
@@ -34,6 +35,34 @@ class KeysTableComponent extends React.Component {
       let keys = await this.db.getKeys(this.context.user);
       this.setState({keys: keys});
     });
+  }
+
+  toggleHeaderBar(isShown) {
+    if (isShown) {
+      this.props.navigation.setOptions({
+        headerRight: () => (
+          <RectButton
+            onPress={() => {
+              this.toggleHeaderBar(false);
+            }}>
+            <MaterialCommunityIcons name="close" size={30} />
+          </RectButton>
+        ),
+        title: <TextInput></TextInput>,
+      });
+    } else {
+      this.props.navigation.setOptions({
+        headerRight: () => (
+          <RectButton
+            onPress={() => {
+              this.toggleHeaderBar(true);
+            }}>
+            <MaterialCommunityIcons name="magnify" size={30} />
+          </RectButton>
+        ),
+        title: this.props.route.name,
+      });
+    }
   }
 
   render() {
