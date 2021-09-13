@@ -8,7 +8,7 @@ import {
   TouchableNativeFeedback,
 } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import {Snackbar} from 'react-native-paper';
+import {Snackbar,FAB} from 'react-native-paper';
 import DBUtils from '../DBUtils/DBUtils';
 import {RectButton, Swipeable} from 'react-native-gesture-handler';
 import styles from './styles';
@@ -38,7 +38,7 @@ class KeysTableComponent extends React.Component {
 
   render() {
     return (
-      <View>
+      <View style={styles.views}>
         <FlatList
           data={this.state.keys}
           keyExtractor={item => item.context.concat(item.login)}
@@ -123,6 +123,23 @@ class KeysTableComponent extends React.Component {
           duration={5000}>
           {this.state.selectedPassword}
         </Snackbar>
+        <FAB
+          style={styles.fabBack}
+          small
+          icon="chevron-left"
+          label="back"
+          color={'#000000'}
+          onPress={() => {
+            this.props.navigation.goBack();
+          }}
+        />
+        <FAB
+          style={styles.fabPlus}
+          big
+          color='#000000'
+          icon ="plus"
+          onPress={() => console.log('Pressed')}
+        />
       </View>
     );
   }
