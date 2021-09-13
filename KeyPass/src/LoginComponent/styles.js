@@ -1,7 +1,5 @@
 import {StyleSheet} from 'react-native';
 
-//let styles = StyleSheet.create();
-
 const styles = StyleSheet.create({
   views: {
     //контейнер

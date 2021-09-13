@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
     fontSize: 30,
     marginTop: 60,
-    marginBottom: 60,
+    marginBottom: 55,
     textAlign: 'center',
   },
   btnSave: {
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#00C4B4',
   },
   btnSaveText: {
-    //текст на кнопке reg
+    //текст на кнопке save
     color: '#121212',
     textAlign: 'center',
     paddingLeft: 10,
@@ -37,11 +37,11 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   textInputContext: {
-    //поле ввода логина
+    //поле ввода контекста
     marginRight: 40,
     marginLeft: 40,
     marginTop: 10,
-    backgroundColor:"#ffffff",
+    backgroundColor: '#ffffff',
     fontSize: 17,
   },
   textInputLogin: {
@@ -50,31 +50,30 @@ const styles = StyleSheet.create({
     marginLeft: 40,
     marginTop: 10,
     borderColor: '#ccc',
-    backgroundColor:"#ffffff",
+    backgroundColor: '#ffffff',
     fontSize: 17,
   },
   textInputPassword: {
-    //поле ввода логина
+    //поле ввода пароля
     marginRight: 40,
     marginLeft: 40,
     marginTop: 10,
     marginBottom: 30,
-    backgroundColor:"#ffffff",
+    backgroundColor: '#ffffff',
     fontSize: 17,
   },
   fab: {
+    //кнопка back
     marginRight: 150,
     marginLeft: 152,
-    marginTop:20,
+    marginTop: 20,
     right: 0,
-    left:0,
+    left: 0,
     bottom: 0,
     borderRadius: 40,
     elevation: 20,
     backgroundColor: '#ffffff',
   },
-  }
-);
-
+});
 
 export default styles;

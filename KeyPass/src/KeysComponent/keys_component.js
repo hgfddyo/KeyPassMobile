@@ -37,7 +37,7 @@ class KeysComponent extends React.Component {
   }
 
   componentWillUnmount() {
-    this.props.navigation.addListener('focus', async () => {
+    this.props.navigation.removeListener('focus', async () => {
       let keys = await this.db.getKeys(this.context.user);
       this.setState({
         contexts: keys

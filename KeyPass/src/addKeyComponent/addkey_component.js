@@ -19,17 +19,15 @@ class AddKeyComponent extends React.Component {
         <TextInput
           style={styles.textInputContext}
           placeholder="Context"
-          mode = 'outlined'
+          mode="outlined"
           outlineColor="#ccc"
-          //underlineColor="#ccc"
-          //selectionColor="#ccc"
           value={this.state.context}
           onChangeText={context => this.setState({context: context})}
         />
         <TextInput
           style={styles.textInputLogin}
           placeholder="Login"
-          mode = 'outlined'
+          mode="outlined"
           outlineColor="#ccc"
           value={this.state.login}
           onChangeText={login => this.setState({login: login})}
@@ -37,7 +35,7 @@ class AddKeyComponent extends React.Component {
         <TextInput
           style={styles.textInputPassword}
           placeholder="Password"
-          mode = 'outlined'
+          mode="outlined"
           outlineColor="#ccc"
           value={this.state.password}
           onChangeText={password => this.setState({password: password})}
