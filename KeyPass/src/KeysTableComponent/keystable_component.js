@@ -77,7 +77,7 @@ class KeysTableComponent extends React.Component {
               overshootLeft={false}
               overshootRight={false}
               renderLeftActions={() => (
-                <RectButton
+                <RectButton style={styles.leftSwipeEye}
                   onPress={() => {
                     Alert.alert(
                       '',
@@ -100,12 +100,14 @@ class KeysTableComponent extends React.Component {
                       {cancelable: false},
                     );
                   }}>
-                  <MaterialCommunityIcons name="eye" />
+                  <MaterialCommunityIcons name="eye" size={26} />
                 </RectButton>
               )}
               renderRightActions={() => (
                 <View>
+                  <View style={styles.row}>
                   <RectButton
+                    style={styles.rightSwipePencil}
                     onPress={() => {
                       this.props.navigation.navigate('Updating', {
                         context: item.context,
@@ -113,9 +115,9 @@ class KeysTableComponent extends React.Component {
                         password: item.password,
                       });
                     }}>
-                    <MaterialCommunityIcons name="pencil" />
+                    <MaterialCommunityIcons name="pencil" size={26}/>
                   </RectButton>
-                  <RectButton
+                  <RectButton style={styles.rightSwipeDelete}
                     onPress={async () => {
                       let deleteResult = await this.db.deleteKey(
                         item.context,
@@ -126,15 +128,16 @@ class KeysTableComponent extends React.Component {
                       );
                       this.setState({keys: refreshedKeys});
                     }}>
-                    <MaterialCommunityIcons name="delete" />
+                    <MaterialCommunityIcons name="delete" size={26}/>
                   </RectButton>
+                  </View>
                 </View>
               )}>
               <TouchableNativeFeedback
                 background={TouchableNativeFeedback.Ripple(null, false)}>
                 <View>
-                  <Text>{item.login}</Text>
-                  <Text>{item.context}</Text>
+                  <Text style={styles.itemLogin}>{item.login}</Text>
+                  <Text style={styles.itemContext}>{item.context}</Text>
                 </View>
               </TouchableNativeFeedback>
             </Swipeable>
