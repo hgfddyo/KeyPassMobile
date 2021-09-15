@@ -8,7 +8,7 @@ import {
   TouchableNativeFeedback,
 } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import {Snackbar} from 'react-native-paper';
+import {Snackbar,FAB} from 'react-native-paper';
 import DBUtils from '../DBUtils/DBUtils';
 import {RectButton, Swipeable} from 'react-native-gesture-handler';
 import styles from './styles';
@@ -97,7 +97,7 @@ class KeysTableComponent extends React.Component {
 
   render() {
     return (
-      <View>
+      <View style={styles.views}>
         <FlatList
           data={this.state.filteredKeys}
           keyExtractor={item => item.context.concat(item.login)}
@@ -107,7 +107,7 @@ class KeysTableComponent extends React.Component {
               overshootLeft={false}
               overshootRight={false}
               renderLeftActions={() => (
-                <RectButton
+                <RectButton style={styles.leftSwipeEye}
                   onPress={() => {
                     Alert.alert(
                       '',
@@ -130,12 +130,14 @@ class KeysTableComponent extends React.Component {
                       {cancelable: false},
                     );
                   }}>
-                  <MaterialCommunityIcons name="eye" />
+                  <MaterialCommunityIcons name="eye" size={26} />
                 </RectButton>
               )}
               renderRightActions={() => (
                 <View>
+                  <View style={styles.row}>
                   <RectButton
+                    style={styles.rightSwipePencil}
                     onPress={() => {
                       this.props.navigation.navigate('Updating', {
                         context: item.context,
@@ -143,9 +145,9 @@ class KeysTableComponent extends React.Component {
                         password: item.password,
                       });
                     }}>
-                    <MaterialCommunityIcons name="pencil" />
+                    <MaterialCommunityIcons name="pencil" size={26}/>
                   </RectButton>
-                  <RectButton
+                  <RectButton style={styles.rightSwipeDelete}
                     onPress={async () => {
                       let deleteResult = await this.db.deleteKey(
                         item.context,
@@ -156,15 +158,16 @@ class KeysTableComponent extends React.Component {
                       );
                       this.setState({keys: refreshedKeys});
                     }}>
-                    <MaterialCommunityIcons name="delete" />
+                    <MaterialCommunityIcons name="delete" size={26}/>
                   </RectButton>
+                  </View>
                 </View>
               )}>
               <TouchableNativeFeedback
                 background={TouchableNativeFeedback.Ripple(null, false)}>
                 <View>
-                  <Text>{item.login}</Text>
-                  <Text>{item.context}</Text>
+                  <Text style={styles.itemLogin}>{item.login}</Text>
+                  <Text style={styles.itemContext}>{item.context}</Text>
                 </View>
               </TouchableNativeFeedback>
             </Swipeable>
@@ -182,6 +185,23 @@ class KeysTableComponent extends React.Component {
           duration={5000}>
           {this.state.selectedPassword}
         </Snackbar>
+        <FAB
+          style={styles.fabBack}
+          small
+          icon="chevron-left"
+          label="back"
+          color={'#000000'}
+          onPress={() => {
+            this.props.navigation.goBack();
+          }}
+        />
+        <FAB
+          style={styles.fabPlus}
+          big
+          color='#000000'
+          icon ="plus"
+          onPress={() => console.log('Pressed')}
+        />
       </View>
     );
   }
