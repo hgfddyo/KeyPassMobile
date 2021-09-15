@@ -19,14 +19,20 @@ class KeysTableComponent extends React.Component {
   constructor(props) {
     super(props);
     this.db = new DBUtils();
-    this.state = {keys: [], visible: false, selectedPassword: ''};
+    this.state = {
+      keys: [],
+      visible: false,
+      selectedPassword: '',
+      filteredKeys: [],
+      querry: '',
+    };
   }
 
   componentDidMount() {
     this.toggleHeaderBar(false);
     this.props.navigation.addListener('focus', async () => {
       let keys = await this.db.getKeys(this.context.user);
-      this.setState({keys: keys});
+      this.setState({keys: keys, filteredKeys: keys});
     });
   }
 
@@ -40,28 +46,52 @@ class KeysTableComponent extends React.Component {
   toggleHeaderBar(isShown) {
     if (isShown) {
       this.props.navigation.setOptions({
+        headerTitleAlign: 'center',
         headerRight: () => (
           <RectButton
+            style={styles.headerRightButton}
             onPress={() => {
+              this.setState({querry: '', filteredKeys: this.state.keys});
               this.toggleHeaderBar(false);
             }}>
-            <MaterialCommunityIcons name="close" size={30} />
+            <MaterialCommunityIcons name="close" size={28} />
           </RectButton>
         ),
-        title: <TextInput></TextInput>,
+        headerTitle: () => (
+          <TextInput
+            style={styles.headerSearchInput}
+            placeholder="Type context or login"
+            onChangeText={querry => {
+              this.setState({querry: querry});
+              this.findKeys(querry);
+            }}></TextInput>
+        ),
       });
     } else {
       this.props.navigation.setOptions({
+        headerTitleAlign: 'left',
         headerRight: () => (
           <RectButton
+            style={styles.headerRightButton}
             onPress={() => {
               this.toggleHeaderBar(true);
             }}>
-            <MaterialCommunityIcons name="magnify" size={30} />
+            <MaterialCommunityIcons name="magnify" size={28} />
           </RectButton>
         ),
-        title: this.props.route.name,
+        headerTitle: this.props.route.name,
       });
+    }
+  }
+
+  findKeys(querry) {
+    if (querry) {
+      let filtered = this.state.keys.filter(
+        key => key.context.includes(querry) || key.login.includes(querry),
+      );
+      this.setState({filteredKeys: filtered});
+    } else {
+      this.setState({filteredKeys: this.state.keys});
     }
   }
 
@@ -69,7 +99,7 @@ class KeysTableComponent extends React.Component {
     return (
       <View style={styles.views}>
         <FlatList
-          data={this.state.keys}
+          data={this.state.filteredKeys}
           keyExtractor={item => item.context.concat(item.login)}
           renderItem={({item}) => (
             <Swipeable
@@ -147,7 +177,7 @@ class KeysTableComponent extends React.Component {
           visible={this.state.visible}
           onDismiss={() => this.setState({visible: false})}
           action={{
-            label: <MaterialCommunityIcons name="content-copy" />,
+            label: <MaterialCommunityIcons name="content-copy" size={25} />,
             onPress: () => {
               Clipboard.setString(this.state.selectedPassword);
             },
