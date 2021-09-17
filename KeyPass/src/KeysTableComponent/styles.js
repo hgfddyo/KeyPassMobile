@@ -97,5 +97,9 @@ const styles = StyleSheet.create({
   divider: {
     height: 1,
   },
+  itemWrapper: {
+    backgroundColor: 'white',
+    elevation: 10,
+  },
 });
 export default styles;

@@ -167,7 +167,7 @@ class KeysTableComponent extends React.Component {
               )}>
               <TouchableNativeFeedback
                 background={TouchableNativeFeedback.Ripple(null, false)}>
-                <View>
+                <View style={styles.itemWrapper}>
                   <Text style={styles.itemLogin}>{item.login}</Text>
                   <Text style={styles.itemContext}>{item.context}</Text>
                   <Divider style={styles.divider} />
