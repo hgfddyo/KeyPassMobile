@@ -81,5 +81,25 @@ const styles = StyleSheet.create({
     //строка
     flexDirection: 'row',
   },
+  snackbar: {
+    backgroundColor: '#F9F9F9',
+    color: 'black',
+  },
+  snackText: {
+    color: 'black',
+  },
+  snackView: {
+    position: 'absolute',
+    top: '40%',
+    zIndex: 1,
+    elevation: 20,
+  },
+  divider: {
+    height: 1,
+  },
+  itemWrapper: {
+    backgroundColor: 'white',
+    elevation: 10,
+  },
 });
 export default styles;

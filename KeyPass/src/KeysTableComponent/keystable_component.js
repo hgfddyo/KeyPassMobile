@@ -8,7 +8,7 @@ import {
   TouchableNativeFeedback,
 } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import {Snackbar,FAB} from 'react-native-paper';
+import {Snackbar, FAB, Divider} from 'react-native-paper';
 import DBUtils from '../DBUtils/DBUtils';
 import {RectButton, Swipeable} from 'react-native-gesture-handler';
 import styles from './styles';
@@ -107,35 +107,37 @@ class KeysTableComponent extends React.Component {
               overshootLeft={false}
               overshootRight={false}
               renderLeftActions={() => (
-                <RectButton style={styles.leftSwipeEye}
-                  onPress={() => {
-                    Alert.alert(
-                      '',
-                      'Do you want to see the password?',
-                      [
-                        {
-                          text: 'Yes',
-                          onPress: () => {
-                            this.setState({
-                              visible: true,
-                              selectedPassword: item.password,
-                            });
+                <View>
+                  <RectButton
+                    style={styles.leftSwipeEye}
+                    onPress={() => {
+                      Alert.alert(
+                        '',
+                        'Do you want to see the password?',
+                        [
+                          {
+                            text: 'Yes',
+                            onPress: () => {
+                              this.setState({
+                                visible: true,
+                                selectedPassword: item.password,
+                              });
+                            },
                           },
-                        },
-                        {
-                          text: 'No',
-                          onPress: () => {},
-                        },
-                      ],
-                      {cancelable: false},
-                    );
-                  }}>
-                  <MaterialCommunityIcons name="eye" size={26} />
-                </RectButton>
+                          {
+                            text: 'No',
+                            onPress: () => {},
+                          },
+                        ],
+                        {cancelable: false},
+                      );
+                    }}>
+                    <MaterialCommunityIcons name="eye" size={26} />
+                  </RectButton>
+                </View>
               )}
               renderRightActions={() => (
-                <View>
-                  <View style={styles.row}>
+                <View style={styles.row}>
                   <RectButton
                     style={styles.rightSwipePencil}
                     onPress={() => {
@@ -145,9 +147,10 @@ class KeysTableComponent extends React.Component {
                         password: item.password,
                       });
                     }}>
-                    <MaterialCommunityIcons name="pencil" size={26}/>
+                    <MaterialCommunityIcons name="pencil" size={26} />
                   </RectButton>
-                  <RectButton style={styles.rightSwipeDelete}
+                  <RectButton
+                    style={styles.rightSwipeDelete}
                     onPress={async () => {
                       let deleteResult = await this.db.deleteKey(
                         item.context,
@@ -158,16 +161,16 @@ class KeysTableComponent extends React.Component {
                       );
                       this.setState({keys: refreshedKeys});
                     }}>
-                    <MaterialCommunityIcons name="delete" size={26}/>
+                    <MaterialCommunityIcons name="delete" size={26} />
                   </RectButton>
-                  </View>
                 </View>
               )}>
               <TouchableNativeFeedback
                 background={TouchableNativeFeedback.Ripple(null, false)}>
-                <View>
+                <View style={styles.itemWrapper}>
                   <Text style={styles.itemLogin}>{item.login}</Text>
                   <Text style={styles.itemContext}>{item.context}</Text>
+                  <Divider style={styles.divider} />
                 </View>
               </TouchableNativeFeedback>
             </Swipeable>
@@ -176,6 +179,8 @@ class KeysTableComponent extends React.Component {
         <Snackbar
           visible={this.state.visible}
           onDismiss={() => this.setState({visible: false})}
+          style={styles.snackbar}
+          wrapperStyle={styles.snackView}
           action={{
             label: <MaterialCommunityIcons name="content-copy" size={25} />,
             onPress: () => {
@@ -183,7 +188,7 @@ class KeysTableComponent extends React.Component {
             },
           }}
           duration={5000}>
-          {this.state.selectedPassword}
+          {<Text style={styles.snackText}>{this.state.selectedPassword}</Text>}
         </Snackbar>
         <FAB
           style={styles.fabBack}
@@ -198,9 +203,9 @@ class KeysTableComponent extends React.Component {
         <FAB
           style={styles.fabPlus}
           big
-          color='#000000'
-          icon ="plus"
-          onPress={() => console.log('Pressed')}
+          color="#000000"
+          icon="plus"
+          onPress={() => this.props.navigation.navigate('Adding')}
         />
       </View>
     );
