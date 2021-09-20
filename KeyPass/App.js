@@ -10,7 +10,7 @@ import {NavigationContainer, withNavigation} from '@react-navigation/native';
 import LoginComponent from './src/LoginComponent/login_component';
 import RegistrationComponent from './src/RegistrationComponent/registration_component';
 import DBUtils from './src/DBUtils/DBUtils';
-import {Provider as PaperProvider} from 'react-native-paper';
+import {Provider as PaperProvider, Divider} from 'react-native-paper';
 import {userContext} from './src/userContext/userContext';
 import KeysComponent from './src/KeysComponent/keys_component';
 import AddKeyComponent from './src/addKeyComponent/addkey_component';
@@ -61,6 +61,7 @@ function App() {
           icon={() => <MaterialCommunityIcons name="creation" size={20} />}
           onPress={() => props.navigation.navigate('Adding')}
         />
+        <Divider style={{height: 1}} />
         <DrawerItem
           label="Logout"
           icon={() => <MaterialCommunityIcons name="logout" size={20} />}
@@ -80,7 +81,9 @@ function App() {
         <PaperProvider>
           <NavigationContainer>
             {!isLogin ? (
-              <Stack.Navigator initialRouteName="Login">
+              <Stack.Navigator
+                initialRouteName="Login"
+                screenOptions={{headerBackVisible: false}}>
                 <Stack.Screen
                   options={{unmountOnBlur: true}}
                   name="Login"

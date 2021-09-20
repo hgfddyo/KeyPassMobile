@@ -188,7 +188,20 @@ class KeysTableComponent extends React.Component {
             },
           }}
           duration={5000}>
-          {<Text style={styles.snackText}>{this.state.selectedPassword}</Text>}
+          {
+            <Text style={styles.snackText}>
+              {this.state.selectedPassword.length - 21 > 3
+                ? this.state.selectedPassword
+                    .substring(0, 21)
+                    .concat('...')
+                    .concat(
+                      this.state.selectedPassword.substring(
+                        this.state.selectedPassword.length - 3,
+                      ),
+                    )
+                : this.state.selectedPassword}
+            </Text>
+          }
         </Snackbar>
         <FAB
           style={styles.fabBack}
