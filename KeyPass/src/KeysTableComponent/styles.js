@@ -2,7 +2,7 @@ import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   headerSearchInput: {
-    width: 150,
+    width: 270,
     height: 40,
     borderBottomColor: '#000000',
     borderBottomWidth: 1,
@@ -93,6 +93,9 @@ const styles = StyleSheet.create({
     top: '40%',
     zIndex: 1,
     elevation: 20,
+    alignSelf:'center',
+    flex:1,
+    width:300,
   },
   divider: {
     height: 1,

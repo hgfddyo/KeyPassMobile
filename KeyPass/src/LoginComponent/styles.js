@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
   },
-  button1: {
+  buttonNext: {
     //кнопка next
     marginRight: 40,
     marginLeft: 40,
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     elevation: 20,
     backgroundColor: '#00C4B4',
   },
-  button2: {
+  buttonReg: {
     //кнопка reg
     backgroundColor: '#ffffff',
     marginRight: 40,
