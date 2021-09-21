@@ -26,14 +26,14 @@ class RegistrationComponent extends React.Component {
             onChangeText={username => this.setState({username: username})}
           />
           <TouchableOpacity
-            style={styles.button1}
+            style={styles.buttonNext}
             onPress={() => {
               this.setState({changed: true});
             }}>
             <Text style={styles.nextText}> Next </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.button2}
+            style={styles.buttonReg}
             onPress={() => {
               this.props.navigation.navigate('Login');
             }}>
@@ -62,7 +62,7 @@ class RegistrationComponent extends React.Component {
             }
           />
           <TouchableOpacity
-            style={styles.button1}
+            style={styles.buttonNext}
             onPress={async () => {
               if (this.state.username && this.state.password) {
                 let registationResult = await this.db.registration(
@@ -116,7 +116,7 @@ class RegistrationComponent extends React.Component {
             <Text style={styles.nextText}> Entry </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.button2}
+            style={styles.buttonReg}
             onPress={() => {
               this.setState({changed: false});
             }}>
