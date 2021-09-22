@@ -45,7 +45,7 @@ function App() {
         <DrawerItem
           label="Search keys"
           icon={() => (
-            <MaterialCommunityIcons name="account-search" size={20} />
+            <MaterialCommunityIcons name="account-search" size={20}  />
           )}
           onPress={() => props.navigation.navigate('Search')}
         />
@@ -85,12 +85,36 @@ function App() {
                 initialRouteName="Login"
                 screenOptions={{headerBackVisible: false}}>
                 <Stack.Screen
-                  options={{unmountOnBlur: true}}
+                  options={{
+                    title: 'KEYS RING',
+                    unmountOnBlur: true,
+                    headerStyle: {
+                      backgroundColor: '#00B3A6',
+                    },
+                    headerTintColor: '#000000',
+                    headerTitleStyle: {
+                      textTransform: 'uppercase',
+                      fontSize:22,
+                      fontWeight: 'bold',
+                    },
+                  }}
                   name="Login"
                   component={LoginComponent}
                 />
                 <Stack.Screen
-                  options={{unmountOnBlur: true}}
+                  options={{
+                    title: 'KEYS RING',
+                    unmountOnBlur: true,
+                    headerStyle: {
+                      backgroundColor: '#00B3A6',
+                    },
+                    headerTintColor: '#000000',
+                    headerTitleStyle: {
+                      textTransform: 'uppercase',
+                      fontSize:22,
+                      fontWeight: 'bold',
+                    },
+                  }}
                   name="Registration"
                   component={RegistrationComponent}
                 />
@@ -101,22 +125,57 @@ function App() {
                 backBehavior="history"
                 drawerContent={props => <CustomDrawerContent {...props} />}>
                 <Drawer.Screen
-                  options={{unmountOnBlur: true}}
+                  options={{
+                    unmountOnBlur: true,
+                    headerStyle: {
+                      backgroundColor: '#00B3A6',
+                    },
+                    headerTintColor: '#000000',
+                    headerTitleStyle: {
+                      fontSize:25,
+                    },
+                  }}
                   name="Search"
                   component={KeysComponent}
+
                 />
                 <Drawer.Screen
-                  options={{unmountOnBlur: true}}
+                  options={{
+                    unmountOnBlur: true,
+                    headerStyle: {
+                      backgroundColor: '#00B3A6',
+                    },
+                    headerTintColor: '#000000',
+                    headerTitleStyle: {
+                      fontSize:25,
+                    },}}
                   name="Accounts"
                   component={KeysTableComponent}
                 />
                 <Drawer.Screen
-                  options={{unmountOnBlur: true}}
+                  options={{
+                    unmountOnBlur: true,
+                    headerStyle: {
+                      backgroundColor: '#00B3A6',
+                    },
+                    headerTintColor: '#000000',
+                    headerTitleStyle: {
+                      fontSize:25,
+                    },}}
                   name="Adding"
                   component={AddKeyComponent}
                 />
                 <Drawer.Screen
-                  options={{unmountOnBlur: true}}
+                  options={{
+                    unmountOnBlur: true,
+                    headerStyle: {
+                      backgroundColor: '#00B3A6',
+                    },
+                    headerTintColor: '#000000',
+                    headerTitleStyle: {
+                      fontSize:25,
+                    },
+                  }}
                   name="Updating"
                   component={UpdateKeyComponent}
                 />
