@@ -4,13 +4,20 @@ import DBUtils from '../DBUtils/DBUtils';
 import styles from './styles';
 import {userContext} from '../userContext/userContext';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import {TextInput} from 'react-native-paper';
+import {TextInput, HelperText} from 'react-native-paper';
 
 class RegistrationComponent extends React.Component {
   constructor(props) {
     super(props);
     this.db = new DBUtils();
-    this.state = {changed: false, username: '', password: '', isSecure: true};
+    this.state = {
+      changed: false,
+      username: '',
+      password: '',
+      isSecure: true,
+      isLoginValid: true,
+      isPasswordValid: true,
+    };
   }
 
   render() {
@@ -22,9 +29,20 @@ class RegistrationComponent extends React.Component {
           <TextInput
             style={styles.textInput}
             label="Login"
+            error={!this.state.isLoginValid}
+            onBlur={() => {
+              if (this.state.username) {
+                this.setState({isLoginValid: true});
+              } else {
+                this.setState({isLoginValid: false});
+              }
+            }}
             value={this.state.username}
             onChangeText={username => this.setState({username: username})}
           />
+          <HelperText type="error" visible={!this.state.isLoginValid}>
+            Login is required
+          </HelperText>
           <TouchableOpacity
             style={styles.buttonNext}
             onPress={() => {
@@ -35,7 +53,7 @@ class RegistrationComponent extends React.Component {
           <TouchableOpacity
             style={styles.buttonReg}
             onPress={() => {
-              this.props.navigation.navigate('Login');
+              this.props.navigation.goBack();
             }}>
             <Text style={styles.regText}> Log in </Text>
           </TouchableOpacity>
@@ -51,6 +69,14 @@ class RegistrationComponent extends React.Component {
             label="Password"
             secureTextEntry={this.state.isSecure}
             value={this.state.password}
+            error={!this.state.isPasswordValid}
+            onBlur={() => {
+              if (this.state.password) {
+                this.setState({isPasswordValid: true});
+              } else {
+                this.setState({isPasswordValid: false});
+              }
+            }}
             onChangeText={password => this.setState({password: password})}
             right={
               <TextInput.Icon
@@ -61,6 +87,9 @@ class RegistrationComponent extends React.Component {
               />
             }
           />
+          <HelperText type="error" visible={!this.state.isPasswordValid}>
+            Password is required
+          </HelperText>
           <TouchableOpacity
             style={styles.buttonNext}
             onPress={async () => {
