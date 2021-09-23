@@ -39,7 +39,7 @@ class AddKeyComponent extends React.Component {
           value={this.state.context}
           onChangeText={context => this.setState({context: context})}
         />
-        <HelperText type="error" visible={!this.state.isContextValid}>
+        <HelperText type="error" visible={!this.state.isContextValid} style={styles.helperText}>
           Context is required
         </HelperText>
         <TextInput
@@ -58,7 +58,7 @@ class AddKeyComponent extends React.Component {
           value={this.state.login}
           onChangeText={login => this.setState({login: login})}
         />
-        <HelperText type="error" visible={!this.state.isLoginValid}>
+        <HelperText type="error" visible={!this.state.isLoginValid} style={styles.helperText}>
           Login is required
         </HelperText>
         <TextInput
@@ -85,7 +85,7 @@ class AddKeyComponent extends React.Component {
             />
           }
         />
-        <HelperText type="error" visible={!this.state.isPasswordValid}>
+        <HelperText type="error" visible={!this.state.isPasswordValid} style={styles.helperText}>
           Password is required
         </HelperText>
         <TouchableOpacity
