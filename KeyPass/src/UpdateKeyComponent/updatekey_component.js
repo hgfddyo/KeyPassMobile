@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Button, View, Text, Alert, TouchableOpacity} from 'react-native';
 import DBUtils from '../DBUtils/DBUtils';
-import {TextInput, Surface, FAB} from 'react-native-paper';
+import {TextInput, Surface, FAB, HelperText} from 'react-native-paper';
 import styles from './styles';
 import {userContext} from '../userContext/userContext';
 
@@ -16,6 +16,9 @@ class UpdateKeyComponent extends React.Component {
       oldContext: '',
       oldLogin: '',
       oldPassword: '',
+      isContextValid: true,
+      isLoginValid: true,
+      isPasswordValid: true,
     };
   }
 
@@ -54,22 +57,52 @@ class UpdateKeyComponent extends React.Component {
           placeholder="Context"
           mode="outlined"
           outlineColor="#ccc"
+          onBlur={() => {
+            if (this.state.context) {
+              this.setState({isContextValid: true});
+            } else {
+              this.setState({isContextValid: false});
+            }
+          }}
+          error={!this.state.isContextValid}
           value={this.state.context}
           onChangeText={context => this.setState({context: context})}
         />
+        <HelperText type="error" visible={!this.state.isContextValid}>
+          Context is required
+        </HelperText>
         <TextInput
           style={styles.textInputLogin}
           placeholder="Login"
           mode="outlined"
           outlineColor="#ccc"
+          error={!this.state.isLoginValid}
+          onBlur={() => {
+            if (this.state.login) {
+              this.setState({isLoginValid: true});
+            } else {
+              this.setState({isLoginValid: false});
+            }
+          }}
           value={this.state.login}
           onChangeText={login => this.setState({login: login})}
         />
+        <HelperText type="error" visible={!this.state.isLoginValid}>
+          Login is required
+        </HelperText>
         <TextInput
           style={styles.textInputPassword}
           placeholder="Password"
           mode="outlined"
           outlineColor="#ccc"
+          error={!this.state.isPasswordValid}
+          onBlur={() => {
+            if (this.state.password) {
+              this.setState({isPasswordValid: true});
+            } else {
+              this.setState({isPasswordValid: false});
+            }
+          }}
           value={this.state.password}
           onChangeText={password => this.setState({password: password})}
           right={
@@ -81,6 +114,9 @@ class UpdateKeyComponent extends React.Component {
             />
           }
         />
+        <HelperText type="error" visible={!this.state.isPasswordValid}>
+          Password is required
+        </HelperText>
         <TouchableOpacity
           style={styles.btnUpdate}
           onPress={async () => {

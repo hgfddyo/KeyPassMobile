@@ -1,6 +1,12 @@
 import * as React from 'react';
-import {View, Text, Alert, TouchableOpacity} from 'react-native';
-import {TextInput, Surface} from 'react-native-paper';
+import {
+  View,
+  Text,
+  Alert,
+  TouchableOpacity,
+  TouchableHighlightBase,
+} from 'react-native';
+import {TextInput, Surface, HelperText} from 'react-native-paper';
 import DBUtils from '../DBUtils/DBUtils';
 import styles from './styles';
 import {userContext} from '../userContext/userContext';
@@ -10,7 +16,14 @@ class LoginComponent extends React.Component {
   constructor(props) {
     super(props);
     this.db = new DBUtils();
-    this.state = {changed: false, username: '', password: '', isSecure: true};
+    this.state = {
+      changed: false,
+      username: '',
+      password: '',
+      isSecure: true,
+      isLoginValid: true,
+      isPasswordValid: true,
+    };
   }
 
   render() {
@@ -22,9 +35,20 @@ class LoginComponent extends React.Component {
           <TextInput
             style={styles.textInput}
             label="Login"
+            error={!this.state.isLoginValid}
             value={this.state.username}
             onChangeText={username => this.setState({username: username})}
+            onBlur={() => {
+              if (this.state.username) {
+                this.setState({isLoginValid: true});
+              } else {
+                this.setState({isLoginValid: false});
+              }
+            }}
           />
+          <HelperText type="error" visible={!this.state.isLoginValid}>
+            Login is required
+          </HelperText>
           <TouchableOpacity
             style={styles.buttonNext}
             onPress={() => {
@@ -58,9 +82,20 @@ class LoginComponent extends React.Component {
                 }}
               />
             }
+            error={!this.state.isPasswordValid}
+            onBlur={() => {
+              if (this.state.password) {
+                this.setState({isPasswordValid: true});
+              } else {
+                this.setState({isPasswordValid: false});
+              }
+            }}
             value={this.state.password}
             onChangeText={password => this.setState({password: password})}
           />
+          <HelperText type="error" visible={!this.state.isPasswordValid}>
+            Password is required
+          </HelperText>
           <TouchableOpacity
             style={styles.buttonNext}
             onPress={async () => {
