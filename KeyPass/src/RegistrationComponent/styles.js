@@ -26,7 +26,6 @@ const styles = StyleSheet.create({
     marginLeft: 40,
     marginTop: 10,
     borderRadius: 4,
-    marginBottom: 50,
   },
   nextText: {
     //текст на кнопке next
@@ -72,12 +71,15 @@ const styles = StyleSheet.create({
     elevation: 20,
   },
   surface: {
-    //padding: 8,
     height: 30,
     width: 180,
     alignItems: 'center',
     justifyContent: 'center',
     elevation: 4,
+  },
+  helperText: {
+    marginBottom: 30,
+    marginLeft:40,
   },
 });
 export default styles;

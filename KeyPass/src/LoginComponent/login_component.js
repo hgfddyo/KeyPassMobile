@@ -46,7 +46,7 @@ class LoginComponent extends React.Component {
               }
             }}
           />
-          <HelperText type="error" visible={!this.state.isLoginValid}>
+          <HelperText type="error" visible={!this.state.isLoginValid} style={styles.helperText}>
             Login is required
           </HelperText>
           <TouchableOpacity
@@ -93,7 +93,7 @@ class LoginComponent extends React.Component {
             value={this.state.password}
             onChangeText={password => this.setState({password: password})}
           />
-          <HelperText type="error" visible={!this.state.isPasswordValid}>
+          <HelperText type="error" visible={!this.state.isPasswordValid} style={styles.helperText}>
             Password is required
           </HelperText>
           <TouchableOpacity

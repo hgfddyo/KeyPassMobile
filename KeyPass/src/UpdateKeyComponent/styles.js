@@ -18,7 +18,6 @@ const styles = StyleSheet.create({
     //поле ввода контекста
     marginRight: 40,
     marginLeft: 40,
-    marginTop: 10,
     backgroundColor: '#ffffff',
     fontSize: 17,
   },
@@ -26,7 +25,6 @@ const styles = StyleSheet.create({
     //поле ввода логина
     marginRight: 40,
     marginLeft: 40,
-    marginTop: 10,
     borderColor: '#ccc',
     backgroundColor: '#ffffff',
     fontSize: 17,
@@ -35,8 +33,6 @@ const styles = StyleSheet.create({
     //поле ввода пароля
     marginRight: 40,
     marginLeft: 40,
-    marginTop: 10,
-    marginBottom: 30,
     backgroundColor: '#ffffff',
     fontSize: 17,
   },
@@ -44,7 +40,7 @@ const styles = StyleSheet.create({
     //кнопка update
     marginRight: 40,
     marginLeft: 40,
-    marginTop: 10,
+    marginTop: 20,
     marginBottom: 15,
     paddingTop: 10,
     paddingBottom: 10,
@@ -73,6 +69,9 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     elevation: 20,
     backgroundColor: '#ffffff',
+  },
+  helperText: {
+    marginLeft:40,
   },
 });
 export default styles;

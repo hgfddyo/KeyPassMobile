@@ -40,7 +40,7 @@ class RegistrationComponent extends React.Component {
             value={this.state.username}
             onChangeText={username => this.setState({username: username})}
           />
-          <HelperText type="error" visible={!this.state.isLoginValid}>
+          <HelperText type="error" visible={!this.state.isLoginValid} style={styles.helperText}>
             Login is required
           </HelperText>
           <TouchableOpacity
@@ -87,7 +87,7 @@ class RegistrationComponent extends React.Component {
               />
             }
           />
-          <HelperText type="error" visible={!this.state.isPasswordValid}>
+          <HelperText type="error" visible={!this.state.isPasswordValid} style={styles.helperText}>
             Password is required
           </HelperText>
           <TouchableOpacity
