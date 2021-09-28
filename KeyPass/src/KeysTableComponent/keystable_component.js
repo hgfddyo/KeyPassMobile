@@ -159,7 +159,10 @@ class KeysTableComponent extends React.Component {
                       let refreshedKeys = await this.db.getKeys(
                         this.context.user,
                       );
-                      this.setState({keys: refreshedKeys});
+                      this.setState({
+                        keys: refreshedKeys,
+                        filteredKeys: refreshedKeys,
+                      });
                     }}>
                     <MaterialCommunityIcons name="delete" size={26} />
                   </RectButton>
