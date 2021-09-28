@@ -31,7 +31,7 @@ class RegistrationComponent extends React.Component {
             label="Login"
             error={!this.state.isLoginValid}
             onBlur={() => {
-              if (this.state.username) {
+              if (this.state.username.trim('')) {
                 this.setState({isLoginValid: true});
               } else {
                 this.setState({isLoginValid: false});
@@ -40,13 +40,20 @@ class RegistrationComponent extends React.Component {
             value={this.state.username}
             onChangeText={username => this.setState({username: username})}
           />
-          <HelperText type="error" visible={!this.state.isLoginValid} style={styles.helperText}>
+          <HelperText
+            type="error"
+            visible={!this.state.isLoginValid}
+            style={styles.helperText}>
             Login is required
           </HelperText>
           <TouchableOpacity
             style={styles.buttonNext}
             onPress={() => {
-              this.setState({changed: true});
+              if (this.state.username.trim('')) {
+                this.setState({changed: true});
+              } else {
+                this.setState({isLoginValid: false});
+              }
             }}>
             <Text style={styles.nextText}> Next </Text>
           </TouchableOpacity>
@@ -71,7 +78,7 @@ class RegistrationComponent extends React.Component {
             value={this.state.password}
             error={!this.state.isPasswordValid}
             onBlur={() => {
-              if (this.state.password) {
+              if (this.state.password.trim('')) {
                 this.setState({isPasswordValid: true});
               } else {
                 this.setState({isPasswordValid: false});
@@ -87,13 +94,16 @@ class RegistrationComponent extends React.Component {
               />
             }
           />
-          <HelperText type="error" visible={!this.state.isPasswordValid} style={styles.helperText}>
+          <HelperText
+            type="error"
+            visible={!this.state.isPasswordValid}
+            style={styles.helperText}>
             Password is required
           </HelperText>
           <TouchableOpacity
             style={styles.buttonNext}
             onPress={async () => {
-              if (this.state.username && this.state.password) {
+              if (this.state.password.trim('')) {
                 let registationResult = await this.db.registration(
                   this.state.username,
                   this.state.password,
@@ -101,7 +111,7 @@ class RegistrationComponent extends React.Component {
                 if (registationResult) {
                   Alert.alert(
                     'Success',
-                    'You register Successfully',
+                    'You register successfully',
                     [
                       {
                         text: 'Ok',
@@ -130,16 +140,7 @@ class RegistrationComponent extends React.Component {
                   );
                 }
               } else {
-                Alert.alert(
-                  'Error',
-                  'Enter correct data',
-                  [
-                    {
-                      text: 'Ok',
-                    },
-                  ],
-                  {cancelable: false},
-                );
+                this.setState({isPasswordValid: false});
               }
             }}>
             <Text style={styles.nextText}> Entry </Text>
