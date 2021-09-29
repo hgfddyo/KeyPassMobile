@@ -39,20 +39,27 @@ class LoginComponent extends React.Component {
             value={this.state.username}
             onChangeText={username => this.setState({username: username})}
             onBlur={() => {
-              if (this.state.username) {
+              if (this.state.username.trim('')) {
                 this.setState({isLoginValid: true});
               } else {
                 this.setState({isLoginValid: false});
               }
             }}
           />
-          <HelperText type="error" visible={!this.state.isLoginValid} style={styles.helperText}>
+          <HelperText
+            type="error"
+            visible={!this.state.isLoginValid}
+            style={styles.helperText}>
             Login is required
           </HelperText>
           <TouchableOpacity
             style={styles.buttonNext}
             onPress={() => {
-              this.setState({changed: true});
+              if (this.state.username.trim('')) {
+                this.setState({changed: true});
+              } else {
+                this.setState({isLoginValid: false});
+              }
             }}>
             <Text style={styles.nextText}> Next </Text>
           </TouchableOpacity>
@@ -84,7 +91,7 @@ class LoginComponent extends React.Component {
             }
             error={!this.state.isPasswordValid}
             onBlur={() => {
-              if (this.state.password) {
+              if (this.state.password.trim('')) {
                 this.setState({isPasswordValid: true});
               } else {
                 this.setState({isPasswordValid: false});
@@ -93,46 +100,53 @@ class LoginComponent extends React.Component {
             value={this.state.password}
             onChangeText={password => this.setState({password: password})}
           />
-          <HelperText type="error" visible={!this.state.isPasswordValid} style={styles.helperText}>
+          <HelperText
+            type="error"
+            visible={!this.state.isPasswordValid}
+            style={styles.helperText}>
             Password is required
           </HelperText>
           <TouchableOpacity
             style={styles.buttonNext}
             onPress={async () => {
-              let loginResult = await this.db.login(
-                this.state.username,
-                this.state.password,
-              );
-              if (loginResult) {
-                Alert.alert(
-                  'Success',
-                  'You log in Successfully',
-                  [
-                    {
-                      text: 'Ok',
-                      onPress: () => {
-                        this.context.setUser(this.state.username);
-                        this.context.setIsLogin(true);
-                        EncryptedStorage.setItem(
-                          'active_user',
-                          this.state.username,
-                        );
+              if (this.state.password.trim('')) {
+                let loginResult = await this.db.login(
+                  this.state.username,
+                  this.state.password,
+                );
+                if (loginResult) {
+                  Alert.alert(
+                    'Success',
+                    'You log in Successfully',
+                    [
+                      {
+                        text: 'Ok',
+                        onPress: () => {
+                          this.context.setUser(this.state.username);
+                          this.context.setIsLogin(true);
+                          EncryptedStorage.setItem(
+                            'active_user',
+                            this.state.username,
+                          );
+                        },
                       },
-                    },
-                  ],
-                  {cancelable: false},
-                );
+                    ],
+                    {cancelable: false},
+                  );
+                } else {
+                  Alert.alert(
+                    'Error',
+                    'Bad account credentials',
+                    [
+                      {
+                        text: 'Ok',
+                      },
+                    ],
+                    {cancelable: false},
+                  );
+                }
               } else {
-                Alert.alert(
-                  'Error',
-                  'Bad account credentials',
-                  [
-                    {
-                      text: 'Ok',
-                    },
-                  ],
-                  {cancelable: false},
-                );
+                this.setState({isPasswordValid: false});
               }
             }}>
             <Text style={styles.nextText}> Entry </Text>

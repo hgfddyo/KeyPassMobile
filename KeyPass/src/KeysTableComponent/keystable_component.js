@@ -159,7 +159,10 @@ class KeysTableComponent extends React.Component {
                       let refreshedKeys = await this.db.getKeys(
                         this.context.user,
                       );
-                      this.setState({keys: refreshedKeys});
+                      this.setState({
+                        keys: refreshedKeys,
+                        filteredKeys: refreshedKeys,
+                      });
                     }}>
                     <MaterialCommunityIcons name="delete" size={26} />
                   </RectButton>
@@ -190,9 +193,9 @@ class KeysTableComponent extends React.Component {
           duration={5000}>
           {
             <Text style={styles.snackText}>
-              {this.state.selectedPassword.length - 21 > 3
+              {this.state.selectedPassword.length - 12 > 3
                 ? this.state.selectedPassword
-                    .substring(0, 21)
+                    .substring(0, 12)
                     .concat('...')
                     .concat(
                       this.state.selectedPassword.substring(

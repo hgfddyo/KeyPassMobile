@@ -93,9 +93,9 @@ const styles = StyleSheet.create({
     top: '40%',
     zIndex: 1,
     elevation: 20,
-    alignSelf:'center',
-    flex:1,
-    width:300,
+    alignSelf: 'center',
+    flex: 1,
+    width: 300,
   },
   divider: {
     height: 1,
