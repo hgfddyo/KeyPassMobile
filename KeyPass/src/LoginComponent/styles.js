@@ -10,8 +10,8 @@ const styles = StyleSheet.create({
     //заголовок
     fontWeight: 'normal',
     fontSize: 30,
-    marginTop: 60,
-    marginBottom: 75,
+    marginTop: "20%",
+    marginBottom: "15%",
     textAlign: 'center',
   },
   textH6: {

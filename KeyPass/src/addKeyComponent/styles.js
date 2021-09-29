@@ -10,16 +10,16 @@ const styles = StyleSheet.create({
     //заголовок
     fontWeight: 'normal',
     fontSize: 30,
-    marginTop: 60,
-    marginBottom: 55,
+    marginTop: "15%",
+    marginBottom: "12%",
     textAlign: 'center',
   },
   btnSave: {
-    //кнопка show save
+    //кнопка  save
     marginRight: 40,
     marginLeft: 40,
-    marginTop: 15,
-    marginBottom: 15,
+    marginTop: "4%",
+    marginBottom: "4%",
     paddingTop: 10,
     paddingBottom: 10,
     borderRadius: 4,
@@ -60,12 +60,10 @@ const styles = StyleSheet.create({
   },
   fab: {
     //кнопка back
-    marginRight: 150,
-    marginLeft: 152,
+    width:"30%",
     marginTop: 20,
-    right: 0,
-    left: 0,
-    bottom: 0,
+    right:"35%",
+    left: "35%",
     borderRadius: 40,
     elevation: 20,
     backgroundColor: '#ffffff',

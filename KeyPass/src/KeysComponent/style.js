@@ -11,8 +11,8 @@ const styles = StyleSheet.create({
     //заголовок
     fontWeight: 'normal',
     fontSize: 30,
-    marginTop: 30,
-    marginBottom: 75,
+    marginTop: "15%",
+    marginBottom: "10%",
     textAlign: 'center',
   },
   itemText: {
@@ -24,11 +24,12 @@ const styles = StyleSheet.create({
     left: 0,
     position: 'absolute',
     right: 0,
+    width: "75%",
     top: 0,
     zIndex: 3,
     marginRight: 40,
     marginLeft: 40,
-    marginTop: 0,
+    marginTop: "5%",
     borderColor: '#DADADA',
   },
   autocompleteContainerLogin: {
@@ -42,6 +43,18 @@ const styles = StyleSheet.create({
     marginLeft: 40,
     marginTop: '25%',
     borderColor: '#DADADA',
+  },
+  textInput: {
+    //поле ввода пароля
+    marginRight: 10,
+    marginLeft: 40,
+    marginTop: 0,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: '#DADADA',
+    padding: 10,
+    width: "72%",
+    right: 0,
   },
   fab: {
     //кнопка "плюс"
@@ -75,17 +88,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 14,
   },
-  textInput: {
-    //поле ввода пароля
-    marginRight: 10,
-    marginLeft: 40,
-    marginTop: 0,
-    borderRadius: 4,
-    borderWidth: 1,
-    borderColor: '#DADADA',
-    padding: 10,
-    width: 295,
-  },
+
   textInputContLog: {
     //настройки инпута для контекста и логина
     borderRadius: 4,
