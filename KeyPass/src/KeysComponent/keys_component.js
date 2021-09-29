@@ -177,7 +177,7 @@ class KeysComponent extends React.Component {
             onPress={() => {
               Clipboard.setString(this.state.password);
             }}>
-            <MaterialCommunityIcons name="content-copy" size={27} />
+            <MaterialCommunityIcons name="content-copy" size={27}/>
           </RectButton>
         </View>
         <TouchableOpacity
