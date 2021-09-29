@@ -10,8 +10,8 @@ const styles = StyleSheet.create({
     //заголовок
     fontWeight: 'normal',
     fontSize: 30,
-    marginTop: 60,
-    marginBottom: 55,
+    marginTop: "15%",
+    marginBottom: "12%",
     textAlign: 'center',
   },
   textInputContext: {
@@ -40,8 +40,8 @@ const styles = StyleSheet.create({
     //кнопка update
     marginRight: 40,
     marginLeft: 40,
-    marginTop: 20,
-    marginBottom: 15,
+    marginTop: "4%",
+    marginBottom: "4%",
     paddingTop: 10,
     paddingBottom: 10,
     borderRadius: 4,
@@ -60,11 +60,10 @@ const styles = StyleSheet.create({
   },
   fab: {
     //кнопка назад
-    marginRight: 150,
-    marginLeft: 152,
+    width:"30%",
     marginTop: 20,
-    right: 0,
-    left: 0,
+    right:"35%",
+    left: "35%",
     bottom: 0,
     borderRadius: 40,
     elevation: 20,

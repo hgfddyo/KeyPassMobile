@@ -2,7 +2,7 @@ import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   headerSearchInput: {
-    width: 270,
+    width: 260,
     height: 40,
     borderBottomColor: '#000000',
     borderBottomWidth: 1,
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   leftSwipeEye: {
     //кнопка показать
     backgroundColor: '#70EFDE',
-    height: 60,
+    height: "100%",
     width: 60,
     elevation: 90,
     justifyContent: 'center',
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   rightSwipePencil: {
     //кнопка редактировать
     backgroundColor: '#70EFDE',
-    height: 60,
+    height: "100%",
     width: 60,
     elevation: 90,
     justifyContent: 'center',
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   rightSwipeDelete: {
     //кнопка удалить
     backgroundColor: '#00C4B4',
-    height: 60,
+    height: "100%",
     width: 60,
     elevation: 20,
     justifyContent: 'center',
