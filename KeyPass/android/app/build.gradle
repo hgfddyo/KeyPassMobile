@@ -120,6 +120,22 @@ def jscFlavor = 'org.webkit:android-jsc:+'
  */
 def enableHermes = project.ext.react.get("enableHermes", false);
 
+def getUserVersion() {
+    def process = "git describe --abbrev=0".execute()
+    process.waitFor()
+    return process.text.trim()
+}
+
+def getGoogleVersion() {
+    def process = "git tag -l".execute()
+    process.waitFor()
+    def tags = process.text.split("\n")
+    return tags.length
+}
+
+def userVer = getUserVersion()
+def googleVer = getGoogleVersion()
+
 android {
     ndkVersion rootProject.ext.ndkVersion
 
@@ -134,8 +150,9 @@ android {
         applicationId "com.keypass"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode googleVer
+        versionName userVer
+        archivesBaseName = "KeyPass-$versionName"
     }
     splits {
         abi {
