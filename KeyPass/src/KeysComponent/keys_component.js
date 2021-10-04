@@ -56,11 +56,16 @@ class KeysComponent extends React.Component {
   findContext(query) {
     if (query) {
       const regex = new RegExp(`${query.trim()}`, 'i');
-      this.setState({
-        contextsAuto: this.state.contexts.filter(
-          context => context.search(regex) >= 0,
-        ),
-      });
+      let filtered = this.state.contexts.filter(
+        context => context.search(regex) >= 0,
+      );
+      if (filtered.length === 1 && filtered[0] === query) {
+        this.completeContext(query);
+      } else {
+        this.setState({
+          contextsAuto: filtered,
+        });
+      }
     } else {
       this.setState({
         contextsAuto: [],
@@ -71,14 +76,45 @@ class KeysComponent extends React.Component {
   findLogin(query) {
     if (query) {
       const regex = new RegExp(`${query.trim()}`, 'i');
-      this.setState({
-        loginsAuto: this.state.logins.filter(login => login.search(regex) >= 0),
-      });
+      let filtered = this.state.logins.filter(
+        login => login.search(regex) >= 0,
+      );
+      if (filtered.length === 1 && filtered[0] === query) {
+        this.completeLogin(query);
+      } else {
+        this.setState({
+          loginsAuto: filtered,
+        });
+      }
     } else {
       this.setState({
         loginsAuto: [],
       });
     }
+  }
+
+  completeContext(context) {
+    let filtered = this.state.keys
+      .filter(key => key.context === context)
+      .map(key => key.login);
+    this.setState({
+      context: context,
+      contextsAuto: [],
+      logins: filtered,
+      login: filtered.length === 1 ? filtered[0] : '',
+      password:
+        filtered.length === 1
+          ? this.state.keys.filter(key => key.login === filtered[0])[0].password
+          : '',
+    });
+  }
+
+  completeLogin(login) {
+    this.setState({
+      login: login,
+      loginsAuto: [],
+      password: this.state.keys.filter(key => key.login === login)[0].password,
+    });
   }
 
   render() {
@@ -103,21 +139,7 @@ class KeysComponent extends React.Component {
                 renderItem: item => (
                   <TouchableOpacity
                     onPress={() => {
-                      let filtered = this.state.keys
-                        .filter(key => key.context === item.item)
-                        .map(key => key.login);
-                      this.setState({
-                        context: item.item,
-                        contextsAuto: [],
-                        logins: filtered,
-                        login: filtered.length === 1 ? filtered[0] : '',
-                        password:
-                          filtered.length === 1
-                            ? this.state.keys.filter(
-                                key => key.login === filtered[0],
-                              )[0].password
-                            : '',
-                      });
+                      this.completeContext(item.item);
                     }}>
                     <Text style={styles.itemText}>{item.item}</Text>
                   </TouchableOpacity>
@@ -144,13 +166,7 @@ class KeysComponent extends React.Component {
                 renderItem: item => (
                   <TouchableOpacity
                     onPress={() => {
-                      this.setState({
-                        login: item.item,
-                        loginsAuto: [],
-                        password: this.state.keys.filter(
-                          key => key.login === item.item,
-                        )[0].password,
-                      });
+                      this.completeLogin(item.item);
                     }}>
                     <Text style={styles.itemText}>{item.item}</Text>
                   </TouchableOpacity>
@@ -177,7 +193,7 @@ class KeysComponent extends React.Component {
             onPress={() => {
               Clipboard.setString(this.state.password);
             }}>
-            <MaterialCommunityIcons name="content-copy" size={27}/>
+            <MaterialCommunityIcons name="content-copy" size={27} />
           </RectButton>
         </View>
         <TouchableOpacity
