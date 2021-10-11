@@ -9,17 +9,17 @@ import {
 } from 'react-native';
 import {Surface, FAB} from 'react-native-paper';
 import Autocomplete from 'react-native-autocomplete-input';
-import DBUtils from '../DBUtils/DBUtils';
 import styles from './style';
-import {userContext} from '../userContext/userContext';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {RectButton} from 'react-native-gesture-handler';
 import Clipboard from '@react-native-clipboard/clipboard';
+import {UserContext} from '../UserContext';
+import Account from '../Account';
+import User from '../User';
 
 class KeysComponent extends React.Component {
   constructor(props) {
     super(props);
-    this.db = new DBUtils();
     this.state = {
       keys: [],
       contextsAuto: [],
@@ -34,10 +34,12 @@ class KeysComponent extends React.Component {
 
   componentDidMount() {
     this.props.navigation.addListener('focus', async () => {
-      let keys = await this.db.getKeys(this.context.user);
+      let keys = await this.context.accountService.getAccounts(
+        this.context.userService.getCurrentUser(),
+      );
       this.setState({
         contexts: keys
-          .map(key => key.context)
+          .map(key => key.getContext())
           .filter((item, index, arr) => {
             return arr.indexOf(item) === index;
           }),
@@ -48,8 +50,17 @@ class KeysComponent extends React.Component {
 
   componentWillUnmount() {
     this.props.navigation.removeListener('focus', async () => {
-      let keys = await this.db.getKeys(this.context.user);
-      this.setState({keys: keys});
+      let keys = await this.context.accountService.getAccounts(
+        this.context.userService.getCurrentUser(),
+      );
+      this.setState({
+        contexts: keys
+          .map(key => key.getContext())
+          .filter((item, index, arr) => {
+            return arr.indexOf(item) === index;
+          }),
+        keys: keys,
+      });
     });
   }
 
@@ -95,8 +106,8 @@ class KeysComponent extends React.Component {
 
   completeContext(context) {
     let filtered = this.state.keys
-      .filter(key => key.context === context)
-      .map(key => key.login);
+      .filter(key => key.getContext() === context)
+      .map(key => key.getLogin());
     this.setState({
       context: context,
       contextsAuto: [],
@@ -104,7 +115,9 @@ class KeysComponent extends React.Component {
       login: filtered.length === 1 ? filtered[0] : '',
       password:
         filtered.length === 1
-          ? this.state.keys.filter(key => key.login === filtered[0])[0].password
+          ? this.state.keys
+              .filter(key => key.getLogin() === filtered[0])[0]
+              .getPassword()
           : '',
     });
   }
@@ -113,7 +126,9 @@ class KeysComponent extends React.Component {
     this.setState({
       login: login,
       loginsAuto: [],
-      password: this.state.keys.filter(key => key.login === login)[0].password,
+      password: this.state.keys
+        .filter(key => key.getLogin() === login)[0]
+        .getPassword(),
     });
   }
 
@@ -214,6 +229,6 @@ class KeysComponent extends React.Component {
     );
   }
 }
-KeysComponent.contextType = userContext;
+KeysComponent.contextType = UserContext;
 
 export default KeysComponent;

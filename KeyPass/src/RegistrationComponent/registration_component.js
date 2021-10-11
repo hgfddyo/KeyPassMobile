@@ -1,15 +1,15 @@
 import * as React from 'react';
 import {Button, View, Text, Alert, TouchableOpacity} from 'react-native';
-import DBUtils from '../DBUtils/DBUtils';
 import styles from './styles';
-import {userContext} from '../userContext/userContext';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {TextInput, HelperText} from 'react-native-paper';
+import {UserContext} from '../UserContext';
+import Account from '../Account';
+import User from '../User';
 
 class RegistrationComponent extends React.Component {
   constructor(props) {
     super(props);
-    this.db = new DBUtils();
     this.state = {
       changed: false,
       username: '',
@@ -104,10 +104,10 @@ class RegistrationComponent extends React.Component {
             style={styles.buttonNext}
             onPress={async () => {
               if (this.state.password.trim('')) {
-                let registationResult = await this.db.registration(
-                  this.state.username,
-                  this.state.password,
-                );
+                let registationResult =
+                  await this.context.userService.registerUser(
+                    new User(this.state.username, this.state.password),
+                  );
                 if (registationResult) {
                   Alert.alert(
                     'Success',
@@ -116,12 +116,13 @@ class RegistrationComponent extends React.Component {
                       {
                         text: 'Ok',
                         onPress: () => {
-                          this.context.setUser(this.state.username);
-                          this.context.setIsLogin(true);
-                          EncryptedStorage.setItem(
-                            'active_user',
-                            this.state.username,
+                          this.context.userService.setCurrentUser(
+                            new User(this.state.username, this.state.password),
                           );
+                          this.context.userService.saveUser(
+                            new User(this.state.username, this.state.password),
+                          );
+                          this.context.setIsLogin(true);
                         },
                       },
                     ],
@@ -157,6 +158,6 @@ class RegistrationComponent extends React.Component {
     }
   }
 }
-RegistrationComponent.contextType = userContext;
+RegistrationComponent.contextType = UserContext;
 
 export default RegistrationComponent;

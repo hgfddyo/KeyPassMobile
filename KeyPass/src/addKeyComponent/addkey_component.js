@@ -1,14 +1,14 @@
 import * as React from 'react';
 import {Button, View, Text, Alert, TouchableOpacity} from 'react-native';
 import {TextInput, Surface, FAB, HelperText} from 'react-native-paper';
-import DBUtils from '../DBUtils/DBUtils';
-import {userContext} from '../userContext/userContext';
 import styles from './styles';
+import {UserContext} from '../UserContext';
+import Account from '../Account';
+import User from '../User';
 
 class AddKeyComponent extends React.Component {
   constructor(props) {
     super(props);
-    this.db = new DBUtils();
     this.state = {
       context: '',
       login: '',
@@ -39,7 +39,10 @@ class AddKeyComponent extends React.Component {
           value={this.state.context}
           onChangeText={context => this.setState({context: context})}
         />
-        <HelperText type="error" visible={!this.state.isContextValid} style={styles.helperText}>
+        <HelperText
+          type="error"
+          visible={!this.state.isContextValid}
+          style={styles.helperText}>
           Context is required
         </HelperText>
         <TextInput
@@ -58,7 +61,10 @@ class AddKeyComponent extends React.Component {
           value={this.state.login}
           onChangeText={login => this.setState({login: login})}
         />
-        <HelperText type="error" visible={!this.state.isLoginValid} style={styles.helperText}>
+        <HelperText
+          type="error"
+          visible={!this.state.isLoginValid}
+          style={styles.helperText}>
           Login is required
         </HelperText>
         <TextInput
@@ -80,24 +86,32 @@ class AddKeyComponent extends React.Component {
             <TextInput.Icon
               name="autorenew"
               onPress={() => {
-                this.setState({password: this.db.generatePassword()});
+                this.setState({
+                  password: this.context.accountService.generatePassword(),
+                });
               }}
             />
           }
         />
-        <HelperText type="error" visible={!this.state.isPasswordValid} style={styles.helperText}>
+        <HelperText
+          type="error"
+          visible={!this.state.isPasswordValid}
+          style={styles.helperText}>
           Password is required
         </HelperText>
         <TouchableOpacity
           style={styles.btnSave}
           onPress={async () => {
             if (this.state.login && this.state.password && this.state.context) {
-              let addKeyResult = await this.db.addKey(
-                this.context.user,
-                this.state.context,
-                this.state.login,
-                this.state.password,
-              );
+              let addKeyResult =
+                await this.context.accountService.createAccount(
+                  this.context.userService.getCurrentUser(),
+                  new Account(
+                    this.state.context,
+                    this.state.login,
+                    this.state.password,
+                  ),
+                );
               if (addKeyResult) {
                 this.props.navigation.goBack();
               } else {
@@ -141,6 +155,6 @@ class AddKeyComponent extends React.Component {
     );
   }
 }
-AddKeyComponent.contextType = userContext;
+AddKeyComponent.contextType = UserContext;
 
 export default AddKeyComponent;
