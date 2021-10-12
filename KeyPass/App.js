@@ -1,10 +1,4 @@
 import * as React from 'react';
-import {
-  createDrawerNavigator,
-  DrawerContentScrollView,
-  DrawerItemList,
-  DrawerItem,
-} from '@react-navigation/drawer';
 import Account from './src/Account';
 import User from './src/User';
 import UserService from './src/UserService';
@@ -16,14 +10,12 @@ import LoginComponent from './src/LoginComponent/login_component';
 import RegistrationComponent from './src/RegistrationComponent/registration_component';
 import {Provider as PaperProvider, Divider} from 'react-native-paper';
 import {UserContext} from './src/UserContext';
-import KeysComponent from './src/KeysComponent/keys_component';
-import AddKeyComponent from './src/AddKeyComponent/Addkey_component';
+import AddKeyComponent from './src/AddKeyComponent/addkey_component';
 import KeysTableComponent from './src/KeysTableComponent/keystable_component';
 import UpdateKeyComponent from './src/UpdateKeyComponent/updatekey_component';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {View} from 'react-native';
 
-const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 const userService = new UserService();
 const accountService = new AccountService();
@@ -43,41 +35,6 @@ function App() {
     setIsLoaded(true);
   }, []);
 
-  function CustomDrawerContent(props) {
-    return (
-      <DrawerContentScrollView {...props}>
-        <DrawerItem
-          label="Search keys"
-          icon={() => (
-            <MaterialCommunityIcons name="account-search" size={20} />
-          )}
-          onPress={() => props.navigation.navigate('Search')}
-        />
-        <DrawerItem
-          label="All keys"
-          icon={() => (
-            <MaterialCommunityIcons name="account-multiple" size={20} />
-          )}
-          onPress={() => props.navigation.navigate('Accounts')}
-        />
-        <DrawerItem
-          label="Add key"
-          icon={() => <MaterialCommunityIcons name="creation" size={20} />}
-          onPress={() => props.navigation.navigate('Adding')}
-        />
-        <Divider style={{height: 1}} />
-        <DrawerItem
-          label="Logout"
-          icon={() => <MaterialCommunityIcons name="logout" size={20} />}
-          onPress={async () => {
-            await userService.removeUser();
-            userService.setCurrentUser('');
-            setIsLogin(false);
-          }}
-        />
-      </DrawerContentScrollView>
-    );
-  }
   if (isLoaded) {
     return (
       <UserContext.Provider
@@ -124,25 +81,10 @@ function App() {
                 />
               </Stack.Navigator>
             ) : (
-              <Drawer.Navigator
-                initialRouteName="Search"
-                backBehavior="history"
-                drawerContent={props => <CustomDrawerContent {...props} />}>
-                <Drawer.Screen
-                  options={{
-                    unmountOnBlur: true,
-                    headerStyle: {
-                      backgroundColor: '#00B3A6',
-                    },
-                    headerTintColor: '#000000',
-                    headerTitleStyle: {
-                      fontSize: 25,
-                    },
-                  }}
-                  name="Search"
-                  component={KeysComponent}
-                />
-                <Drawer.Screen
+              <Stack.Navigator
+                initialRouteName="Accounts"
+                screenOptions={{headerBackVisible: false}}>
+                <Stack.Screen
                   options={{
                     unmountOnBlur: true,
                     headerStyle: {
@@ -156,7 +98,7 @@ function App() {
                   name="Accounts"
                   component={KeysTableComponent}
                 />
-                <Drawer.Screen
+                <Stack.Screen
                   options={{
                     unmountOnBlur: true,
                     headerStyle: {
@@ -170,7 +112,7 @@ function App() {
                   name="Adding"
                   component={AddKeyComponent}
                 />
-                <Drawer.Screen
+                <Stack.Screen
                   options={{
                     unmountOnBlur: true,
                     headerStyle: {
@@ -184,7 +126,7 @@ function App() {
                   name="Updating"
                   component={UpdateKeyComponent}
                 />
-              </Drawer.Navigator>
+              </Stack.Navigator>
             )}
           </NavigationContainer>
         </PaperProvider>
