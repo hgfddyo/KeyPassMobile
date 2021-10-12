@@ -16,7 +16,8 @@ import UpdateKeyComponent from './src/UpdateKeyComponent/updatekey_component';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {View} from 'react-native';
 
-const Stack = createNativeStackNavigator();
+const AuthorizationStack = createNativeStackNavigator();
+const AppStack = createNativeStackNavigator();
 const userService = new UserService();
 const accountService = new AccountService();
 let crudService = new CRUDService();
@@ -42,10 +43,10 @@ function App() {
         <PaperProvider>
           <NavigationContainer>
             {!isLogin ? (
-              <Stack.Navigator
+              <AuthorizationStack.Navigator
                 initialRouteName="Login"
                 screenOptions={{headerBackVisible: false}}>
-                <Stack.Screen
+                <AuthorizationStack.Screen
                   options={{
                     title: 'KEYS RING',
                     unmountOnBlur: true,
@@ -62,7 +63,7 @@ function App() {
                   name="Login"
                   component={LoginComponent}
                 />
-                <Stack.Screen
+                <AuthorizationStack.Screen
                   options={{
                     title: 'KEYS RING',
                     unmountOnBlur: true,
@@ -79,12 +80,12 @@ function App() {
                   name="Registration"
                   component={RegistrationComponent}
                 />
-              </Stack.Navigator>
+              </AuthorizationStack.Navigator>
             ) : (
-              <Stack.Navigator
+              <AppStack.Navigator
                 initialRouteName="Accounts"
                 screenOptions={{headerBackVisible: false}}>
-                <Stack.Screen
+                <AppStack.Screen
                   options={{
                     unmountOnBlur: true,
                     headerStyle: {
@@ -98,7 +99,7 @@ function App() {
                   name="Accounts"
                   component={KeysTableComponent}
                 />
-                <Stack.Screen
+                <AppStack.Screen
                   options={{
                     unmountOnBlur: true,
                     headerStyle: {
@@ -112,7 +113,7 @@ function App() {
                   name="Adding"
                   component={AddKeyComponent}
                 />
-                <Stack.Screen
+                <AppStack.Screen
                   options={{
                     unmountOnBlur: true,
                     headerStyle: {
@@ -126,7 +127,7 @@ function App() {
                   name="Updating"
                   component={UpdateKeyComponent}
                 />
-              </Stack.Navigator>
+              </AppStack.Navigator>
             )}
           </NavigationContainer>
         </PaperProvider>
