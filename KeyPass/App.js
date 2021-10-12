@@ -5,35 +5,39 @@ import {
   DrawerItemList,
   DrawerItem,
 } from '@react-navigation/drawer';
+import Account from './src/Account';
+import User from './src/User';
+import UserService from './src/UserService';
+import AccountService from './src/AccountService';
+import CRUDService from './src/CRUDService';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer, withNavigation} from '@react-navigation/native';
 import LoginComponent from './src/LoginComponent/login_component';
 import RegistrationComponent from './src/RegistrationComponent/registration_component';
-import DBUtils from './src/DBUtils/DBUtils';
 import {Provider as PaperProvider, Divider} from 'react-native-paper';
-import {userContext} from './src/userContext/userContext';
+import {UserContext} from './src/UserContext';
 import KeysComponent from './src/KeysComponent/keys_component';
-import AddKeyComponent from './src/addKeyComponent/addkey_component';
+import AddKeyComponent from './src/AddKeyComponent/Addkey_component';
 import KeysTableComponent from './src/KeysTableComponent/keystable_component';
 import UpdateKeyComponent from './src/UpdateKeyComponent/updatekey_component';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import EncryptedStorage from 'react-native-encrypted-storage';
 import {View} from 'react-native';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
-let db = new DBUtils();
-db.createTables();
+const userService = new UserService();
+const accountService = new AccountService();
+let crudService = new CRUDService();
+crudService.createTables();
 
 function App() {
-  const [user, setUser] = React.useState('');
   const [isLogin, setIsLogin] = React.useState(false);
   const [isLoaded, setIsLoaded] = React.useState(false);
 
   React.useEffect(async () => {
-    let user = await EncryptedStorage.getItem('active_user');
+    let user = await userService.loadUser();
     if (user) {
-      setUser(user);
+      userService.setCurrentUser(user);
       setIsLogin(true);
     }
     setIsLoaded(true);
@@ -45,7 +49,7 @@ function App() {
         <DrawerItem
           label="Search keys"
           icon={() => (
-            <MaterialCommunityIcons name="account-search" size={20}  />
+            <MaterialCommunityIcons name="account-search" size={20} />
           )}
           onPress={() => props.navigation.navigate('Search')}
         />
@@ -65,11 +69,10 @@ function App() {
         <DrawerItem
           label="Logout"
           icon={() => <MaterialCommunityIcons name="logout" size={20} />}
-          onPress={() => {
-            EncryptedStorage.removeItem('active_user').then(() => {
-              setUser('');
-              setIsLogin(false);
-            });
+          onPress={async () => {
+            await userService.removeUser();
+            userService.setCurrentUser('');
+            setIsLogin(false);
           }}
         />
       </DrawerContentScrollView>
@@ -77,7 +80,8 @@ function App() {
   }
   if (isLoaded) {
     return (
-      <userContext.Provider value={{user, isLogin, setUser, setIsLogin}}>
+      <UserContext.Provider
+        value={{isLogin, setIsLogin, userService, accountService}}>
         <PaperProvider>
           <NavigationContainer>
             {!isLogin ? (
@@ -94,7 +98,7 @@ function App() {
                     headerTintColor: '#000000',
                     headerTitleStyle: {
                       textTransform: 'uppercase',
-                      fontSize:22,
+                      fontSize: 22,
                       fontWeight: 'bold',
                     },
                   }}
@@ -111,7 +115,7 @@ function App() {
                     headerTintColor: '#000000',
                     headerTitleStyle: {
                       textTransform: 'uppercase',
-                      fontSize:22,
+                      fontSize: 22,
                       fontWeight: 'bold',
                     },
                   }}
@@ -132,12 +136,11 @@ function App() {
                     },
                     headerTintColor: '#000000',
                     headerTitleStyle: {
-                      fontSize:25,
+                      fontSize: 25,
                     },
                   }}
                   name="Search"
                   component={KeysComponent}
-
                 />
                 <Drawer.Screen
                   options={{
@@ -147,8 +150,9 @@ function App() {
                     },
                     headerTintColor: '#000000',
                     headerTitleStyle: {
-                      fontSize:25,
-                    },}}
+                      fontSize: 25,
+                    },
+                  }}
                   name="Accounts"
                   component={KeysTableComponent}
                 />
@@ -160,8 +164,9 @@ function App() {
                     },
                     headerTintColor: '#000000',
                     headerTitleStyle: {
-                      fontSize:25,
-                    },}}
+                      fontSize: 25,
+                    },
+                  }}
                   name="Adding"
                   component={AddKeyComponent}
                 />
@@ -173,7 +178,7 @@ function App() {
                     },
                     headerTintColor: '#000000',
                     headerTitleStyle: {
-                      fontSize:25,
+                      fontSize: 25,
                     },
                   }}
                   name="Updating"
@@ -183,7 +188,7 @@ function App() {
             )}
           </NavigationContainer>
         </PaperProvider>
-      </userContext.Provider>
+      </UserContext.Provider>
     );
   } else {
     return <View></View>;

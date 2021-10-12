@@ -1,14 +1,14 @@
 import * as React from 'react';
 import {Button, View, Text, Alert, TouchableOpacity} from 'react-native';
-import DBUtils from '../DBUtils/DBUtils';
 import {TextInput, Surface, FAB, HelperText} from 'react-native-paper';
 import styles from './styles';
-import {userContext} from '../userContext/userContext';
+import {UserContext} from '../UserContext';
+import Account from '../Account';
+import User from '../User';
 
 class UpdateKeyComponent extends React.Component {
   constructor(props) {
     super(props);
-    this.db = new DBUtils();
     this.state = {
       context: '',
       login: '',
@@ -25,12 +25,12 @@ class UpdateKeyComponent extends React.Component {
   componentDidMount() {
     this.props.navigation.addListener('focus', async () => {
       this.setState({
-        context: this.props.route.params.context,
-        login: this.props.route.params.login,
-        password: this.props.route.params.password,
-        oldContext: this.props.route.params.context,
-        oldLogin: this.props.route.params.login,
-        oldPassword: this.props.route.params.password,
+        context: this.props.route.params.account.getContext(),
+        login: this.props.route.params.account.getLogin(),
+        password: this.props.route.params.account.getPassword(),
+        oldContext: this.props.route.params.account.getContext(),
+        oldLogin: this.props.route.params.account.getLogin(),
+        oldPassword: this.props.route.params.account.getPassword(),
       });
     });
   }
@@ -68,7 +68,10 @@ class UpdateKeyComponent extends React.Component {
           value={this.state.context}
           onChangeText={context => this.setState({context: context})}
         />
-        <HelperText type="error" visible={!this.state.isContextValid} style={styles.helperText}>
+        <HelperText
+          type="error"
+          visible={!this.state.isContextValid}
+          style={styles.helperText}>
           Context is required
         </HelperText>
         <TextInput
@@ -87,7 +90,10 @@ class UpdateKeyComponent extends React.Component {
           value={this.state.login}
           onChangeText={login => this.setState({login: login})}
         />
-        <HelperText type="error" visible={!this.state.isLoginValid} style={styles.helperText}>
+        <HelperText
+          type="error"
+          visible={!this.state.isLoginValid}
+          style={styles.helperText}>
           Login is required
         </HelperText>
         <TextInput
@@ -109,31 +115,37 @@ class UpdateKeyComponent extends React.Component {
             <TextInput.Icon
               name="autorenew"
               onPress={() => {
-                this.setState({password: this.db.generatePassword()});
+                this.setState({
+                  password: this.context.accountService.generatePassword(),
+                });
               }}
             />
           }
         />
-        <HelperText type="error" visible={!this.state.isPasswordValid} style={styles.helperText}>
+        <HelperText
+          type="error"
+          visible={!this.state.isPasswordValid}
+          style={styles.helperText}>
           Password is required
         </HelperText>
         <TouchableOpacity
           style={styles.btnUpdate}
           onPress={async () => {
             if (this.state.login && this.state.password && this.state.context) {
-              let updateKeyResult = await this.db.updateKey(
-                this.context.user,
-                {
-                  context: this.state.oldContext,
-                  login: this.state.oldLogin,
-                  password: this.state.oldPassword,
-                },
-                {
-                  context: this.state.context,
-                  login: this.state.login,
-                  password: this.state.password,
-                },
-              );
+              let updateKeyResult =
+                await this.context.accountService.updateAccount(
+                  this.context.userService.getCurrentUser(),
+                  new Account(
+                    this.state.oldContext,
+                    this.state.oldLogin,
+                    this.state.oldPassword,
+                  ),
+                  new Account(
+                    this.state.context,
+                    this.state.login,
+                    this.state.password,
+                  ),
+                );
               if (updateKeyResult) {
                 this.props.navigation.goBack();
               } else {
@@ -177,6 +189,6 @@ class UpdateKeyComponent extends React.Component {
     );
   }
 }
-UpdateKeyComponent.contextType = userContext;
+UpdateKeyComponent.contextType = UserContext;
 
 export default UpdateKeyComponent;
