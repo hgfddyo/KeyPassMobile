@@ -6,9 +6,10 @@ import {
   TextInput,
   Alert,
   TouchableNativeFeedback,
+  Dimensions,
 } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import {Snackbar, FAB, Divider} from 'react-native-paper';
+import {Snackbar, FAB, Divider, Menu} from 'react-native-paper';
 import {RectButton, Swipeable} from 'react-native-gesture-handler';
 import styles from './styles';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -19,12 +20,14 @@ import User from '../User';
 class KeysTableComponent extends React.Component {
   constructor(props) {
     super(props);
+    this.windowWidth = Dimensions.get('window').width;
     this.state = {
       keys: [],
       visible: false,
       selectedPassword: '',
       filteredKeys: [],
       querry: '',
+      visibleMenu: false,
     };
   }
 
@@ -71,14 +74,23 @@ class KeysTableComponent extends React.Component {
       this.props.navigation.setOptions({
         headerTitleAlign: 'center',
         headerRight: () => (
-          <RectButton
-            style={styles.headerRightButton}
-            onPress={() => {
-              this.setState({querry: '', filteredKeys: this.state.keys});
-              this.toggleHeaderBar(false);
-            }}>
-            <MaterialCommunityIcons name="close" size={28} />
-          </RectButton>
+          <View style={styles.row}>
+            <RectButton
+              style={styles.headerRightButton}
+              onPress={() => {
+                this.setState({querry: '', filteredKeys: this.state.keys});
+                this.toggleHeaderBar(false);
+              }}>
+              <MaterialCommunityIcons name="close" size={28} />
+            </RectButton>
+            <RectButton
+              style={styles.headerRightButton}
+              onPress={() => {
+                this.setState({visibleMenu: true});
+              }}>
+              <MaterialCommunityIcons name="dots-vertical" size={28} />
+            </RectButton>
+          </View>
         ),
         headerTitle: () => (
           <TextInput
@@ -94,13 +106,22 @@ class KeysTableComponent extends React.Component {
       this.props.navigation.setOptions({
         headerTitleAlign: 'left',
         headerRight: () => (
-          <RectButton
-            style={styles.headerRightButton}
-            onPress={() => {
-              this.toggleHeaderBar(true);
-            }}>
-            <MaterialCommunityIcons name="magnify" size={28} />
-          </RectButton>
+          <View style={styles.row}>
+            <RectButton
+              style={styles.headerRightButton}
+              onPress={() => {
+                this.toggleHeaderBar(true);
+              }}>
+              <MaterialCommunityIcons name="magnify" size={28} />
+            </RectButton>
+            <RectButton
+              style={styles.headerRightButton}
+              onPress={() => {
+                this.setState({visibleMenu: true});
+              }}>
+              <MaterialCommunityIcons name="dots-vertical" size={28} />
+            </RectButton>
+          </View>
         ),
         headerTitle: this.props.route.name,
       });
@@ -244,6 +265,40 @@ class KeysTableComponent extends React.Component {
           icon="plus"
           onPress={() => this.props.navigation.navigate('Adding')}
         />
+        <Menu
+          visible={this.state.visibleMenu}
+          onDismiss={() => {
+            this.setState({visibleMenu: false});
+          }}
+          anchor={{x: this.windowWidth, y: 0}}>
+          <Menu.Item
+            onPress={() => {
+              this.setState({visibleMenu: false});
+              this.props.navigation.navigate('Settings');
+            }}
+            title={
+              <View style={styles.row}>
+                <Text>Settings</Text>
+                <MaterialCommunityIcons name="cog" size={20} />
+              </View>
+            }
+          />
+          <Divider style={styles.divider} />
+          <Menu.Item
+            onPress={async () => {
+              this.setState({visibleMenu: false});
+              this.context.userService.setCurrentUser('');
+              await this.context.userService.removeUser();
+              this.context.setIsLogin(false);
+            }}
+            title={
+              <View style={styles.row}>
+                <Text>Logout</Text>
+                <MaterialCommunityIcons name="logout" size={20} />
+              </View>
+            }
+          />
+        </Menu>
       </View>
     );
   }
