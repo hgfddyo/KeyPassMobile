@@ -167,7 +167,7 @@ class UpdateKeyComponent extends React.Component {
           style={styles.fab}
           small
           icon="chevron-left"
-          label="back"
+          label="cancel"
           color={'#00C4B4'}
           onPress={() => {
             this.props.navigation.goBack();
