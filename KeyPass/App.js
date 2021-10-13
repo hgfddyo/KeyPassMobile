@@ -7,6 +7,7 @@ import CRUDService from './src/CRUDService';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer, withNavigation} from '@react-navigation/native';
 import LoginComponent from './src/LoginComponent/login_component';
+import SettingsComponent from './src/SettingsComponent/settings_component';
 import RegistrationComponent from './src/RegistrationComponent/registration_component';
 import {Provider as PaperProvider, Divider} from 'react-native-paper';
 import {UserContext} from './src/UserContext';
@@ -126,6 +127,20 @@ function App() {
                   }}
                   name="Updating"
                   component={UpdateKeyComponent}
+                />
+                <AppStack.Screen
+                  options={{
+                    unmountOnBlur: true,
+                    headerStyle: {
+                      backgroundColor: '#00B3A6',
+                    },
+                    headerTintColor: '#000000',
+                    headerTitleStyle: {
+                      fontSize: 25,
+                    },
+                  }}
+                  name="Settings"
+                  component={SettingsComponent}
                 />
               </AppStack.Navigator>
             )}
