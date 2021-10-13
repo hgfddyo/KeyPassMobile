@@ -7,15 +7,14 @@ import {
   TouchableHighlightBase,
 } from 'react-native';
 import {TextInput, Surface, HelperText} from 'react-native-paper';
-import DBUtils from '../DBUtils/DBUtils';
 import styles from './styles';
-import {userContext} from '../userContext/userContext';
-import EncryptedStorage from 'react-native-encrypted-storage';
+import {UserContext} from '../UserContext';
+import Account from '../Account';
+import User from '../User';
 
 class LoginComponent extends React.Component {
   constructor(props) {
     super(props);
-    this.db = new DBUtils();
     this.state = {
       changed: false,
       username: '',
@@ -24,6 +23,32 @@ class LoginComponent extends React.Component {
       isLoginValid: true,
       isPasswordValid: true,
     };
+  }
+
+  componentDidMount() {
+    this.props.navigation.addListener('blur', async () => {
+      this.setState({
+        changed: false,
+        username: '',
+        password: '',
+        isSecure: true,
+        isLoginValid: true,
+        isPasswordValid: true,
+      });
+    });
+  }
+
+  componentWillUnmount() {
+    this.props.navigation.removeListener('blur', async () => {
+      this.setState({
+        changed: false,
+        username: '',
+        password: '',
+        isSecure: true,
+        isLoginValid: true,
+        isPasswordValid: true,
+      });
+    });
   }
 
   render() {
@@ -110,24 +135,24 @@ class LoginComponent extends React.Component {
             style={styles.buttonNext}
             onPress={async () => {
               if (this.state.password.trim('')) {
-                let loginResult = await this.db.login(
-                  this.state.username,
-                  this.state.password,
+                let loginResult = await this.context.userService.loginUser(
+                  new User(this.state.username, this.state.password),
                 );
                 if (loginResult) {
                   Alert.alert(
                     'Success',
-                    'You log in Successfully',
+                    'You log in successfully',
                     [
                       {
                         text: 'Ok',
                         onPress: () => {
-                          this.context.setUser(this.state.username);
-                          this.context.setIsLogin(true);
-                          EncryptedStorage.setItem(
-                            'active_user',
-                            this.state.username,
+                          this.context.userService.setCurrentUser(
+                            new User(this.state.username, this.state.password),
                           );
+                          this.context.userService.saveUser(
+                            new User(this.state.username, this.state.password),
+                          );
+                          this.context.setIsLogin(true);
                         },
                       },
                     ],
@@ -163,6 +188,6 @@ class LoginComponent extends React.Component {
     }
   }
 }
-LoginComponent.contextType = userContext;
+LoginComponent.contextType = UserContext;
 
 export default LoginComponent;

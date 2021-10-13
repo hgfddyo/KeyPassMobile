@@ -9,16 +9,16 @@ import {
 } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import {Snackbar, FAB, Divider} from 'react-native-paper';
-import DBUtils from '../DBUtils/DBUtils';
 import {RectButton, Swipeable} from 'react-native-gesture-handler';
 import styles from './styles';
-import {userContext} from '../userContext/userContext';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {UserContext} from '../UserContext';
+import Account from '../Account';
+import User from '../User';
 
 class KeysTableComponent extends React.Component {
   constructor(props) {
     super(props);
-    this.db = new DBUtils();
     this.state = {
       keys: [],
       visible: false,
@@ -29,17 +29,40 @@ class KeysTableComponent extends React.Component {
   }
 
   componentDidMount() {
-    this.toggleHeaderBar(false);
     this.props.navigation.addListener('focus', async () => {
-      let keys = await this.db.getKeys(this.context.user);
+      this.toggleHeaderBar(false);
+      let keys = await this.context.accountService.getAccounts(
+        this.context.userService.getCurrentUser(),
+      );
       this.setState({keys: keys, filteredKeys: keys});
+    });
+    this.props.navigation.addListener('blur', async () => {
+      this.setState({
+        keys: [],
+        visible: false,
+        selectedPassword: '',
+        filteredKeys: [],
+        querry: '',
+      });
     });
   }
 
   componentWillUnmount() {
     this.props.navigation.removeListener('focus', async () => {
-      let keys = await this.db.getKeys(this.context.user);
-      this.setState({keys: keys});
+      this.toggleHeaderBar(false);
+      let keys = await this.context.accountService.getAccounts(
+        this.context.userService.getCurrentUser(),
+      );
+      this.setState({keys: keys, filteredKeys: keys});
+    });
+    this.props.navigation.removeListener('blur', async () => {
+      this.setState({
+        keys: [],
+        visible: false,
+        selectedPassword: '',
+        filteredKeys: [],
+        querry: '',
+      });
     });
   }
 
@@ -87,7 +110,8 @@ class KeysTableComponent extends React.Component {
   findKeys(querry) {
     if (querry) {
       let filtered = this.state.keys.filter(
-        key => key.context.includes(querry) || key.login.includes(querry),
+        key =>
+          key.getContext().includes(querry) || key.getLogin().includes(querry),
       );
       this.setState({filteredKeys: filtered});
     } else {
@@ -100,7 +124,7 @@ class KeysTableComponent extends React.Component {
       <View style={styles.views}>
         <FlatList
           data={this.state.filteredKeys}
-          keyExtractor={item => item.context.concat(item.login)}
+          keyExtractor={item => item.getContext().concat(item.getLogin())}
           renderItem={({item}) => (
             <Swipeable
               friction={2}
@@ -120,7 +144,7 @@ class KeysTableComponent extends React.Component {
                             onPress: () => {
                               this.setState({
                                 visible: true,
-                                selectedPassword: item.password,
+                                selectedPassword: item.getPassword(),
                               });
                             },
                           },
@@ -142,9 +166,11 @@ class KeysTableComponent extends React.Component {
                     style={styles.rightSwipePencil}
                     onPress={() => {
                       this.props.navigation.navigate('Updating', {
-                        context: item.context,
-                        login: item.login,
-                        password: item.password,
+                        account: new Account(
+                          item.getContext(),
+                          item.getLogin(),
+                          item.getPassword(),
+                        ),
                       });
                     }}>
                     <MaterialCommunityIcons name="pencil" size={26} />
@@ -152,13 +178,18 @@ class KeysTableComponent extends React.Component {
                   <RectButton
                     style={styles.rightSwipeDelete}
                     onPress={async () => {
-                      let deleteResult = await this.db.deleteKey(
-                        item.context,
-                        item.login,
-                      );
-                      let refreshedKeys = await this.db.getKeys(
-                        this.context.user,
-                      );
+                      let deleteResult =
+                        await this.context.accountService.deleteAccount(
+                          new Account(
+                            item.getContext(),
+                            item.getLogin(),
+                            item.getPassword(),
+                          ),
+                        );
+                      let refreshedKeys =
+                        await this.context.accountService.getAccounts(
+                          this.context.userService.getCurrentUser(),
+                        );
                       this.setState({
                         keys: refreshedKeys,
                         filteredKeys: refreshedKeys,
@@ -171,8 +202,8 @@ class KeysTableComponent extends React.Component {
               <TouchableNativeFeedback
                 background={TouchableNativeFeedback.Ripple(null, false)}>
                 <View style={styles.itemWrapper}>
-                  <Text style={styles.itemLogin}>{item.login}</Text>
-                  <Text style={styles.itemContext}>{item.context}</Text>
+                  <Text style={styles.itemLogin}>{item.getLogin()}</Text>
+                  <Text style={styles.itemContext}>{item.getContext()}</Text>
                   <Divider style={styles.divider} />
                 </View>
               </TouchableNativeFeedback>
@@ -217,6 +248,6 @@ class KeysTableComponent extends React.Component {
     );
   }
 }
-KeysTableComponent.contextType = userContext;
+KeysTableComponent.contextType = UserContext;
 
 export default KeysTableComponent;
