@@ -29,21 +29,40 @@ class KeysTableComponent extends React.Component {
   }
 
   componentDidMount() {
-    this.toggleHeaderBar(false);
     this.props.navigation.addListener('focus', async () => {
+      this.toggleHeaderBar(false);
       let keys = await this.context.accountService.getAccounts(
         this.context.userService.getCurrentUser(),
       );
       this.setState({keys: keys, filteredKeys: keys});
     });
+    this.props.navigation.addListener('blur', async () => {
+      this.setState({
+        keys: [],
+        visible: false,
+        selectedPassword: '',
+        filteredKeys: [],
+        querry: '',
+      });
+    });
   }
 
   componentWillUnmount() {
     this.props.navigation.removeListener('focus', async () => {
+      this.toggleHeaderBar(false);
       let keys = await this.context.accountService.getAccounts(
         this.context.userService.getCurrentUser(),
       );
       this.setState({keys: keys, filteredKeys: keys});
+    });
+    this.props.navigation.removeListener('blur', async () => {
+      this.setState({
+        keys: [],
+        visible: false,
+        selectedPassword: '',
+        filteredKeys: [],
+        querry: '',
+      });
     });
   }
 

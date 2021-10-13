@@ -25,6 +25,32 @@ class LoginComponent extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.props.navigation.addListener('blur', async () => {
+      this.setState({
+        changed: false,
+        username: '',
+        password: '',
+        isSecure: true,
+        isLoginValid: true,
+        isPasswordValid: true,
+      });
+    });
+  }
+
+  componentWillUnmount() {
+    this.props.navigation.removeListener('blur', async () => {
+      this.setState({
+        changed: false,
+        username: '',
+        password: '',
+        isSecure: true,
+        isLoginValid: true,
+        isPasswordValid: true,
+      });
+    });
+  }
+
   render() {
     if (!this.state.changed) {
       return (
