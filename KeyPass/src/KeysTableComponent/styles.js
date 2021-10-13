@@ -57,23 +57,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  fabBack: {
-    //кнопка back
-    position: 'absolute',
-    marginLeft: 50,
-    width: 110,
-    height: 50,
-    bottom: 50,
-    borderRadius: 40,
-    elevation: 20,
-    backgroundColor: '#018786',
-  },
   fabPlus: {
     //кнопка "плюс"
     position: 'absolute',
-    marginRight: 50,
-    right: 0,
-    bottom: 50,
+    right: "10%",
+    bottom: "8%",
     backgroundColor: '#018786',
     elevation: 20,
   },

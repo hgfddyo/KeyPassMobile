@@ -238,16 +238,6 @@ class KeysTableComponent extends React.Component {
           }
         </Snackbar>
         <FAB
-          style={styles.fabBack}
-          small
-          icon="chevron-left"
-          label="back"
-          color={'#000000'}
-          onPress={() => {
-            this.props.navigation.goBack();
-          }}
-        />
-        <FAB
           style={styles.fabPlus}
           big
           color="#000000"
