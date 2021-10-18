@@ -223,8 +223,28 @@ class KeysTableComponent extends React.Component {
               <TouchableNativeFeedback
                 background={TouchableNativeFeedback.Ripple(null, false)}>
                 <View style={styles.itemWrapper}>
-                  <Text style={styles.itemLogin}>{item.getLogin()}</Text>
-                  <Text style={styles.itemContext}>{item.getContext()}</Text>
+                  <View style={styles.row}>
+                    <View>
+                      <Text style={styles.itemLogin}>{item.getLogin()}</Text>
+                      <Text style={styles.itemContext}>
+                        {item.getContext()}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        justifyContent: 'center',
+                        alignItems: 'flex-end',
+                        flex: 1,
+                      }}>
+                      <RectButton
+                        style={styles.headerRightButton}
+                        onPress={() => {
+                          Clipboard.setString(item.getLogin());
+                        }}>
+                        <MaterialCommunityIcons name="content-copy" size={24} />
+                      </RectButton>
+                    </View>
+                  </View>
                   <Divider style={styles.divider} />
                 </View>
               </TouchableNativeFeedback>
