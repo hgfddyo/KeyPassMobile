@@ -28,7 +28,7 @@ class AddKeyComponent extends React.Component {
           placeholder="Context"
           mode="outlined"
           onBlur={() => {
-            if (this.state.context) {
+            if (this.state.context.trim()) {
               this.setState({isContextValid: true});
             } else {
               this.setState({isContextValid: false});
@@ -51,7 +51,7 @@ class AddKeyComponent extends React.Component {
           mode="outlined"
           error={!this.state.isLoginValid}
           onBlur={() => {
-            if (this.state.login) {
+            if (this.state.login.trim()) {
               this.setState({isLoginValid: true});
             } else {
               this.setState({isLoginValid: false});
@@ -75,7 +75,7 @@ class AddKeyComponent extends React.Component {
           value={this.state.password}
           error={!this.state.isPasswordValid}
           onBlur={() => {
-            if (this.state.password) {
+            if (this.state.password.trim()) {
               this.setState({isPasswordValid: true});
             } else {
               this.setState({isPasswordValid: false});
@@ -127,16 +127,15 @@ class AddKeyComponent extends React.Component {
                 );
               }
             } else {
-              Alert.alert(
-                'Error',
-                'Enter correct data',
-                [
-                  {
-                    text: 'Ok',
-                  },
-                ],
-                {cancelable: false},
-              );
+              if (!this.state.context.trim()) {
+                this.setState({isContextValid: false});
+              }
+              if (!this.state.login.trim()) {
+                this.setState({isLoginValid: false});
+              }
+              if (!this.state.password.trim()) {
+                this.setState({isPasswordValid: false});
+              }
             }
           }}>
           <Text style={styles.btnSaveText}> save </Text>
