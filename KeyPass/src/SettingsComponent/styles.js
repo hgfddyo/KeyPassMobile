@@ -1,7 +1,35 @@
 import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
-
+  views: {
+    //контейнер
+    backgroundColor: '#ffffff',
+    height: '100%',
+  },
+  textH1: {
+    //текст на кнопке Save
+    color: '#948F8F',
+    //textAlign: 'center',
+    paddingLeft: 10,
+    paddingRight: 10,
+    textTransform: 'uppercase',
+    fontWeight: 'bold',
+    fontSize: 18,
+    marginTop:"5%",
+  },
+  divider: {
+    //контейнер
+    backgroundColor: '#948F8F',
+    height: 1,
+    marginBottom:"5%",
+  },
+  textInputPassword: {
+    //поле ввода пароля
+    marginRight: 40,
+    marginLeft: 40,
+    backgroundColor: '#ffffff',
+    fontSize: 17,
+  },
   fab: {
     //кнопка назад
     width: "30%",
@@ -14,7 +42,29 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   btnSave: {
-    //кнопка update
+    //кнопка Save
+    marginRight: 40,
+    marginLeft: 40,
+    marginTop: "2%",
+    marginBottom: "6%",
+    paddingTop: 10,
+    paddingBottom: 10,
+    borderRadius: 4,
+    elevation: 20,
+    backgroundColor: '#00C4B4',
+  },
+  btnSaveText: {
+    //текст на кнопке Save
+    color: '#121212',
+    textAlign: 'center',
+    paddingLeft: 10,
+    paddingRight: 10,
+    textTransform: 'uppercase',
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
+  btnUnregister: {
+    //кнопка Unregister
     marginRight: 40,
     marginLeft: 40,
     marginTop: "4%",
@@ -23,17 +73,20 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     borderRadius: 4,
     elevation: 20,
-    backgroundColor: '#00C4B4',
+    backgroundColor: '#B21010',
   },
-  btnSaveText: {
-    //текст на кнопке update
-    color: '#121212',
+  btnUnregisterText: {
+    //текст на кнопке Unregister
+    color: '#ffffff',
     textAlign: 'center',
     paddingLeft: 10,
     paddingRight: 10,
     textTransform: 'uppercase',
     fontWeight: 'bold',
     fontSize: 15,
+  },
+  helperText: {
+    marginLeft:40,
   },
 });
 export default styles;
