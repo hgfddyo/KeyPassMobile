@@ -72,6 +72,7 @@ class SettingsComponent extends React.Component {
             : 'Confirm password'}
         </HelperText>
         <TouchableOpacity
+          style={styles.btnSave}
           onPress={async () => {
             if (
               this.state.newPassword &&
@@ -110,7 +111,7 @@ class SettingsComponent extends React.Component {
               }
             }
           }}>
-          <Text> save </Text>
+          <Text style={styles.btnUpdateText}> save </Text>
         </TouchableOpacity>
         <Text>delete your account</Text>
         <TouchableOpacity
@@ -141,6 +142,7 @@ class SettingsComponent extends React.Component {
           <Text> unregister </Text>
         </TouchableOpacity>
         <FAB
+          style={styles.fab}
           small
           icon="chevron-left"
           label="cancel"
