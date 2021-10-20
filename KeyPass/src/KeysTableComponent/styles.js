@@ -2,10 +2,11 @@ import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   headerSearchInput: {
-    width: 260,
+    width: "90%",
     height: 40,
     borderBottomColor: '#000000',
     borderBottomWidth: 1,
+    marginRight: 20,
   },
   headerRightButton: {
     marginRight: 20,
@@ -68,7 +69,9 @@ const styles = StyleSheet.create({
   row: {
     //строка
     flexDirection: 'row',
+
   },
+
   snackbar: {
     backgroundColor: '#F9F9F9',
     color: 'black',
@@ -91,6 +94,10 @@ const styles = StyleSheet.create({
   itemWrapper: {
     backgroundColor: 'white',
     elevation: 10,
+  },
+  menu:{
+    width:"60%",
+    fontSize: 26,
   },
 });
 export default styles;

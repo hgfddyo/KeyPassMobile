@@ -84,7 +84,7 @@ class KeysTableComponent extends React.Component {
               <MaterialCommunityIcons name="close" size={28} />
             </RectButton>
             <RectButton
-              style={styles.headerRightButton}
+
               onPress={() => {
                 this.setState({visibleMenu: true});
               }}>
@@ -115,7 +115,7 @@ class KeysTableComponent extends React.Component {
               <MaterialCommunityIcons name="magnify" size={28} />
             </RectButton>
             <RectButton
-              style={styles.headerRightButton}
+
               onPress={() => {
                 this.setState({visibleMenu: true});
               }}>
@@ -223,8 +223,28 @@ class KeysTableComponent extends React.Component {
               <TouchableNativeFeedback
                 background={TouchableNativeFeedback.Ripple(null, false)}>
                 <View style={styles.itemWrapper}>
-                  <Text style={styles.itemLogin}>{item.getLogin()}</Text>
-                  <Text style={styles.itemContext}>{item.getContext()}</Text>
+                  <View style={styles.row}>
+                    <View>
+                      <Text style={styles.itemLogin}>{item.getLogin()}</Text>
+                      <Text style={styles.itemContext}>
+                        {item.getContext()}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        justifyContent: 'center',
+                        alignItems: 'flex-end',
+                        flex: 1,
+                      }}>
+                      <RectButton
+                        style={styles.headerRightButton}
+                        onPress={() => {
+                          Clipboard.setString(item.getLogin());
+                        }}>
+                        <MaterialCommunityIcons name="content-copy" size={24} />
+                      </RectButton>
+                    </View>
+                  </View>
                   <Divider style={styles.divider} />
                 </View>
               </TouchableNativeFeedback>
@@ -270,34 +290,18 @@ class KeysTableComponent extends React.Component {
           onDismiss={() => {
             this.setState({visibleMenu: false});
           }}
-          anchor={{x: this.windowWidth, y: 0}}>
-          <Menu.Item
-            onPress={() => {
-              this.setState({visibleMenu: false});
-              this.props.navigation.navigate('Settings');
-            }}
-            title={
-              <View style={styles.row}>
-                <Text>Settings</Text>
-                <MaterialCommunityIcons name="cog" size={20} />
-              </View>
-            }
-          />
-          <Divider style={styles.divider} />
-          <Menu.Item
-            onPress={async () => {
-              this.setState({visibleMenu: false});
-              this.context.userService.setCurrentUser('');
-              await this.context.userService.removeUser();
-              this.context.setIsLogin(false);
-            }}
-            title={
-              <View style={styles.row}>
-                <Text>Logout</Text>
-                <MaterialCommunityIcons name="logout" size={20} />
-              </View>
-            }
-          />
+          anchor={{x: this.windowWidth, y: 0}}
+          style={styles.menu}>
+          <Menu.Item icon="cog" onPress={() => {
+            this.setState({visibleMenu: false});
+            this.props.navigation.navigate('Settings');
+          }} title="Settings" />
+          <Menu.Item icon="logout" onPress={async () => {
+            this.setState({visibleMenu: false});
+            this.context.userService.setCurrentUser('');
+            await this.context.userService.removeUser();
+            this.context.setIsLogin(false);
+          }} title="Logout" />
         </Menu>
       </View>
     );
