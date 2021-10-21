@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Button, View, Text, Alert, TouchableOpacity} from 'react-native';
-import {TextInput, Surface, FAB, HelperText} from 'react-native-paper';
+import {TextInput, Surface, FAB, HelperText,Divider} from 'react-native-paper';
 import styles from './styles';
 import {UserContext} from '../UserContext';
 import Account from '../Account';
@@ -20,9 +20,11 @@ class SettingsComponent extends React.Component {
 
   render() {
     return (
-      <View>
-        <Text>change password</Text>
+      <View style={styles.views}>
+        <Text style={styles.textH1}>change password</Text>
+        <Divider style={styles.divider}/>
         <TextInput
+          style={styles.textInputPassword}
           placeholder="New password"
           mode="outlined"
           error={!this.state.isNewPasswordValid}
@@ -39,10 +41,13 @@ class SettingsComponent extends React.Component {
             this.setState({newPassword: newPassword})
           }
         />
-        <HelperText type="error" visible={!this.state.isNewPasswordValid}>
+        <HelperText
+          style={styles.helperText}
+          type="error" visible={!this.state.isNewPasswordValid}>
           Password is required
         </HelperText>
         <TextInput
+          style={styles.textInputPassword}
           placeholder="Confirm password"
           mode="outlined"
           onBlur={() => {
@@ -63,6 +68,7 @@ class SettingsComponent extends React.Component {
           }
         />
         <HelperText
+          style={styles.helperText}
           type="error"
           visible={
             !this.state.isConfirmedPasswordValid || !this.state.isPasswordsMatch
@@ -72,6 +78,7 @@ class SettingsComponent extends React.Component {
             : 'Confirm password'}
         </HelperText>
         <TouchableOpacity
+          style={styles.btnSave}
           onPress={async () => {
             if (
               this.state.newPassword &&
@@ -110,10 +117,12 @@ class SettingsComponent extends React.Component {
               }
             }
           }}>
-          <Text> save </Text>
+          <Text style={styles.btnSaveText}> save </Text>
         </TouchableOpacity>
-        <Text>delete your account</Text>
+        <Text style={styles.textH1}>delete your account</Text>
+        <Divider style={styles.divider} />
         <TouchableOpacity
+          style={styles.btnUnregister}
           onPress={async () => {
             Alert.alert(
               'Warning',
@@ -138,9 +147,10 @@ class SettingsComponent extends React.Component {
               {cancelable: false},
             );
           }}>
-          <Text> unregister </Text>
+          <Text style={styles.btnUnregisterText}> unregister </Text>
         </TouchableOpacity>
         <FAB
+          style={styles.fab}
           small
           icon="chevron-left"
           label="cancel"
