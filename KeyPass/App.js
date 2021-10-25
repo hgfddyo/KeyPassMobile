@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import * as React from 'react';
 import Account from './src/Account';
 import User from './src/User';
