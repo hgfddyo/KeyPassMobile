@@ -7,18 +7,15 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   textH1: {
-    //текст на кнопке Save
     color: '#948F8F',
-    //textAlign: 'center',
     paddingLeft: 10,
     paddingRight: 10,
     textTransform: 'uppercase',
     fontWeight: 'bold',
     fontSize: 18,
-    marginTop:"5%",
+    marginTop:"8%",
   },
   divider: {
-    //контейнер
     backgroundColor: '#948F8F',
     height: 1,
     marginBottom:"5%",
@@ -32,10 +29,10 @@ const styles = StyleSheet.create({
   },
   fab: {
     //кнопка назад
-    width: "30%",
+    width: "33%",
     marginTop: 20,
-    right: "35%",
-    left: "35%",
+    right: "33%",
+    left: "34%",
     bottom: 0,
     borderRadius: 40,
     elevation: 20,
