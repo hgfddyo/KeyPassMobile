@@ -21,13 +21,16 @@ class KeysTableComponent extends React.Component {
   constructor(props) {
     super(props);
     this.windowWidth = Dimensions.get('window').width;
+    this.isDeleted = true;
     this.state = {
       keys: [],
-      visible: false,
+      visiblePassword: false,
       selectedPassword: '',
+      visibleUndo: false,
       filteredKeys: [],
       querry: '',
       visibleMenu: false,
+      deletedAccounts: [],
     };
   }
 
@@ -40,12 +43,25 @@ class KeysTableComponent extends React.Component {
       this.setState({keys: keys, filteredKeys: keys});
     });
     this.props.navigation.addListener('blur', async () => {
+      if (this.state.deletedAccounts.length > 0) {
+        let firstElem = this.state.deletedAccounts.shift();
+        let deleteResult = await this.context.accountService.deleteAccount(
+          new Account(
+            firstElem.getContext(),
+            firstElem.getLogin(),
+            firstElem.getPassword(),
+          ),
+        );
+      }
       this.setState({
         keys: [],
-        visible: false,
+        visiblePassword: false,
         selectedPassword: '',
+        visibleUndo: false,
         filteredKeys: [],
         querry: '',
+        visibleMenu: false,
+        deletedAccounts: [],
       });
     });
   }
@@ -59,12 +75,25 @@ class KeysTableComponent extends React.Component {
       this.setState({keys: keys, filteredKeys: keys});
     });
     this.props.navigation.removeListener('blur', async () => {
+      if (this.state.deletedAccounts.length > 0) {
+        let firstElem = this.state.deletedAccounts.shift();
+        let deleteResult = await this.context.accountService.deleteAccount(
+          new Account(
+            firstElem.getContext(),
+            firstElem.getLogin(),
+            firstElem.getPassword(),
+          ),
+        );
+      }
       this.setState({
         keys: [],
-        visible: false,
+        visiblePassword: false,
         selectedPassword: '',
+        visibleUndo: false,
         filteredKeys: [],
         querry: '',
+        visibleMenu: false,
+        deletedAccounts: [],
       });
     });
   }
@@ -84,7 +113,6 @@ class KeysTableComponent extends React.Component {
               <MaterialCommunityIcons name="close" size={28} />
             </RectButton>
             <RectButton
-
               onPress={() => {
                 this.setState({visibleMenu: true});
               }}>
@@ -115,7 +143,6 @@ class KeysTableComponent extends React.Component {
               <MaterialCommunityIcons name="magnify" size={28} />
             </RectButton>
             <RectButton
-
               onPress={() => {
                 this.setState({visibleMenu: true});
               }}>
@@ -164,7 +191,7 @@ class KeysTableComponent extends React.Component {
                             text: 'Yes',
                             onPress: () => {
                               this.setState({
-                                visible: true,
+                                visiblePassword: true,
                                 selectedPassword: item.getPassword(),
                               });
                             },
@@ -199,21 +226,40 @@ class KeysTableComponent extends React.Component {
                   <RectButton
                     style={styles.rightSwipeDelete}
                     onPress={async () => {
-                      let deleteResult =
-                        await this.context.accountService.deleteAccount(
-                          new Account(
-                            item.getContext(),
-                            item.getLogin(),
-                            item.getPassword(),
-                          ),
-                        );
-                      let refreshedKeys =
-                        await this.context.accountService.getAccounts(
-                          this.context.userService.getCurrentUser(),
-                        );
+                      let deletedAccount;
+                      let keyIndex = this.state.keys.findIndex(
+                        account =>
+                          account.getLogin() === item.getLogin() &&
+                          account.getContext() === item.getContext(),
+                      );
+                      if (keyIndex >= 0) {
+                        deletedAccount = this.state.keys.splice(keyIndex, 1)[0];
+                      }
+                      let filteredKeyIndex = this.state.filteredKeys.findIndex(
+                        account =>
+                          account.getLogin() === item.getLogin() &&
+                          account.getContext() === item.getContext(),
+                      );
+                      if (filteredKeyIndex >= 0) {
+                        this.state.filteredKeys.splice(filteredKeyIndex, 1);
+                      }
+                      if (this.state.deletedAccounts.length > 0) {
+                        let firstElem = this.state.deletedAccounts.shift();
+                        let deleteResult =
+                          await this.context.accountService.deleteAccount(
+                            new Account(
+                              firstElem.getContext(),
+                              firstElem.getLogin(),
+                              firstElem.getPassword(),
+                            ),
+                          );
+                      }
+                      this.state.deletedAccounts.push(deletedAccount);
                       this.setState({
-                        keys: refreshedKeys,
-                        filteredKeys: refreshedKeys,
+                        filteredKeys: this.state.filteredKeys,
+                        keys: this.state.keys,
+                        visibleUndo: true,
+                        deletedAccounts: this.state.deletedAccounts,
                       });
                     }}>
                     <MaterialCommunityIcons name="delete" size={26} />
@@ -252,8 +298,8 @@ class KeysTableComponent extends React.Component {
           )}
         />
         <Snackbar
-          visible={this.state.visible}
-          onDismiss={() => this.setState({visible: false})}
+          visible={this.state.visiblePassword}
+          onDismiss={() => this.setState({visiblePassword: false})}
           style={styles.snackbar}
           wrapperStyle={styles.snackView}
           action={{
@@ -278,6 +324,52 @@ class KeysTableComponent extends React.Component {
             </Text>
           }
         </Snackbar>
+        <Snackbar
+          visible={this.state.visibleUndo}
+          onDismiss={async () => {
+            if (this.isDeleted) {
+              let deleteResult =
+                await this.context.accountService.deleteAccount(
+                  new Account(
+                    this.state.deletedAccounts[0].getContext(),
+                    this.state.deletedAccounts[0].getLogin(),
+                    this.state.deletedAccounts[0].getPassword(),
+                  ),
+                );
+              let refreshedKeys = await this.context.accountService.getAccounts(
+                this.context.userService.getCurrentUser(),
+              );
+              this.setState({
+                keys: refreshedKeys,
+                filteredKeys: refreshedKeys,
+                visibleUndo: false,
+              });
+            } else {
+              this.setState({
+                visibleUndo: false,
+              });
+              this.isDeleted = true;
+            }
+          }}
+          style={styles.snackbar}
+          wrapperStyle={styles.snackView}
+          action={{
+            label: <MaterialCommunityIcons name="undo" size={25} />,
+            onPress: async () => {
+              this.isDeleted = false;
+              let refreshedKeys = await this.context.accountService.getAccounts(
+                this.context.userService.getCurrentUser(),
+              );
+              this.setState({
+                keys: refreshedKeys,
+                filteredKeys: refreshedKeys,
+                deletedAccounts: [],
+              });
+            },
+          }}
+          duration={5000}>
+          <Text style={styles.snackText}>Undo</Text>
+        </Snackbar>
         <FAB
           style={styles.fabPlus}
           big
@@ -292,16 +384,24 @@ class KeysTableComponent extends React.Component {
           }}
           anchor={{x: this.windowWidth, y: 0}}
           style={styles.menu}>
-          <Menu.Item icon="cog" onPress={() => {
-            this.setState({visibleMenu: false});
-            this.props.navigation.navigate('Settings');
-          }} title="Settings" />
-          <Menu.Item icon="logout" onPress={async () => {
-            this.setState({visibleMenu: false});
-            this.context.userService.setCurrentUser('');
-            await this.context.userService.removeUser();
-            this.context.setIsLogin(false);
-          }} title="Logout" />
+          <Menu.Item
+            icon="cog"
+            onPress={() => {
+              this.setState({visibleMenu: false});
+              this.props.navigation.navigate('Settings');
+            }}
+            title="Settings"
+          />
+          <Menu.Item
+            icon="logout"
+            onPress={async () => {
+              this.setState({visibleMenu: false});
+              this.context.userService.setCurrentUser('');
+              await this.context.userService.removeUser();
+              this.context.setIsLogin(false);
+            }}
+            title="Logout"
+          />
         </Menu>
       </View>
     );
