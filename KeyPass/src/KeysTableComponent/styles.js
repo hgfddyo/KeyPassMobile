@@ -2,7 +2,7 @@ import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   headerSearchInput: {
-    width: "90%",
+    width: "84%",
     height: 40,
     borderBottomColor: '#000000',
     borderBottomWidth: 1,
@@ -61,17 +61,15 @@ const styles = StyleSheet.create({
   fabPlus: {
     //кнопка "плюс"
     position: 'absolute',
-    right: "10%",
-    bottom: "8%",
+    right: 40,
+    bottom: 40,
     backgroundColor: '#018786',
     elevation: 20,
   },
   row: {
     //строка
     flexDirection: 'row',
-
   },
-
   snackbar: {
     backgroundColor: '#F9F9F9',
     color: 'black',
