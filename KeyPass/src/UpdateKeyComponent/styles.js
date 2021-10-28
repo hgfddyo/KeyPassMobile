@@ -60,10 +60,10 @@ const styles = StyleSheet.create({
   },
   fab: {
     //кнопка назад
-    width:"30%",
+    width:"33%",
     marginTop: 20,
-    right:"35%",
-    left: "35%",
+    right:"33%",
+    left: "34%",
     bottom: 0,
     borderRadius: 40,
     elevation: 20,
