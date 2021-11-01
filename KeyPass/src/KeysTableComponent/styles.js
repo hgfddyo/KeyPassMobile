@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   snackView: {
+    //всплывающее сообщение с кнопкой
     position: 'absolute',
     top: '40%',
     zIndex: 1,
@@ -85,6 +86,18 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flex: 1,
     width: 300,
+    height:80,
+  },
+  snackViewUndo: {
+    //всплывающее сообщение с кнопкой
+    position: 'absolute',
+    top: '70%',
+    zIndex: 1,
+    elevation: 20,
+    alignSelf: 'center',
+    flex: 1,
+    width: 160,
+    height:90,
   },
   divider: {
     height: 1,

@@ -352,7 +352,7 @@ class KeysTableComponent extends React.Component {
             }
           }}
           style={styles.snackbar}
-          wrapperStyle={styles.snackView}
+          wrapperStyle={styles.snackViewUndo}
           action={{
             label: <MaterialCommunityIcons name="undo" size={25} />,
             onPress: async () => {
