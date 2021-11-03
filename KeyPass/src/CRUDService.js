@@ -1,6 +1,7 @@
 import {openDatabase} from 'react-native-sqlite-storage';
 import Account from './Account';
 import User from './User';
+import Profile from './Profile';
 
 export default class CRUDService {
   #db = '';
@@ -237,14 +238,109 @@ export default class CRUDService {
     });
     this.#db.transaction(tx => {
       tx.executeSql(
+        'CREATE TABLE IF NOT EXISTS Profiles(' +
+          'Id_profile	INTEGER NOT NULL UNIQUE, ' +
+          'Name	TEXT NOT NULL UNIQUE, ' +
+          'Id_user INTEGER NOT NULL, ' +
+          'FOREIGN KEY(Id_user) REFERENCES Users(Id_user),' +
+          'PRIMARY KEY(Id_profile AUTOINCREMENT)); ',
+      );
+    });
+    this.#db.transaction(tx => {
+      tx.executeSql(
         'CREATE TABLE IF NOT EXISTS Keys(' +
           'Id_user INTEGER NOT NULL,' +
+          'Id_profile INTEGER NOT NULL,' +
           'Context TEXT NOT NULL, ' +
           'Login	TEXT NOT NULL, ' +
           'Password	TEXT NOT NULL, ' +
           'FOREIGN KEY(Id_user) REFERENCES Users(Id_user),' +
-          'PRIMARY KEY(Context, Login));',
+          'FOREIGN KEY(Id_profile) REFERENCES Profiles(Id_profile),' +
+          'PRIMARY KEY(Context, Login, Id_user));',
       );
+    });
+  }
+  async insertProfile(user, profile) {
+    return new Promise(async (resolve, reject) => {
+      this.#db.transaction(tx => {
+        tx.executeSql(
+          'INSERT INTO Profiles(Id_user, Name) VALUES (?,?)',
+          [user.getId(), profile.getName()],
+          (tx, result) => {
+            if (result.rowsAffected > 0) {
+              resolve(true);
+            }
+          },
+          err => {
+            resolve(false);
+          },
+        );
+      });
+    });
+  }
+
+  async updateProfile(profile) {
+    return new Promise(async (resolve, reject) => {
+      this.#db.transaction(tx => {
+        tx.executeSql(
+          'UPDATE Profiles SET Name=? WHERE Id_profile=?',
+          [profile.getName(), profile.getId()],
+          (tx, result) => {
+            if (result.rowsAffected > 0) {
+              resolve(true);
+            }
+          },
+          err => {
+            resolve(false);
+          },
+        );
+      });
+    });
+  }
+
+  async deleteProfile(profile) {
+    return new Promise((resolve, reject) => {
+      this.#db.transaction(tx => {
+        tx.executeSql(
+          'DELETE FROM Profiles where Id_profile=?',
+          [profile.getId()],
+          (tx, result) => {
+            if (result.rowsAffected > 0) {
+              resolve(true);
+            }
+          },
+          err => {
+            resolve(false);
+          },
+        );
+      });
+    });
+  }
+
+  async selectProfiles(user) {
+    return new Promise((resolve, reject) => {
+      this.#db.transaction(tx => {
+        tx.executeSql(
+          'SELECT * FROM Profiles where Id_user =?',
+          [user.getId()],
+          (tx, result) => {
+            if (result.rows.length > 0) {
+              let profiles = [];
+              for (let i = 0; i < result.rows.length; i++) {
+                profiles.push(
+                  new Profile(
+                    result.rows.item(i).Id_profile,
+                    result.rows.item(i).Name,
+                  ),
+                );
+              }
+              resolve(profiles);
+            } else {
+              resolve([]);
+            }
+          },
+        );
+      });
     });
   }
 }
