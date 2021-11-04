@@ -136,7 +136,7 @@ class LoginComponent extends React.Component {
             onPress={async () => {
               if (this.state.password.trim('')) {
                 let loginResult = await this.context.userService.loginUser(
-                  new User(this.state.username, this.state.password),
+                  new User('', this.state.username, this.state.password),
                 );
                 if (loginResult) {
                   Alert.alert(
@@ -146,12 +146,8 @@ class LoginComponent extends React.Component {
                       {
                         text: 'Ok',
                         onPress: () => {
-                          this.context.userService.setCurrentUser(
-                            new User(this.state.username, this.state.password),
-                          );
-                          this.context.userService.saveUser(
-                            new User(this.state.username, this.state.password),
-                          );
+                          this.context.userService.setCurrentUser(loginResult);
+                          this.context.userService.saveUser(loginResult);
                           this.context.setIsLogin(true);
                         },
                       },

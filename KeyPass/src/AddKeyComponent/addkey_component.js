@@ -111,6 +111,7 @@ class AddKeyComponent extends React.Component {
                     this.state.login,
                     this.state.password,
                   ),
+                  this.context.profileService.getCurrentProfile(),
                 );
               if (addKeyResult) {
                 this.props.navigation.goBack();

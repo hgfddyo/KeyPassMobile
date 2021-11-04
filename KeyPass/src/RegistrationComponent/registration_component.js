@@ -106,7 +106,7 @@ class RegistrationComponent extends React.Component {
               if (this.state.password.trim('')) {
                 let registationResult =
                   await this.context.userService.registerUser(
-                    new User(this.state.username, this.state.password),
+                    new User('', this.state.username, this.state.password),
                   );
                 if (registationResult) {
                   Alert.alert(
@@ -117,11 +117,9 @@ class RegistrationComponent extends React.Component {
                         text: 'Ok',
                         onPress: () => {
                           this.context.userService.setCurrentUser(
-                            new User(this.state.username, this.state.password),
+                            registationResult,
                           );
-                          this.context.userService.saveUser(
-                            new User(this.state.username, this.state.password),
-                          );
+                          this.context.userService.saveUser(registationResult);
                           this.context.setIsLogin(true);
                         },
                       },

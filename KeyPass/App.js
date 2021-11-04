@@ -4,6 +4,7 @@ import Account from './src/Account';
 import User from './src/User';
 import UserService from './src/UserService';
 import AccountService from './src/AccountService';
+import ProfileService from './src/ProfileService';
 import CRUDService from './src/CRUDService';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer, withNavigation} from '@react-navigation/native';
@@ -22,6 +23,7 @@ const AuthorizationStack = createNativeStackNavigator();
 const AppStack = createNativeStackNavigator();
 const userService = new UserService();
 const accountService = new AccountService();
+const profileService = new ProfileService();
 let crudService = new CRUDService();
 crudService.createTables();
 
@@ -41,7 +43,13 @@ function App() {
   if (isLoaded) {
     return (
       <UserContext.Provider
-        value={{isLogin, setIsLogin, userService, accountService}}>
+        value={{
+          isLogin,
+          setIsLogin,
+          userService,
+          accountService,
+          profileService,
+        }}>
         <PaperProvider>
           <NavigationContainer>
             {!isLogin ? (

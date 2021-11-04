@@ -6,6 +6,7 @@ export default class EncryptedStorageService {
     let result = await EncryptedStorage.setItem(
       'active_user',
       JSON.stringify({
+        id: user.getId(),
         username: user.getUsername(),
         password: user.getPassword(),
       }),
@@ -30,7 +31,7 @@ export default class EncryptedStorageService {
     let item = await EncryptedStorage.getItem('active_user');
     if (item) {
       let user = JSON.parse(item);
-      return new User(user.username, user.password);
+      return new User(user.id, user.username, user.password);
     } else {
       return '';
     }
