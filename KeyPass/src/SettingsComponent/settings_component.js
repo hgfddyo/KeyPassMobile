@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Button, View, Text, Alert, TouchableOpacity} from 'react-native';
-import {TextInput, Surface, FAB, HelperText,Divider} from 'react-native-paper';
+import {TextInput, Surface, FAB, HelperText, Divider} from 'react-native-paper';
 import styles from './styles';
 import {UserContext} from '../UserContext';
 import Account from '../Account';
@@ -22,7 +22,7 @@ class SettingsComponent extends React.Component {
     return (
       <View style={styles.views}>
         <Text style={styles.textH1}>change password</Text>
-        <Divider style={styles.divider}/>
+        <Divider style={styles.divider} />
         <TextInput
           style={styles.textInputPassword}
           placeholder="New password"
@@ -43,7 +43,8 @@ class SettingsComponent extends React.Component {
         />
         <HelperText
           style={styles.helperText}
-          type="error" visible={!this.state.isNewPasswordValid}>
+          type="error"
+          visible={!this.state.isNewPasswordValid}>
           Password is required
         </HelperText>
         <TextInput
@@ -87,6 +88,7 @@ class SettingsComponent extends React.Component {
             ) {
               await this.context.userService.updatePassword(
                 new User(
+                  this.context.userService.getCurrentUser().getId(),
                   this.context.userService.getCurrentUser().getUsername(),
                   this.state.newPassword,
                 ),

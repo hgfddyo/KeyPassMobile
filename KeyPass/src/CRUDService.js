@@ -10,91 +10,18 @@ export default class CRUDService {
     this.#db = openDatabase({name: 'KeyRingDB.db', location: 'default'});
   }
 
-  async getUserId(user) {
-    return new Promise((resolve, reject) => {
+  async insertAccount(user, account, profile) {
+    return new Promise(async (resolve, reject) => {
       this.#db.transaction(tx => {
         tx.executeSql(
-          'SELECT Id_user FROM Users where Username =?',
-          [user.getUsername()],
-          (tx, result) => {
-            if (result.rows.length > 0) {
-              resolve(result.rows.item(0).Id_user);
-            } else {
-              resolve(-1);
-            }
-          },
-        );
-      });
-    });
-  }
-
-  async insertAccount(user, account) {
-    return new Promise(async (resolve, reject) => {
-      let userId = await this.getUserId(user);
-      if (userId > -1) {
-        this.#db.transaction(tx => {
-          tx.executeSql(
-            'INSERT INTO Keys(Id_user, Context, Login, Password) VALUES (?,?,?,?)',
-            [
-              userId,
-              account.getContext(),
-              account.getLogin(),
-              account.getPassword(),
-            ],
-            (tx, result) => {
-              if (result.rowsAffected > 0) {
-                resolve(true);
-              }
-            },
-            err => {
-              resolve(false);
-            },
-          );
-        });
-      } else {
-        resolve(false);
-      }
-    });
-  }
-
-  async updateAccount(user, oldAccount, newAccount) {
-    return new Promise(async (resolve, reject) => {
-      let userId = await this.getUserId(user);
-      if (userId > -1) {
-        this.#db.transaction(tx => {
-          tx.executeSql(
-            'UPDATE Keys SET Context=?, Login=?, Password=? WHERE Context=? AND Login=? AND Password=? AND Id_user=?',
-            [
-              newAccount.getContext(),
-              newAccount.getLogin(),
-              newAccount.getPassword(),
-              oldAccount.getContext(),
-              oldAccount.getLogin(),
-              oldAccount.getPassword(),
-              userId,
-            ],
-            (tx, result) => {
-              if (result.rowsAffected > 0) {
-                resolve(true);
-              }
-            },
-            err => {
-              resolve(false);
-            },
-          );
-        });
-      } else {
-        resolve(false);
-      }
-    });
-  }
-
-  async deleteAccount(account) {
-    return new Promise((resolve, reject) => {
-      this.#db.transaction(tx => {
-        tx.executeSql(
-          'DELETE FROM Keys where Context=? AND Login=?',
-          [account.getContext(), account.getLogin()],
+          'INSERT INTO Keys(Id_user, Context, Login, Password, Id_profile) VALUES (?,?,?,?,?)',
+          [
+            user.getId(),
+            account.getContext(),
+            account.getLogin(),
+            account.getPassword(),
+            profile.getId(),
+          ],
           (tx, result) => {
             if (result.rowsAffected > 0) {
               resolve(true);
@@ -108,12 +35,58 @@ export default class CRUDService {
     });
   }
 
-  async selectAccounts(user) {
+  async updateAccount(user, oldAccount, newAccount) {
+    return new Promise(async (resolve, reject) => {
+      this.#db.transaction(tx => {
+        tx.executeSql(
+          'UPDATE Keys SET Context=?, Login=?, Password=? WHERE Context=? AND Login=? AND Password=? AND Id_user=?',
+          [
+            newAccount.getContext(),
+            newAccount.getLogin(),
+            newAccount.getPassword(),
+            oldAccount.getContext(),
+            oldAccount.getLogin(),
+            oldAccount.getPassword(),
+            user.getId(),
+          ],
+          (tx, result) => {
+            if (result.rowsAffected > 0) {
+              resolve(true);
+            }
+          },
+          err => {
+            resolve(false);
+          },
+        );
+      });
+    });
+  }
+
+  async deleteAccount(account, user) {
     return new Promise((resolve, reject) => {
       this.#db.transaction(tx => {
         tx.executeSql(
-          'SELECT Context, Login, Keys.Password FROM Keys inner join Users on Users.Id_user = Keys.Id_user where Username =?',
-          [user.getUsername()],
+          'DELETE FROM Keys where Context=? AND Login=? AND Id_user=?',
+          [account.getContext(), account.getLogin(), user.getId()],
+          (tx, result) => {
+            if (result.rowsAffected > 0) {
+              resolve(true);
+            }
+          },
+          err => {
+            resolve(false);
+          },
+        );
+      });
+    });
+  }
+
+  async selectAccounts(user, profile) {
+    return new Promise((resolve, reject) => {
+      this.#db.transaction(tx => {
+        tx.executeSql(
+          'SELECT Context, Login, Keys.Password FROM Keys inner join Users on Users.Id_user = Keys.Id_user where Id_user =? AND Id_profile=?',
+          [user.getId(), profile.getId()],
           (tx, result) => {
             if (result.rows.length > 0) {
               let accounts = [];
@@ -144,7 +117,9 @@ export default class CRUDService {
           [user.getUsername(), user.getPassword()],
           (tx, result) => {
             if (result.rowsAffected > 0) {
-              resolve(true);
+              resolve(
+                new User(result.insertId, user.getUsername, user.getPassword),
+              );
             }
           },
           err => {
@@ -159,8 +134,8 @@ export default class CRUDService {
     return new Promise(async (resolve, reject) => {
       this.#db.transaction(tx => {
         tx.executeSql(
-          'UPDATE Users SET Password =? WHERE Username =?',
-          [user.getPassword(), user.getUsername()],
+          'UPDATE Users SET Password =? WHERE Id_user =?',
+          [user.getPassword(), user.getId()],
           (tx, result) => {
             if (result.rowsAffected > 0) {
               resolve(true);
@@ -176,35 +151,30 @@ export default class CRUDService {
 
   async deleteUser(user) {
     return new Promise(async (resolve, reject) => {
-      let userId = await this.getUserId(user);
-      if (userId > -1) {
-        this.#db.transaction(tx => {
-          tx.executeSql(
-            'DELETE FROM Keys where Id_user=?',
-            [userId],
-            (tx, result) => {},
-            err => {
-              resolve(false);
-            },
-          );
-        });
-        this.#db.transaction(tx => {
-          tx.executeSql(
-            'DELETE FROM Users where Id_user=?',
-            [userId],
-            (tx, result) => {
-              if (result.rowsAffected > 0) {
-                resolve(true);
-              }
-            },
-            err => {
-              resolve(false);
-            },
-          );
-        });
-      } else {
-        resolve(false);
-      }
+      this.#db.transaction(tx => {
+        tx.executeSql(
+          'DELETE FROM Keys where Id_user=?',
+          [user.getId()],
+          (tx, result) => {},
+          err => {
+            resolve(false);
+          },
+        );
+      });
+      this.#db.transaction(tx => {
+        tx.executeSql(
+          'DELETE FROM Users where Id_user=?',
+          [user.getId()],
+          (tx, result) => {
+            if (result.rowsAffected > 0) {
+              resolve(true);
+            }
+          },
+          err => {
+            resolve(false);
+          },
+        );
+      });
     });
   }
 
@@ -216,7 +186,13 @@ export default class CRUDService {
           [user.getUsername(), user.getPassword()],
           (tx, result) => {
             if (result.rows.length > 0) {
-              resolve(true);
+              resolve(
+                new User(
+                  result.rows.item(0).Id_user,
+                  result.rows.item(0).Username,
+                  result.rows.item(0).Password,
+                ),
+              );
             } else {
               resolve(false);
             }

@@ -6,7 +6,7 @@ export default class UserService {
   #currentUser = '';
 
   constructor() {
-    this.#currentUser = new User('', '');
+    this.#currentUser = new User('', '', '');
   }
 
   getCurrentUser() {
@@ -21,7 +21,7 @@ export default class UserService {
     let crudService = new CRUDService();
     let result = await crudService.insertUser(user);
     if (result) {
-      return true;
+      return result;
     } else {
       return false;
     }
@@ -31,7 +31,7 @@ export default class UserService {
     let crudService = new CRUDService();
     let result = await crudService.selectUser(user);
     if (result) {
-      return true;
+      return result;
     } else {
       return false;
     }

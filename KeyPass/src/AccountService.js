@@ -15,9 +15,9 @@ export default class AccountService {
     'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
   }
 
-  async createAccount(user, account) {
+  async createAccount(user, account, profile) {
     let crudService = new CRUDService();
-    let result = await crudService.insertAccount(user, account);
+    let result = await crudService.insertAccount(user, account, profile);
     if (result) {
       return true;
     } else {
@@ -35,9 +35,9 @@ export default class AccountService {
     }
   }
 
-  async deleteAccount(account) {
+  async deleteAccount(account, user) {
     let crudService = new CRUDService();
-    let result = await crudService.deleteAccount(account);
+    let result = await crudService.deleteAccount(account, user);
     if (result) {
       return true;
     } else {
@@ -45,9 +45,9 @@ export default class AccountService {
     }
   }
 
-  async getAccounts(user) {
+  async getAccounts(user, profile) {
     let crudService = new CRUDService();
-    let accounts = await crudService.selectAccounts(user);
+    let accounts = await crudService.selectAccounts(user, profile);
     return accounts;
   }
 

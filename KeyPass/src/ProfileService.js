@@ -1,6 +1,8 @@
 import CRUDService from './CRUDService';
 
 export default class ProfileService {
+  #currentProfile = '';
+
   async createProfile(user, profile) {
     let crudService = new CRUDService();
     let result = await crudService.insertProfile(user, profile);
@@ -35,5 +37,12 @@ export default class ProfileService {
     let crudService = new CRUDService();
     let profiles = await crudService.selectProfiles(user);
     return profiles;
+  }
+
+  setCurrentProfile(profile) {
+    this.#currentProfile = profile;
+  }
+  getCurrentProfile() {
+    return this.#currentProfile;
   }
 }
