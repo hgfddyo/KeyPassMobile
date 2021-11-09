@@ -15,6 +15,7 @@ import styles from './styles';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {UserContext} from '../UserContext';
 import Account from '../Account';
+import Profile from '../Profile';
 import User from '../User';
 
 class ProfilesTableComponent extends React.Component {
@@ -23,46 +24,37 @@ class ProfilesTableComponent extends React.Component {
     this.windowWidth = Dimensions.get('window').width;
     this.isDeleted = true;
     this.state = {
-      keys: [],
-      visiblePassword: false,
-      selectedPassword: '',
+      profiles: [],
       visibleUndo: false,
-      filteredKeys: [],
+      filteredProfiles: [],
       querry: '',
       visibleMenu: false,
-      deletedAccounts: [],
+      deletedProfiles: [],
     };
   }
 
   componentDidMount() {
     this.props.navigation.addListener('focus', async () => {
       this.toggleHeaderBar(false);
-      let keys = await this.context.profileService.getProfiles(
-        this.context.userService.getCurrentUser()
+      let profiles = await this.context.profileService.getProfiles(
+        this.context.userService.getCurrentUser(),
       );
-      this.setState({keys: keys, filteredKeys: keys});
+      this.setState({profiles: profiles, filteredProfiles: profiles});
     });
     this.props.navigation.addListener('blur', async () => {
-      if (this.state.deletedAccounts.length > 0) {
-        let firstElem = this.state.deletedAccounts.shift();
-        let deleteResult = await this.context.accountService.deleteAccount(
-          new Account(
-            firstElem.getContext(),
-            firstElem.getLogin(),
-            firstElem.getPassword(),
-            this.context.userService.getCurrentUser(),
-          ),
+      if (this.state.deletedProfiles.length > 0) {
+        let firstElem = this.state.deletedProfiles.shift();
+        let deleteResult = await this.context.profileService.deleteProfile(
+          new Profile(firstElem.getId(), firstElem.getName()),
         );
       }
       this.setState({
-        keys: [],
-        visiblePassword: false,
-        selectedPassword: '',
+        profiles: [],
         visibleUndo: false,
-        filteredKeys: [],
+        filteredProfiles: [],
         querry: '',
         visibleMenu: false,
-        deletedAccounts: [],
+        deletedProfiles: [],
       });
     });
   }
@@ -70,33 +62,25 @@ class ProfilesTableComponent extends React.Component {
   componentWillUnmount() {
     this.props.navigation.removeListener('focus', async () => {
       this.toggleHeaderBar(false);
-      let keys = await this.context.accountService.getAccounts(
+      let profiles = await this.context.profileService.getProfiles(
         this.context.userService.getCurrentUser(),
-        this.context.profileService.getCurrentProfile(),
       );
-      this.setState({keys: keys, filteredKeys: keys});
+      this.setState({profiles: profiles, filteredProfiles: profiles});
     });
     this.props.navigation.removeListener('blur', async () => {
-      if (this.state.deletedAccounts.length > 0) {
-        let firstElem = this.state.deletedAccounts.shift();
-        let deleteResult = await this.context.accountService.deleteAccount(
-          new Account(
-            firstElem.getContext(),
-            firstElem.getLogin(),
-            firstElem.getPassword(),
-            this.context.userService.getCurrentUser(),
-          ),
+      if (this.state.deletedProfiles.length > 0) {
+        let firstElem = this.state.deletedProfiles.shift();
+        let deleteResult = await this.context.profileService.deleteProfile(
+          new Profile(firstElem.getId(), firstElem.getName()),
         );
       }
       this.setState({
-        keys: [],
-        visiblePassword: false,
-        selectedPassword: '',
+        profiles: [],
         visibleUndo: false,
-        filteredKeys: [],
+        filteredProfiles: [],
         querry: '',
         visibleMenu: false,
-        deletedAccounts: [],
+        deletedProfiles: [],
       });
     });
   }
@@ -110,7 +94,10 @@ class ProfilesTableComponent extends React.Component {
             <RectButton
               style={styles.headerRightButton}
               onPress={() => {
-                this.setState({querry: '', filteredKeys: this.state.keys});
+                this.setState({
+                  querry: '',
+                  filteredProfiles: this.state.profiles,
+                });
                 this.toggleHeaderBar(false);
               }}>
               <MaterialCommunityIcons name="close" size={28} />
@@ -129,7 +116,7 @@ class ProfilesTableComponent extends React.Component {
             placeholder="Type context or login"
             onChangeText={querry => {
               this.setState({querry: querry});
-              this.findKeys(querry);
+              this.findProfiles(querry);
             }}></TextInput>
         ),
       });
@@ -158,15 +145,14 @@ class ProfilesTableComponent extends React.Component {
     }
   }
 
-  findKeys(querry) {
+  findProfiles(querry) {
     if (querry) {
-      let filtered = this.state.keys.filter(
-        key =>
-          key.getContext().includes(querry) || key.getLogin().includes(querry),
+      let filtered = this.state.profiles.filter(profile =>
+        profile.getName().includes(querry),
       );
-      this.setState({filteredKeys: filtered});
+      this.setState({filteredProfiles: filtered});
     } else {
-      this.setState({filteredKeys: this.state.keys});
+      this.setState({filteredProfiles: this.state.profiles});
     }
   }
 
@@ -174,96 +160,64 @@ class ProfilesTableComponent extends React.Component {
     return (
       <View style={styles.views}>
         <FlatList
-          data={this.state.filteredKeys}
-          keyExtractor={item => item.getContext().concat(item.getLogin())}
+          data={this.state.filteredProfiles}
+          keyExtractor={item => item.getId()}
           renderItem={({item}) => (
             <Swipeable
               friction={2}
               overshootLeft={false}
               overshootRight={false}
-              renderLeftActions={() => (
-                <View>
-                  <RectButton
-                    style={styles.leftSwipeEye}
-                    onPress={() => {
-                      Alert.alert(
-                        '',
-                        'Do you want to see the password?',
-                        [
-                          {
-                            text: 'Yes',
-                            onPress: () => {
-                              this.setState({
-                                visiblePassword: true,
-                                selectedPassword: item.getPassword(),
-                              });
-                            },
-                          },
-                          {
-                            text: 'No',
-                            onPress: () => {},
-                          },
-                        ],
-                        {cancelable: false},
-                      );
-                    }}>
-                    <MaterialCommunityIcons name="eye" size={26} />
-                  </RectButton>
-                </View>
-              )}
               renderRightActions={() => (
                 <View style={styles.row}>
                   <RectButton
                     style={styles.rightSwipePencil}
                     onPress={() => {
-                      this.props.navigation.navigate('Updating', {
-                        account: new Account(
-                          item.getContext(),
-                          item.getLogin(),
-                          item.getPassword(),
-                        ),
-                      });
+                      // this.props.navigation.navigate('Updating', {
+                      //   account: new Account(
+                      //     item.getContext(),
+                      //     item.getLogin(),
+                      //     item.getPassword(),
+                      //   ),
+                      // });
                     }}>
                     <MaterialCommunityIcons name="pencil" size={26} />
                   </RectButton>
                   <RectButton
                     style={styles.rightSwipeDelete}
                     onPress={async () => {
-                      let deletedAccount;
-                      let keyIndex = this.state.keys.findIndex(
-                        account =>
-                          account.getLogin() === item.getLogin() &&
-                          account.getContext() === item.getContext(),
+                      let deletedProfile;
+                      let profileIndex = this.state.profiles.findIndex(
+                        profile => profile.getId() === item.getId(),
                       );
-                      if (keyIndex >= 0) {
-                        deletedAccount = this.state.keys.splice(keyIndex, 1)[0];
+                      if (profileIndex >= 0) {
+                        deletedProfile = this.state.profiles.splice(
+                          profileIndex,
+                          1,
+                        )[0];
                       }
-                      let filteredKeyIndex = this.state.filteredKeys.findIndex(
-                        account =>
-                          account.getLogin() === item.getLogin() &&
-                          account.getContext() === item.getContext(),
-                      );
-                      if (filteredKeyIndex >= 0) {
-                        this.state.filteredKeys.splice(filteredKeyIndex, 1);
+                      let filteredProfileIndex =
+                        this.state.filteredProfiles.findIndex(
+                          profile => profile.getId() === item.getId(),
+                        );
+                      if (filteredProfileIndex >= 0) {
+                        this.state.filteredProfiles.splice(
+                          filteredProfileIndex,
+                          1,
+                        );
                       }
-                      if (this.state.deletedAccounts.length > 0) {
-                        let firstElem = this.state.deletedAccounts.shift();
+                      if (this.state.deletedProfiles.length > 0) {
+                        let firstElem = this.state.deletedProfiles.shift();
                         let deleteResult =
-                          await this.context.accountService.deleteAccount(
-                            new Account(
-                              firstElem.getContext(),
-                              firstElem.getLogin(),
-                              firstElem.getPassword(),
-                            ),
-                            this.context.userService.getCurrentUser(),
+                          await this.context.profileService.deleteProfile(
+                            new Profile(firstElem.getId(), firstElem.getName()),
                           );
                       }
-                      this.state.deletedAccounts.push(deletedAccount);
+                      this.state.deletedProfiles.push(deletedProfile);
                       this.setState({
-                        filteredKeys: this.state.filteredKeys,
-                        keys: this.state.keys,
+                        filteredProfiles: this.state.filteredProfiles,
+                        profiles: this.state.profiles,
                         visibleUndo: true,
-                        deletedAccounts: this.state.deletedAccounts,
+                        deletedProfiles: this.state.deletedProfiles,
                       });
                     }}>
                     <MaterialCommunityIcons name="delete" size={26} />
@@ -275,24 +229,7 @@ class ProfilesTableComponent extends React.Component {
                 <View style={styles.itemWrapper}>
                   <View style={styles.row}>
                     <View>
-                      <Text style={styles.itemLogin}>{item.getLogin()}</Text>
-                      <Text style={styles.itemContext}>
-                        {item.getContext()}
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        justifyContent: 'center',
-                        alignItems: 'flex-end',
-                        flex: 1,
-                      }}>
-                      <RectButton
-                        style={styles.headerRightButton}
-                        onPress={() => {
-                          Clipboard.setString(item.getLogin());
-                        }}>
-                        <MaterialCommunityIcons name="content-copy" size={24} />
-                      </RectButton>
+                      <Text style={styles.itemLogin}>{item.getName()}</Text>
                     </View>
                   </View>
                   <Divider style={styles.divider} />
@@ -302,52 +239,23 @@ class ProfilesTableComponent extends React.Component {
           )}
         />
         <Snackbar
-          visible={this.state.visiblePassword}
-          onDismiss={() => this.setState({visiblePassword: false})}
-          style={styles.snackbar}
-          wrapperStyle={styles.snackView}
-          action={{
-            label: <MaterialCommunityIcons name="content-copy" size={25} />,
-            onPress: () => {
-              Clipboard.setString(this.state.selectedPassword);
-            },
-          }}
-          duration={5000}>
-          {
-            <Text style={styles.snackText}>
-              {this.state.selectedPassword.length - 12 > 3
-                ? this.state.selectedPassword
-                  .substring(0, 12)
-                  .concat('...')
-                  .concat(
-                    this.state.selectedPassword.substring(
-                      this.state.selectedPassword.length - 3,
-                    ),
-                  )
-                : this.state.selectedPassword}
-            </Text>
-          }
-        </Snackbar>
-        <Snackbar
           visible={this.state.visibleUndo}
           onDismiss={async () => {
             if (this.isDeleted) {
               let deleteResult =
-                await this.context.accountService.deleteAccount(
-                  new Account(
-                    this.state.deletedAccounts[0].getContext(),
-                    this.state.deletedAccounts[0].getLogin(),
-                    this.state.deletedAccounts[0].getPassword(),
-                    this.context.userService.getCurrentUser(),
+                await this.context.profileService.deleteProfile(
+                  new Profile(
+                    this.state.deletedProfiles[0].getId(),
+                    this.state.deletedProfiles[0].getName(),
                   ),
                 );
-              let refreshedKeys = await this.context.accountService.getAccounts(
-                this.context.userService.getCurrentUser(),
-                this.context.profileService.getCurrentProfile(),
-              );
+              let refreshedProfiles =
+                await this.context.profileService.getProfiles(
+                  this.context.userService.getCurrentUser(),
+                );
               this.setState({
-                keys: refreshedKeys,
-                filteredKeys: refreshedKeys,
+                profiles: refreshedProfiles,
+                filteredProfiles: refreshedProfiles,
                 visibleUndo: false,
               });
             } else {
@@ -363,14 +271,14 @@ class ProfilesTableComponent extends React.Component {
             label: <MaterialCommunityIcons name="undo" size={25} />,
             onPress: async () => {
               this.isDeleted = false;
-              let refreshedKeys = await this.context.accountService.getAccounts(
-                this.context.userService.getCurrentUser(),
-                this.context.profileService.getCurrentProfile(),
-              );
+              let refreshedProfiles =
+                await this.context.profileService.getProfiles(
+                  this.context.userService.getCurrentUser(),
+                );
               this.setState({
-                keys: refreshedKeys,
-                filteredKeys: refreshedKeys,
-                deletedAccounts: [],
+                profiles: refreshedProfiles,
+                filteredProfiles: refreshedProfiles,
+                deletedProfiles: [],
               });
             },
           }}
