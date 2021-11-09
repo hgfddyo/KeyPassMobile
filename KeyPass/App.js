@@ -16,6 +16,7 @@ import {UserContext} from './src/UserContext';
 import AddKeyComponent from './src/AddKeyComponent/addkey_component';
 import KeysTableComponent from './src/KeysTableComponent/keystable_component';
 import UpdateKeyComponent from './src/UpdateKeyComponent/updatekey_component';
+import ProfilesTableComponent from "./src/ProfilesTableComponent/profiletable_component";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {View} from 'react-native';
 
@@ -93,7 +94,7 @@ function App() {
               </AuthorizationStack.Navigator>
             ) : (
               <AppStack.Navigator
-                initialRouteName="Accounts"
+                initialRouteName="Profiles"
                 screenOptions={{headerBackVisible: false}}>
                 <AppStack.Screen
                   options={{
@@ -108,6 +109,20 @@ function App() {
                   }}
                   name="Accounts"
                   component={KeysTableComponent}
+                />
+                <AppStack.Screen
+                  options={{
+                    unmountOnBlur: true,
+                    headerStyle: {
+                      backgroundColor: '#00B3A6',
+                    },
+                    headerTintColor: '#000000',
+                    headerTitleStyle: {
+                      fontSize: 25,
+                    },
+                  }}
+                  name="Profiles"
+                  component={ProfilesTableComponent}
                 />
                 <AppStack.Screen
                   options={{
