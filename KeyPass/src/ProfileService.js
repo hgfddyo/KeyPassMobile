@@ -42,6 +42,7 @@ export default class ProfileService {
   setCurrentProfile(profile) {
     this.#currentProfile = profile;
   }
+
   getCurrentProfile() {
     return this.#currentProfile;
   }
