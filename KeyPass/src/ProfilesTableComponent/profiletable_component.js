@@ -290,7 +290,7 @@ class ProfilesTableComponent extends React.Component {
           big
           color="#000000"
           icon="plus"
-          onPress={() => this.props.navigation.navigate('Adding')}
+          onPress={() => this.props.navigation.navigate('Adding Profile')}
         />
         <Menu
           visible={this.state.visibleMenu}

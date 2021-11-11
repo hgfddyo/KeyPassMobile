@@ -16,7 +16,8 @@ import {UserContext} from './src/UserContext';
 import AddKeyComponent from './src/AddKeyComponent/addkey_component';
 import KeysTableComponent from './src/KeysTableComponent/keystable_component';
 import UpdateKeyComponent from './src/UpdateKeyComponent/updatekey_component';
-import ProfilesTableComponent from "./src/ProfilesTableComponent/profiletable_component";
+import ProfilesTableComponent from './src/ProfilesTableComponent/profiletable_component';
+import AddProfileComponent from './src/AddProfileComponent/addprofile_component';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {View} from 'react-native';
 
@@ -107,20 +108,6 @@ function App() {
                       fontSize: 25,
                     },
                   }}
-                  name="Accounts"
-                  component={KeysTableComponent}
-                />
-                <AppStack.Screen
-                  options={{
-                    unmountOnBlur: true,
-                    headerStyle: {
-                      backgroundColor: '#00B3A6',
-                    },
-                    headerTintColor: '#000000',
-                    headerTitleStyle: {
-                      fontSize: 25,
-                    },
-                  }}
                   name="Profiles"
                   component={ProfilesTableComponent}
                 />
@@ -135,8 +122,36 @@ function App() {
                       fontSize: 25,
                     },
                   }}
-                  name="Adding"
+                  name="Accounts"
+                  component={KeysTableComponent}
+                />
+                <AppStack.Screen
+                  options={{
+                    unmountOnBlur: true,
+                    headerStyle: {
+                      backgroundColor: '#00B3A6',
+                    },
+                    headerTintColor: '#000000',
+                    headerTitleStyle: {
+                      fontSize: 25,
+                    },
+                  }}
+                  name="Adding Key"
                   component={AddKeyComponent}
+                />
+                <AppStack.Screen
+                  options={{
+                    unmountOnBlur: true,
+                    headerStyle: {
+                      backgroundColor: '#00B3A6',
+                    },
+                    headerTintColor: '#000000',
+                    headerTitleStyle: {
+                      fontSize: 25,
+                    },
+                  }}
+                  name="Adding Profile"
+                  component={AddProfileComponent}
                 />
                 <AppStack.Screen
                   options={{

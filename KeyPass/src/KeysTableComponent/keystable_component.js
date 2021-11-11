@@ -383,7 +383,7 @@ class KeysTableComponent extends React.Component {
           big
           color="#000000"
           icon="plus"
-          onPress={() => this.props.navigation.navigate('Adding')}
+          onPress={() => this.props.navigation.navigate('Adding Key')}
         />
         <Menu
           visible={this.state.visibleMenu}

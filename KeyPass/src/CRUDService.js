@@ -163,6 +163,16 @@ export default class CRUDService {
       });
       this.#db.transaction(tx => {
         tx.executeSql(
+          'DELETE FROM Profiles where Id_user=?',
+          [user.getId()],
+          (tx, result) => {},
+          err => {
+            resolve(false);
+          },
+        );
+      });
+      this.#db.transaction(tx => {
+        tx.executeSql(
           'DELETE FROM Users where Id_user=?',
           [user.getId()],
           (tx, result) => {
@@ -219,7 +229,7 @@ export default class CRUDService {
           'Name	TEXT NOT NULL UNIQUE, ' +
           'Id_user INTEGER NOT NULL, ' +
           'FOREIGN KEY(Id_user) REFERENCES Users(Id_user),' +
-          'PRIMARY KEY(Id_profile AUTOINCREMENT)); ',
+          'PRIMARY KEY(Id_profile AUTOINCREMENT, Id_user)); ',
       );
     });
     this.#db.transaction(tx => {
@@ -276,6 +286,19 @@ export default class CRUDService {
 
   async deleteProfile(profile) {
     return new Promise((resolve, reject) => {
+      this.#db.transaction(tx => {
+        tx.executeSql(
+          'DELETE FROM Keys where Id_profile=?',
+          [profile.getId()],
+          (tx, result) => {
+            if (result.rowsAffected > 0) {
+            }
+          },
+          err => {
+            resolve(false);
+          },
+        );
+      });
       this.#db.transaction(tx => {
         tx.executeSql(
           'DELETE FROM Profiles where Id_profile=?',
