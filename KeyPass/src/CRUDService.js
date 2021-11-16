@@ -1,4 +1,4 @@
-import {openDatabase} from 'react-native-sqlite-storage';
+import SQLite from 'react-native-sqlite-storage';
 import Account from './Account';
 import User from './User';
 import Profile from './Profile';
@@ -7,7 +7,7 @@ export default class CRUDService {
   #db = '';
 
   constructor() {
-    this.#db = openDatabase({name: 'KeyRingDB.db', location: 'default'});
+    this.#db = SQLite.openDatabase({name: 'KeyRingDB.db', location: 'default'});
   }
 
   async insertAccount(user, account, profile) {
