@@ -10,16 +10,16 @@ const styles = StyleSheet.create({
     //заголовок
     fontWeight: 'normal',
     fontSize: 30,
-    marginTop: "15%",
-    marginBottom: "12%",
+    marginTop: "30%",
+    marginBottom: "9%",
     textAlign: 'center',
   },
   btnSave: {
     //кнопка  save
     marginRight: 40,
     marginLeft: 40,
-    marginTop: "4%",
-    marginBottom: "4%",
+    marginTop: "5%",
+    marginBottom: "7%",
     paddingTop: 10,
     paddingBottom: 10,
     borderRadius: 4,
@@ -36,23 +36,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 15,
   },
-  textInputContext: {
+  textInputName: {
     //поле ввода контекста
-    marginRight: 40,
-    marginLeft: 40,
-    backgroundColor: '#ffffff',
-    fontSize: 17,
-  },
-  textInputLogin: {
-    //поле ввода логина
-    marginRight: 40,
-    marginLeft: 40,
-    borderColor: '#ccc',
-    backgroundColor: '#ffffff',
-    fontSize: 17,
-  },
-  textInputPassword: {
-    //поле ввода пароля
     marginRight: 40,
     marginLeft: 40,
     backgroundColor: '#ffffff',
