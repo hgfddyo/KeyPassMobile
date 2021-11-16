@@ -21,7 +21,7 @@ class AddProfileComponent extends React.Component {
       <View style={styles.views}>
         <Text style={styles.textH1}>Add Profile</Text>
         <TextInput
-          style={styles.textInputContext}
+          style={styles.textInputName}
           placeholder="Name"
           mode="outlined"
           onBlur={() => {
