@@ -226,10 +226,10 @@ export default class CRUDService {
       tx.executeSql(
         'CREATE TABLE IF NOT EXISTS Profiles(' +
           'Id_profile	INTEGER NOT NULL UNIQUE, ' +
-          'Name	TEXT NOT NULL UNIQUE, ' +
+          'Name	TEXT NOT NULL, ' +
           'Id_user INTEGER NOT NULL, ' +
           'FOREIGN KEY(Id_user) REFERENCES Users(Id_user),' +
-          'PRIMARY KEY(Id_profile AUTOINCREMENT, Id_user)); ',
+          'PRIMARY KEY(Id_profile AUTOINCREMENT)); ',
       );
     });
     this.#db.transaction(tx => {
@@ -246,14 +246,17 @@ export default class CRUDService {
       );
     });
   }
-  async insertProfile(user, profile) {
+
+  async selectProfileByName(user, profile) {
     return new Promise(async (resolve, reject) => {
       this.#db.transaction(tx => {
         tx.executeSql(
-          'INSERT INTO Profiles(Id_user, Name) VALUES (?,?)',
+          'SELECT * FROM Profiles where Id_user=? AND Name=?',
           [user.getId(), profile.getName()],
           (tx, result) => {
-            if (result.rowsAffected > 0) {
+            if (result.rows.length > 0) {
+              resolve(false);
+            } else {
               resolve(true);
             }
           },
@@ -262,6 +265,30 @@ export default class CRUDService {
           },
         );
       });
+    });
+  }
+
+  async insertProfile(user, profile) {
+    return new Promise(async (resolve, reject) => {
+      let selectResult = await this.selectProfileByName(user, profile);
+      if (selectResult) {
+        this.#db.transaction(tx => {
+          tx.executeSql(
+            'INSERT INTO Profiles(Id_user, Name) VALUES (?,?)',
+            [user.getId(), profile.getName()],
+            (tx, result) => {
+              if (result.rowsAffected > 0) {
+                resolve(true);
+              }
+            },
+            err => {
+              resolve(false);
+            },
+          );
+        });
+      } else {
+        resolve(false);
+      }
     });
   }
 
