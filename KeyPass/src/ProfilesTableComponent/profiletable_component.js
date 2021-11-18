@@ -92,7 +92,7 @@ class ProfilesTableComponent extends React.Component {
         headerRight: () => (
           <View style={styles.row}>
             <RectButton
-              style={styles.headerRightButton}
+              style={styles.headerCloseButton}
               onPress={() => {
                 this.setState({
                   querry: '',
@@ -103,6 +103,7 @@ class ProfilesTableComponent extends React.Component {
               <MaterialCommunityIcons name="close" size={28} />
             </RectButton>
             <RectButton
+              style={styles.headerDots}
               onPress={() => {
                 this.setState({visibleMenu: true});
               }}>
@@ -126,13 +127,14 @@ class ProfilesTableComponent extends React.Component {
         headerRight: () => (
           <View style={styles.row}>
             <RectButton
-              style={styles.headerRightButton}
+              style={styles.headerCloseButton}
               onPress={() => {
                 this.toggleHeaderBar(true);
               }}>
               <MaterialCommunityIcons name="magnify" size={28} />
             </RectButton>
             <RectButton
+              style={styles.headerDots}
               onPress={() => {
                 this.setState({visibleMenu: true});
               }}>
@@ -229,7 +231,10 @@ class ProfilesTableComponent extends React.Component {
                 <View style={styles.itemWrapper}>
                   <View style={styles.row}>
                     <View>
-                      <Text style={styles.itemLogin}>{item.getName()}</Text>
+                      <Text style={styles.itemName}>{item.getName()}</Text>
+                    </View>
+                    <View style={styles.RightChevron}>
+                    <MaterialCommunityIcons name="chevron-right" size={26} />
                     </View>
                   </View>
                   <Divider style={styles.divider} />

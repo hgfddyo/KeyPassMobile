@@ -7,29 +7,33 @@ const styles = StyleSheet.create({
     borderBottomColor: '#000000',
     borderBottomWidth: 1,
     marginRight: 20,
+    paddingLeft:0,
+    fontSize: 16,
   },
-  headerRightButton: {
+  headerCloseButton: {
+    marginRight: 15,
+  },
+  headerDots: {
+    marginRight: 5,
+  },
+  RightChevron: {//стрелка
     marginRight: 20,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    flex: 1,
   },
   views: {
     //контейнер
     backgroundColor: '#ffffff',
     height: '100%',
   },
-  itemLogin: {
-    //login
+  itemName: {
+    //name
     marginHorizontal: 10,
-    marginTop: 5,
+    marginTop:20,
+    marginBottom:20,
     marginLeft: 20,
     fontSize: 18,
-  },
-  itemContext: {
-    //Context
-    marginHorizontal: 10,
-    marginBottom: 5,
-    marginLeft: 20,
-    fontSize: 16,
-    color: '#595353',
   },
   leftSwipeEye: {
     //кнопка показать
@@ -42,7 +46,7 @@ const styles = StyleSheet.create({
   },
   rightSwipePencil: {
     //кнопка редактировать
-    backgroundColor: '#70EFDE',
+    backgroundColor: 'rgba(0, 52, 238, 0.22)',
     height: "100%",
     width: 60,
     elevation: 90,
@@ -51,7 +55,7 @@ const styles = StyleSheet.create({
   },
   rightSwipeDelete: {
     //кнопка удалить
-    backgroundColor: '#00C4B4',
+    backgroundColor: 'rgba(179, 16, 16, 0.23)',
     height: "100%",
     width: 60,
     elevation: 20,
