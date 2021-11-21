@@ -5,10 +5,6 @@ import User from './User';
 export default class UserService {
   #currentUser = '';
 
-  constructor() {
-    this.#currentUser = new User('', '', '');
-  }
-
   getCurrentUser() {
     return this.#currentUser;
   }
