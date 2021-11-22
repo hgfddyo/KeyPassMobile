@@ -14,8 +14,15 @@ const styles = StyleSheet.create({
     marginBottom: "9%",
     textAlign: 'center',
   },
-  btnSave: {
-    //кнопка  save
+  textInputName: {
+    //поле ввода названия
+    marginRight: 40,
+    marginLeft: 40,
+    backgroundColor: '#ffffff',
+    fontSize: 17,
+  },
+  btnUpdate: {
+    //кнопка update
     marginRight: 40,
     marginLeft: 40,
     marginTop: "5%",
@@ -26,8 +33,8 @@ const styles = StyleSheet.create({
     elevation: 20,
     backgroundColor: '#00C4B4',
   },
-  btnSaveText: {
-    //текст на кнопке save
+  btnUpdateText: {
+    //текст на кнопке update
     color: '#121212',
     textAlign: 'center',
     paddingLeft: 10,
@@ -36,19 +43,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 15,
   },
-  textInputName: {
-    //поле ввода названия
-    marginRight: 40,
-    marginLeft: 40,
-    backgroundColor: '#ffffff',
-    fontSize: 17,
-  },
   fab: {
-    //кнопка back
+    //кнопка назад
     width:"33%",
     marginTop: 20,
     right:"33%",
     left: "34%",
+    bottom: 0,
     borderRadius: 40,
     elevation: 20,
     backgroundColor: '#ffffff',
@@ -57,5 +58,4 @@ const styles = StyleSheet.create({
     marginLeft:40,
   },
 });
-
 export default styles;

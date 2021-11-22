@@ -217,7 +217,7 @@ class KeysTableComponent extends React.Component {
                   <RectButton
                     style={styles.rightSwipePencil}
                     onPress={() => {
-                      this.props.navigation.navigate('Updating', {
+                      this.props.navigation.navigate('Updating key', {
                         account: new Account(
                           item.getContext(),
                           item.getLogin(),

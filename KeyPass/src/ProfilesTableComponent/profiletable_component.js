@@ -174,13 +174,12 @@ class ProfilesTableComponent extends React.Component {
                   <RectButton
                     style={styles.rightSwipePencil}
                     onPress={() => {
-                      // this.props.navigation.navigate('Updating', {
-                      //   account: new Account(
-                      //     item.getContext(),
-                      //     item.getLogin(),
-                      //     item.getPassword(),
-                      //   ),
-                      // });
+                      this.props.navigation.navigate('Updating profile', {
+                        profile: new Profile(
+                          item.getId(),
+                          item.getName(),
+                        ),
+                      });
                     }}>
                     <MaterialCommunityIcons name="pencil" size={26} />
                   </RectButton>

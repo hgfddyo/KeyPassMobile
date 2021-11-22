@@ -20,6 +20,7 @@ import ProfilesTableComponent from './src/ProfilesTableComponent/profiletable_co
 import AddProfileComponent from './src/AddProfileComponent/addprofile_component';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {View} from 'react-native';
+import UpdateProfileComponent from "./src/UpdateProfileComponent/updateprofile_component";
 
 const AuthorizationStack = createNativeStackNavigator();
 const AppStack = createNativeStackNavigator();
@@ -122,6 +123,20 @@ function App() {
                       fontSize: 25,
                     },
                   }}
+                  name="Updating profile"
+                  component={UpdateProfileComponent}
+                />
+                <AppStack.Screen
+                  options={{
+                    unmountOnBlur: true,
+                    headerStyle: {
+                      backgroundColor: '#00B3A6',
+                    },
+                    headerTintColor: '#000000',
+                    headerTitleStyle: {
+                      fontSize: 25,
+                    },
+                  }}
                   name="Accounts"
                   component={KeysTableComponent}
                 />
@@ -164,7 +179,7 @@ function App() {
                       fontSize: 25,
                     },
                   }}
-                  name="Updating"
+                  name="Updating key"
                   component={UpdateKeyComponent}
                 />
                 <AppStack.Screen
