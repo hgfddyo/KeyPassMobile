@@ -13,9 +13,9 @@ export default class ProfileService {
     }
   }
 
-  async updateProfile(profile) {
+  async updateProfile(profile, user) {
     let crudService = new CRUDService();
-    let result = await crudService.updateProfile(profile);
+    let result = await crudService.updateProfile(profile, user);
     if (result) {
       return true;
     } else {

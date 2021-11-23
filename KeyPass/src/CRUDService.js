@@ -85,7 +85,7 @@ export default class CRUDService {
     return new Promise((resolve, reject) => {
       this.#db.transaction(tx => {
         tx.executeSql(
-          'SELECT Context, Login, Keys.Password FROM Keys inner join Users on Users.Id_user = Keys.Id_user where Id_user =? AND Id_profile=?',
+          'SELECT Context, Login, Keys.Password FROM Keys where Id_user =? AND Id_profile=?',
           [user.getId(), profile.getId()],
           (tx, result) => {
             if (result.rows.length > 0) {
@@ -118,7 +118,11 @@ export default class CRUDService {
           (tx, result) => {
             if (result.rowsAffected > 0) {
               resolve(
-                new User(result.insertId, user.getUsername, user.getPassword),
+                new User(
+                  result.insertId,
+                  user.getUsername(),
+                  user.getPassword(),
+                ),
               );
             }
           },
@@ -292,22 +296,27 @@ export default class CRUDService {
     });
   }
 
-  async updateProfile(profile) {
+  async updateProfile(profile, user) {
     return new Promise(async (resolve, reject) => {
-      this.#db.transaction(tx => {
-        tx.executeSql(
-          'UPDATE Profiles SET Name=? WHERE Id_profile=?',
-          [profile.getName(), profile.getId()],
-          (tx, result) => {
-            if (result.rowsAffected > 0) {
-              resolve(true);
-            }
-          },
-          err => {
-            resolve(false);
-          },
-        );
-      });
+      let selectResult = await this.selectProfileByName(user, profile);
+      if (selectResult) {
+        this.#db.transaction(tx => {
+          tx.executeSql(
+            'UPDATE Profiles SET Name=? WHERE Id_profile=?',
+            [profile.getName(), profile.getId()],
+            (tx, result) => {
+              if (result.rowsAffected > 0) {
+                resolve(true);
+              }
+            },
+            err => {
+              resolve(false);
+            },
+          );
+        });
+      } else {
+        resolve(false);
+      }
     });
   }
 

@@ -4,8 +4,8 @@ import {TextInput, Surface, FAB, HelperText} from 'react-native-paper';
 import styles from './styles';
 import {UserContext} from '../UserContext';
 import Account from '../Account';
+import Profile from '../Profile';
 import User from '../User';
-import Profile from "../Profile";
 
 class UpdateProfileComponent extends React.Component {
   constructor(props) {
@@ -19,7 +19,7 @@ class UpdateProfileComponent extends React.Component {
   componentDidMount() {
     this.props.navigation.addListener('focus', async () => {
       this.setState({
-      name: this.props.route.params.profile.getName(),
+        name: this.props.route.params.profile.getName(),
       });
     });
   }
@@ -62,34 +62,28 @@ class UpdateProfileComponent extends React.Component {
           style={styles.btnUpdate}
           onPress={async () => {
             if (this.state.name) {
-              // let updateKeyResult =
-                // await this.context.accountService.updateAccount(
-              //     this.context.userService.getCurrentUser(),
-              //     new Account(
-              //       this.state.oldContext,
-              //       this.state.oldLogin,
-              //       this.state.oldPassword,
-              //     ),
-              //     new Account(
-              //       this.state.context,
-              //       this.state.login,
-              //       this.state.password,
-              //     ),
-              //   );
-              // if (updateKeyResult) {
-              //   this.props.navigation.goBack();
-              // } else {
-              //   Alert.alert(
-              //     'Error',
-              //     'Key with such context and login already exists',
-              //     [
-              //       {
-              //         text: 'Ok',
-              //       },
-              //     ],
-              //     {cancelable: false},
-              //   );
-              // }
+              let updateProfileResult =
+                await this.context.profileService.updateProfile(
+                  new Profile(
+                    this.props.route.params.profile.getId(),
+                    this.state.name,
+                  ),
+                  this.context.userService.getCurrentUser(),
+                );
+              if (updateProfileResult) {
+                this.props.navigation.goBack();
+              } else {
+                Alert.alert(
+                  'Error',
+                  'Profile with such name already exists',
+                  [
+                    {
+                      text: 'Ok',
+                    },
+                  ],
+                  {cancelable: false},
+                );
+              }
             } else {
               if (!this.state.name.trim()) {
                 this.setState({isNameValid: false});

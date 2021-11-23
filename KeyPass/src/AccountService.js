@@ -17,6 +17,7 @@ export default class AccountService {
 
   async createAccount(user, account, profile) {
     let crudService = new CRUDService();
+    console.log(profile.getName());
     let result = await crudService.insertAccount(user, account, profile);
     if (result) {
       return true;
