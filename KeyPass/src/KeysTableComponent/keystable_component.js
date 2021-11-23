@@ -51,8 +51,8 @@ class KeysTableComponent extends React.Component {
             firstElem.getContext(),
             firstElem.getLogin(),
             firstElem.getPassword(),
-            this.context.userService.getCurrentUser(),
           ),
+          this.context.userService.getCurrentUser(),
         );
       }
       this.setState({
@@ -85,8 +85,8 @@ class KeysTableComponent extends React.Component {
             firstElem.getContext(),
             firstElem.getLogin(),
             firstElem.getPassword(),
-            this.context.userService.getCurrentUser(),
           ),
+          this.context.userService.getCurrentUser(),
         );
       }
       this.setState({
@@ -339,8 +339,8 @@ class KeysTableComponent extends React.Component {
                     this.state.deletedAccounts[0].getContext(),
                     this.state.deletedAccounts[0].getLogin(),
                     this.state.deletedAccounts[0].getPassword(),
-                    this.context.userService.getCurrentUser(),
                   ),
+                  this.context.userService.getCurrentUser(),
                 );
               let refreshedKeys = await this.context.accountService.getAccounts(
                 this.context.userService.getCurrentUser(),
