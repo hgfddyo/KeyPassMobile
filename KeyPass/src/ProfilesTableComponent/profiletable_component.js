@@ -175,10 +175,7 @@ class ProfilesTableComponent extends React.Component {
                     style={styles.rightSwipePencil}
                     onPress={() => {
                       this.props.navigation.navigate('Updating profile', {
-                        profile: new Profile(
-                          item.getId(),
-                          item.getName(),
-                        ),
+                        profile: new Profile(item.getId(), item.getName()),
                       });
                     }}>
                     <MaterialCommunityIcons name="pencil" size={26} />
@@ -226,6 +223,12 @@ class ProfilesTableComponent extends React.Component {
                 </View>
               )}>
               <TouchableNativeFeedback
+                onPress={async () => {
+                  this.context.profileService.setCurrentProfile(
+                    new Profile(item.getId(), item.getName()),
+                  );
+                  this.props.navigation.navigate('Accounts');
+                }}
                 background={TouchableNativeFeedback.Ripple(null, false)}>
                 <View style={styles.itemWrapper}>
                   <View style={styles.row}>
@@ -233,7 +236,7 @@ class ProfilesTableComponent extends React.Component {
                       <Text style={styles.itemName}>{item.getName()}</Text>
                     </View>
                     <View style={styles.RightChevron}>
-                    <MaterialCommunityIcons name="chevron-right" size={26} />
+                      <MaterialCommunityIcons name="chevron-right" size={26} />
                     </View>
                   </View>
                   <Divider style={styles.divider} />
