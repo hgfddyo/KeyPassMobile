@@ -114,7 +114,7 @@ class ProfilesTableComponent extends React.Component {
         headerTitle: () => (
           <TextInput
             style={styles.headerSearchInput}
-            placeholder="Type context or login"
+            placeholder="Type name of profile"
             onChangeText={querry => {
               this.setState({querry: querry});
               this.findProfiles(querry);
@@ -262,14 +262,15 @@ class ProfilesTableComponent extends React.Component {
                 );
               this.setState({
                 profiles: refreshedProfiles,
+                deletedProfiles: [],
                 filteredProfiles: refreshedProfiles,
                 visibleUndo: false,
               });
             } else {
+              this.isDeleted = true;
               this.setState({
                 visibleUndo: false,
               });
-              this.isDeleted = true;
             }
           }}
           style={styles.snackbar}

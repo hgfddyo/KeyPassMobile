@@ -347,6 +347,7 @@ class KeysTableComponent extends React.Component {
                 this.context.profileService.getCurrentProfile(),
               );
               this.setState({
+                deletedAccounts: [],
                 keys: refreshedKeys,
                 filteredKeys: refreshedKeys,
                 visibleUndo: false,
